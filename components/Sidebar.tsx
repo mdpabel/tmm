@@ -232,6 +232,8 @@ function Sidebar() {
     setRole((data as CustomSession)?.user?.role ?? '');
   }, [data, status]);
 
+  console.log(data);
+
   return (
     <nav>
       <div
