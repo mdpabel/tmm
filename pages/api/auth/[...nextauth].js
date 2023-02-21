@@ -41,6 +41,9 @@ export default NextAuth({
       },
     }),
   ],
+  pages: {
+    signIn: '/login',
+  },
   secret: process.env.JWR_SECRETE,
   cookies: {
     sessionToken: {
