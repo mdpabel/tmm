@@ -232,21 +232,6 @@ function Sidebar() {
 
   const role = (data as CustomSession)?.user?.role ?? '';
 
-  const forceUpdate = useForceUpdate();
-
-  useEffect(() => {
-    const handleRouteChange = () => {
-      console.log('forceUpdate');
-      forceUpdate();
-    };
-
-    addEventListener('hashchange', handleRouteChange);
-
-    return () => {
-      removeEventListener('hashchange', handleRouteChange);
-    };
-  }, [forceUpdate]);
-
   return (
     <nav>
       <div
