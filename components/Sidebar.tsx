@@ -235,18 +235,17 @@ function Sidebar() {
   const forceUpdate = useForceUpdate();
 
   useEffect(() => {
-    const handleRouteChange = (url) => {
+    const handleRouteChange = () => {
+      console.log('forceUpdate');
       forceUpdate();
     };
 
-    // Listen for URL changes
-    router.events.on('routeChangeComplete', handleRouteChange);
+    addEventListener('hashchange', handleRouteChange);
 
-    // Unsubscribe from the event when the component is unmounted
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
+      removeEventListener('hashchange', handleRouteChange);
     };
-  }, [router.events]);
+  }, [forceUpdate]);
 
   return (
     <nav>
