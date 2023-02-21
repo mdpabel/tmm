@@ -14,7 +14,7 @@ const MyApp = ({ Component, pageProps }: Props) => {
   const Layout = Component.layout ?? Fragment;
 
   return (
-    <SessionProvider>
+    <SessionProvider session={pageProps.session}>
       <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
     </SessionProvider>
   );

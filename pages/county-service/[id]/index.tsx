@@ -12,20 +12,13 @@ interface ParamsType {
 
 export async function getStaticPaths() {
   const res = await prisma.service.findMany();
-  // const services: ServiceType[] = JSON.parse(JSON.stringify(res));
+  const services: ServiceType[] = JSON.parse(JSON.stringify(res));
 
-  const paths = res.map((service) => ({
-    params: {
-      id: '' + service.id.toString(),
-    },
+  const paths = services?.map((service) => ({
+    params: { id: service.id.toString() },
   }));
 
-  console.log(paths);
-
-  return {
-    paths,
-    fallback: false,
-  };
+  return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }: ParamsType) {
@@ -36,6 +29,12 @@ export async function getStaticProps({ params }: ParamsType) {
   });
 
   const service = JSON.parse(JSON.stringify(res));
+
+  if (!service) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {

@@ -6,23 +6,30 @@ import { JobType } from '@/types/jobType';
 import AppLayout from '@/layouts/AppLayout';
 import { CompanyType } from '@/types/compnayTypes';
 
-// export const generateStaticParams = async () => {
-//   const data = await prisma.job.findMany();
-//   return data.map((job) => {
-//     return { jobParams: '' + job.id };
-//   });
-// };
-
 interface ParamsType {
   params: {
-    jobParams: string;
+    id: string;
   };
+}
+
+export async function getStaticPaths() {
+  const jobs = await prisma.job.findMany({
+    include: {
+      company: true,
+    },
+  });
+
+  const paths = jobs?.map((jobs) => ({
+    params: { id: jobs.id.toString() },
+  }));
+
+  return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }: ParamsType) {
   const data = await prisma.job.findFirst({
     where: {
-      id: +params.jobParams,
+      id: +params.id,
     },
     include: {
       company: true,

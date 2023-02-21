@@ -10,8 +10,6 @@ export const auth = async (req: ReqType, res: NextApiResponse, next: any) => {
     secret: process.env.JWR_SECRETE,
   });
 
-  console.log(token);
-
   if (!token) {
     return res.status(401).json({
       data: 'Unauthorized user',

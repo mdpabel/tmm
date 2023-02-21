@@ -5,6 +5,7 @@ import AppLayout from '@/layouts/AppLayout';
 import { ServiceCard } from '@/components/ServiceCard';
 import Title from '@/components/Title';
 import { ServiceType } from '@/types/serviceType';
+import prisma from '@/db/postgresql';
 
 export async function getStaticProps() {
   const res = await prisma.service.findMany();

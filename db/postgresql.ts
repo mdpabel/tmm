@@ -1,25 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 
 declare global {
-  namespace NodeJS {
-    interface Global {
-      prisma: PrismaClient;
-    }
-  }
+  var cachedPrisma: PrismaClient;
 }
 
-let prisma: PrismaClient | undefined;
+let prisma: PrismaClient;
 
-if (typeof window === 'undefined') {
-  if (process.env.NODE_ENV === 'production') {
-    prisma = new PrismaClient();
-  } else {
-    if (!global.prisma) {
-      global.prisma = new PrismaClient();
-    }
-
-    prisma = global.prisma;
+if (process.env.NODE_ENV === 'production') {
+  prisma = new PrismaClient();
+} else {
+  if (!global.cachedPrisma) {
+    global.cachedPrisma = new PrismaClient();
   }
+  prisma = global.cachedPrisma;
 }
 
 export default prisma;

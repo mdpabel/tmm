@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import HamburgerIcon from '@/components/icons/hamburgerIcon';
 import CrossIcon from '@/components/icons/CrossIcon';
 import logo from '@/assets/images/tmmlogo.png';
-import { useSession } from 'next-auth/react';
+import { useSession, getSession } from 'next-auth/react';
 import { Session, User } from 'next-auth';
 
 const NavLink = ({
@@ -66,7 +66,7 @@ const Navbar = () => {
                   )}
                   <NavLink label='About Us' link='about' />
                   <NavLink label='Contact Us' link='contact' />
-                  {status === 'unauthenticated' ? (
+                  {status === 'unauthenticated' || status === 'loading' ? (
                     <>
                       <NavLink
                         label='Login'

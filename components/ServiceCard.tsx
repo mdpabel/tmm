@@ -14,15 +14,13 @@ export const ServiceCard = ({ id, packageImage, name, price }: ServiceCard) => {
   return (
     <Link href={`/county-service/${id}`}>
       <div className='w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow'>
-        <a href='#'>
-          <Image
-            width={300}
-            height={300}
-            className='p-8 rounded-t-lg'
-            src={packageImage}
-            alt='product image'
-          />
-        </a>
+        <Image
+          width={300}
+          height={300}
+          className='p-8 rounded-t-lg'
+          src={packageImage}
+          alt='product image'
+        />
         <div className='px-5 pb-5'>
           <h5 className='py-4 text-xl font-semibold tracking-tight text-gray-900'>
             {name}
