@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 import Image from 'next/image';
 import logo from '@/assets/images/tmmlogo.png';
 import Link from 'next/link';
@@ -226,13 +232,22 @@ function Sidebar() {
   const [list, setList] = useState<number | null>(null);
   const [role, setRole] = useState('');
   const [toggleSidebar, setToggleSidebar] = useState(true);
-  const { data, status } = useSession();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-    setRole((data as CustomSession)?.user?.role ?? '');
-  }, [data, status]);
+    if (session && session.user) {
+      setRole(session.user?.role);
+    }
+  }, [session]);
 
-  console.log(data);
+  useEffect(() => {
+    forceUpdate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [role]);
+
+  const forceUpdate = () => {
+    setRole('' + role);
+  };
 
   return (
     <nav>
