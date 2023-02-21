@@ -229,7 +229,7 @@ function Sidebar() {
 
   const role = (data as CustomSession)?.user?.role ?? '';
 
-  console.log(toggleSidebar);
+  console.log(role);
 
   return (
     <nav>

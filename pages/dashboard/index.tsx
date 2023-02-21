@@ -1,4 +1,7 @@
 import React from 'react';
+import authOptions from 'pages/api/auth/[...nextauth]';
+import { getServerSession } from 'next-auth/next';
+import { getSession } from 'next-auth/react';
 import UserVerification from '@/components/UserVerification';
 import DashboardLayout from '@/layouts/DashboardLayout';
 
