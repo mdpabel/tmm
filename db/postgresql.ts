@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-let prisma: PrismaClient;
+let prisma: PrismaClient | undefined;
 
 if (typeof window === 'undefined') {
   if (process.env.NODE_ENV === 'production') {
