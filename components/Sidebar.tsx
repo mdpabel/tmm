@@ -225,7 +225,9 @@ const SidebarItem = ({
 function Sidebar() {
   const [list, setList] = useState<number | null>(null);
   const [toggleSidebar, setToggleSidebar] = useState(true);
-  const { data, status } = useSession();
+  const { data, status } = useSession({
+    required: true,
+  });
 
   const role = (data as CustomSession)?.user?.role ?? '';
 
