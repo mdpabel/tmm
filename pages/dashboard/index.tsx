@@ -7,16 +7,7 @@ const Dashboard = () => {
   const forceUpdate = useForceUpdate();
 
   useEffect(() => {
-    const handleRouteChange = () => {
-      console.log('forceUpdate');
-      forceUpdate();
-    };
-
-    addEventListener('hashchange', handleRouteChange);
-
-    return () => {
-      removeEventListener('hashchange', handleRouteChange);
-    };
+    forceUpdate();
   }, [forceUpdate]);
 
   return (
