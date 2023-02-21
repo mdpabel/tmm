@@ -1,0 +1,8 @@
+.sidebar {
+  transform: translateX(-320px);
+}
+@media (min-width: 1280px) {
+  .sidebar {
+    transform: translateX(0px);
+  }
+}

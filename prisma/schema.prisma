@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  MOVER
+  MOVING_CUSTOMER
+  MOVING_COMPANY
+}
+
+enum JobStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum AccountStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model User {
+  id             Int              @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  role           Role
+  email          String           @unique
+  password       String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Mover          Mover[]
+  MovingCustomer MovingCustomer[]
+  MovingCompany  MovingCompany[]
+}
+
+model Mover {
+  id         Int      @id @default(autoincrement())
+  bio        String?
+  hourlyRate Float?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  applications Application[]
+  user         User          @relation(fields: [userId], references: [id])
+  userId       Int
+}
+
+model MovingCustomer {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+}
+
+model MovingCompany {
+  id          Int           @id @default(autoincrement())
+  companyName String        @unique
+  companyInfo String?
+  status      AccountStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id])
+  services    Service[]
+  jobs        Job[]
+  userId      Int           @unique
+}
+
+model Service {
+  id                Int           @id @default(autoincrement())
+  serviceName       String        @unique
+  servicePrice      Float
+  serviceMovers     Int
+  serviceHours      Int
+  serviceDesc       String
+  serviceCounty     String
+  serviceDisclaimer String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  serviceImg        String
+  company           MovingCompany @relation(fields: [movingCompanyId], references: [id])
+  movingCompanyId   Int
+}
+
+model Job {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  position    String
+  rate        Float
+  title       String
+  county      String
+  description String
+  jobStatus   JobStatus @default(PENDING)
+
+  company MovingCompany @relation(fields: [movingCompanyId], references: [id])
+
+  applications    Application[]
+  movingCompanyId Int
+
+  @@unique([movingCompanyId, title])
+}
+
+model Application {
+  id                Int               @id @default(autoincrement())
+  applicationStatus ApplicationStatus
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  mover             Mover             @relation(fields: [moverId], references: [id])
+  job               Job               @relation(fields: [jobId], references: [id])
+  moverId           Int
+  jobId             Int
+}
