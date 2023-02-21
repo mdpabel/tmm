@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Image from 'next/image';
 import logo from '@/assets/images/tmmlogo.png';
 import Link from 'next/link';
@@ -224,10 +224,13 @@ const SidebarItem = ({
 
 function Sidebar() {
   const [list, setList] = useState<number | null>(null);
+  const [role, setRole] = useState('');
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const { data, status } = useSession();
 
-  const role = (data as CustomSession)?.user?.role ?? '';
+  useEffect(() => {
+    setRole((data as CustomSession)?.user?.role ?? '');
+  }, [data]);
 
   return (
     <nav>
