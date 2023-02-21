@@ -1,16 +1,12 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-  useCallback,
-} from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Image from 'next/image';
 import logo from '@/assets/images/tmmlogo.png';
 import Link from 'next/link';
 import Button from './Button';
 import { signOut, useSession } from 'next-auth/react';
 import { Session, User } from 'next-auth';
+import { useForceUpdate } from '@/hooks/useForce';
+import { useRouter } from 'next/navigation';
 
 const sidebarLinks = [
   {
@@ -230,24 +226,27 @@ const SidebarItem = ({
 
 function Sidebar() {
   const [list, setList] = useState<number | null>(null);
-  const [role, setRole] = useState('');
   const [toggleSidebar, setToggleSidebar] = useState(true);
-  const { data: session, status } = useSession();
+  const { data, status } = useSession();
+  const router = useRouter();
+
+  const role = (data as CustomSession)?.user?.role ?? '';
+
+  const forceUpdate = useForceUpdate();
 
   useEffect(() => {
-    if (session && session.user) {
-      setRole(session.user?.role);
-    }
-  }, [session]);
+    const handleRouteChange = (url) => {
+      forceUpdate();
+    };
 
-  useEffect(() => {
-    forceUpdate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role]);
+    // Listen for URL changes
+    router.events.on('routeChangeComplete', handleRouteChange);
 
-  const forceUpdate = () => {
-    setRole('' + role);
-  };
+    // Unsubscribe from the event when the component is unmounted
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   return (
     <nav>
