@@ -14,7 +14,7 @@ const MyApp = ({ Component, pageProps }: Props) => {
   const Layout = Component.layout ?? Fragment;
 
   return (
-    <SessionProvider session={pageProps.session} refetchOnWindowFocus={true}>
+    <SessionProvider>
       <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
     </SessionProvider>
   );
