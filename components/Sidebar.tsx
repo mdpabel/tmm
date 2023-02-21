@@ -230,7 +230,7 @@ function Sidebar() {
 
   useEffect(() => {
     setRole((data as CustomSession)?.user?.role ?? '');
-  }, [data]);
+  }, [data, status]);
 
   return (
     <nav>
