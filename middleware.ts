@@ -26,8 +26,6 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const res = NextResponse;
 
-  console.log(pathname);
-
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/county-service') ||
@@ -48,8 +46,6 @@ export async function middleware(req: NextRequest) {
     cookieName: process.env.COOKIES_NAME,
     secret: process.env.JWR_SECRETE,
   });
-
-  console.log(payload);
 
   if (!payload) {
     req.nextUrl.pathname = '/login';

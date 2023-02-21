@@ -229,8 +229,6 @@ function Sidebar() {
 
   const role = (data as CustomSession)?.user?.role ?? '';
 
-  console.log(role);
-
   return (
     <nav>
       <div
