@@ -57,16 +57,16 @@ export default function Home() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({
-    req: context.req,
-  });
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const session = await getSession({
+//     req: context.req,
+//   });
 
-  return {
-    props: {
-      session,
-    },
-  };
-};
+//   return {
+//     props: {
+//       session,
+//     },
+//   };
+// };
 
 Home.layout = AppLayout;
