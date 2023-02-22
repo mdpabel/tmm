@@ -51,10 +51,16 @@ const handler = nc<ReqType, NextApiResponse>({
       });
 
       // await res.revalidate('/jobs');
-
-      res.status(201).json({
-        data: newJob,
-      });
+      try {
+        await res.revalidate('/jobs');
+        return res.status(201).json({
+          data: newJob,
+        });
+      } catch (error) {
+        return res.status(201).json({
+          data: newJob,
+        });
+      }
     } catch (error) {
       console.error(error);
 
