@@ -1,15 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { getToken } from 'next-auth/jwt';
 import UserVerification from '@/components/UserVerification';
 import DashboardLayout from '@/layouts/DashboardLayout';
-import { useForceUpdate } from '@/hooks/useForce';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 
 const Dashboard = () => {
-  const forceUpdate = useForceUpdate();
-
-  useEffect(() => {
-    forceUpdate();
-  }, [forceUpdate]);
-
   return (
     <div className='pt-4'>
       <UserVerification />
@@ -18,5 +14,29 @@ const Dashboard = () => {
 };
 
 Dashboard.layout = DashboardLayout;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const data = await getSession({
+    req: context.req,
+  });
+
+  if (!data) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: {
+        data,
+        status: 'authenticated',
+      },
+    },
+  };
+};
 
 export default Dashboard;

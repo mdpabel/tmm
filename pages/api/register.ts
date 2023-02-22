@@ -33,6 +33,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         firstName,
         lastName,
         email,
+        // @ts-ignore
         role: roles[role],
         password: hashedPassword,
       },
@@ -42,6 +43,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 
     res.setHeader(
       'Set-Cookie',
+      // @ts-ignore
       serialize(process.env.COOKIES_NAME, token, {
         httpOnly: true,
         path: '/',
