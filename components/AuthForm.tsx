@@ -82,8 +82,6 @@ const AuthForm = ({ mode }: { mode: modeType }) => {
     }
   };
 
-  console.log(data);
-
   useEffect(() => {
     if (isSuccess) {
       router.replace('/dashboard');
@@ -106,7 +104,7 @@ const AuthForm = ({ mode }: { mode: modeType }) => {
             <>
               <div
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  console.log(e.target.value);
+                  setFormState({ ...formState, role: e.target.value });
                 }}
                 className='flex justify-around'
               >

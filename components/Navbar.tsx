@@ -36,7 +36,7 @@ const NavLink = ({
   );
 };
 
-interface CustomSession extends Session {
+export interface CustomSession extends Session {
   user?: User & { role?: string; firstName?: string; lastName?: string };
 }
 const Navbar = () => {

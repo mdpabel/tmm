@@ -227,7 +227,6 @@ const SidebarItem = ({
 function Sidebar() {
   const [list, setList] = useState<number | null>(null);
   const [toggleSidebar, setToggleSidebar] = useState(true);
-  const { data, status } = useSession();
   const [role, setRole] = useState('');
 
   // const role = (data as CustomSession)?.user?.role ?? '';
@@ -235,6 +234,7 @@ function Sidebar() {
   useEffect(() => {
     getSession().then((session) => {
       if (session) {
+        // @ts-ignore
         setRole(session?.user?.role);
       }
     });
