@@ -52,6 +52,8 @@ const handler = nc<ReqType, NextApiResponse>({
 
       await res.revalidate('/jobs');
 
+      await res.revalidate('/jobs' + newJob.id);
+
       res.status(201).json({
         data: newJob,
       });
