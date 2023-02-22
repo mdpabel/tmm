@@ -16,9 +16,16 @@ const companyAccess = [
   '/add-new-user',
   '/manage-users',
   '/schedule',
+  '/jobs',
 ];
 
-const employeeAccess = ['/dashboard', '/my-jobs', '/schedule', '/job-tracking'];
+const employeeAccess = [
+  '/dashboard',
+  '/my-jobs',
+  '/schedule',
+  '/job-tracking',
+  '/jobs',
+];
 
 const customerAccess = ['/dashboard', '/my-orders'];
 
