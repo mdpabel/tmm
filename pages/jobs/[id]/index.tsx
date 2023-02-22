@@ -35,6 +35,13 @@ export async function getStaticProps({ params }: ParamsType) {
       company: true,
     },
   });
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
   const job = JSON.parse(JSON.stringify(data));
 
   return {

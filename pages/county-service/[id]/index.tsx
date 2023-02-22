@@ -18,7 +18,7 @@ export async function getStaticPaths() {
     params: { id: service.id.toString() },
   }));
 
-  return { paths, fallback: false };
+  return { paths, fallback: true };
 }
 
 export async function getStaticProps({ params }: ParamsType) {
@@ -28,13 +28,13 @@ export async function getStaticProps({ params }: ParamsType) {
     },
   });
 
-  const service = JSON.parse(JSON.stringify(res));
-
-  if (!service) {
+  if (!res) {
     return {
       notFound: true,
     };
   }
+
+  const service = JSON.parse(JSON.stringify(res));
 
   return {
     props: {
@@ -45,6 +45,10 @@ export async function getStaticProps({ params }: ParamsType) {
 }
 
 const Service = ({ service }: { service: ServiceType }) => {
+  if (!service) {
+    return <h1>Loading...</h1>;
+  }
+
   const {
     serviceCounty,
     serviceName,
