@@ -239,10 +239,7 @@ function Sidebar() {
       >
         <div>
           <div className='flex items-center justify-between'>
-            <Link
-              onClick={() => setToggleSidebar(!toggleSidebar)}
-              href='/dashboard'
-            >
+            <Link onClick={() => setToggleSidebar(!toggleSidebar)} href='/'>
               <Image src={logo} alt='tmm logo' />
             </Link>
             <div
