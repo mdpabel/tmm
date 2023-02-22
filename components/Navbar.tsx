@@ -66,23 +66,24 @@ const Navbar = () => {
                   )}
                   <NavLink label='About Us' link='about' />
                   <NavLink label='Contact Us' link='contact' />
-                  {status === 'unauthenticated' ||
-                    (status !== 'loading' && (
-                      <>
-                        <NavLink
-                          label='Login'
-                          link='login'
-                          customStyles='login'
-                        />
-                        <NavLink
-                          label='Register'
-                          link='register'
-                          customStyles='register'
-                        />
-                      </>
-                    ))}
-                  {status === 'authenticated' && (
+                  {status === 'unauthenticated' ? (
+                    <>
+                      <NavLink
+                        onClick={() => setShow(!show)}
+                        label='Login'
+                        link='login'
+                        customStyles='login'
+                      />
+                      <NavLink
+                        onClick={() => setShow(!show)}
+                        label='Register'
+                        link='register'
+                        customStyles='register'
+                      />
+                    </>
+                  ) : (
                     <NavLink
+                      onClick={() => setShow(!show)}
                       label='Dashboard'
                       link='dashboard'
                       customStyles='register'
@@ -142,16 +143,6 @@ const Navbar = () => {
                       </div>
                     </div>
                     <ul className='flex flex-col justify-between mt-10 f-m-m'>
-                      {/* <div>
-                        {navLinkWithDropDownItems.map(({ subMenu, label }) => (
-                          <div className='my-2' key={label}>
-                            <NavLinkWithDropDown
-                              label={label}
-                              subMenu={subMenu}
-                            />
-                          </div>
-                        ))}
-                      </div> */}
                       <div className='justify-items-end'>
                         <NavLink
                           onClick={() => setShow(!show)}

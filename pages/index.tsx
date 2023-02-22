@@ -4,6 +4,8 @@ import AnimatedHeader from '@/components/AnimatedHeader';
 import Head from 'next/head';
 import { Lato } from '@next/font/google';
 import AppLayout from '@/layouts/AppLayout';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 
 const lato = Lato({
   variable: '--lato-font',
@@ -54,5 +56,17 @@ export default function Home() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession({
+    req: context.req,
+  });
+
+  return {
+    props: {
+      session,
+    },
+  };
+};
 
 Home.layout = AppLayout;

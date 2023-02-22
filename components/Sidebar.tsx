@@ -5,8 +5,6 @@ import Link from 'next/link';
 import Button from './Button';
 import { signOut, useSession, getSession } from 'next-auth/react';
 import { Session, User } from 'next-auth';
-import { useForceUpdate } from '@/hooks/useForce';
-import { useRouter } from 'next/navigation';
 
 const sidebarLinks = [
   {

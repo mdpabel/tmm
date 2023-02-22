@@ -1,5 +1,4 @@
 import React from 'react';
-import { getToken } from 'next-auth/jwt';
 import UserVerification from '@/components/UserVerification';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { GetServerSideProps } from 'next';
@@ -16,12 +15,11 @@ const Dashboard = () => {
 Dashboard.layout = DashboardLayout;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const data = await getSession({
+  const session = await getSession({
     req: context.req,
   });
 
-
-  if (!data) {
+  if (!session) {
     return {
       redirect: {
         destination: '/login',
@@ -32,10 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      session: {
-        data,
-        status: 'authenticated',
-      },
+      session,
     },
   };
 };

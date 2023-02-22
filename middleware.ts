@@ -26,6 +26,20 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const res = NextResponse;
 
+  const payload = await getToken({
+    req: req,
+    cookieName: process.env.COOKIES_NAME,
+    secret: process.env.JWR_SECRETE,
+  });
+
+  if (
+    (pathname.startsWith('/login') || pathname.startsWith('/register')) &&
+    payload
+  ) {
+    req.nextUrl.pathname = '/dashboard';
+    return res.redirect(req.nextUrl);
+  }
+
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/county-service') ||
@@ -34,18 +48,12 @@ export async function middleware(req: NextRequest) {
     pathname === '/' ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/static') ||
+    PUBLIC_FILE.test(pathname) ||
     pathname.startsWith('/login') ||
-    pathname.startsWith('/register') ||
-    PUBLIC_FILE.test(pathname)
+    pathname.startsWith('/register')
   ) {
     return NextResponse.next();
   }
-
-  const payload = await getToken({
-    req: req,
-    cookieName: process.env.COOKIES_NAME,
-    secret: process.env.JWR_SECRETE,
-  });
 
   if (!payload) {
     req.nextUrl.pathname = '/login';
