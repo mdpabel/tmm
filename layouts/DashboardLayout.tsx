@@ -6,9 +6,7 @@ const DashboardLayout = ({ children }: ChildrenType) => {
   return (
     <div className='flex flex-no-wrap h-full min-h-screen'>
       <aside>
-        <SessionProvider>
-          <Sidebar />
-        </SessionProvider>
+        <Sidebar />
       </aside>
       <section className='container flex flex-col items-center justify-center w-full min-h-screen px-4 py-6'>
         {children}

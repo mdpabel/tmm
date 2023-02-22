@@ -20,6 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     req: context.req,
   });
 
+
   if (!data) {
     return {
       redirect: {
