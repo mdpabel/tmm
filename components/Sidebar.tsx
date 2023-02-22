@@ -3,7 +3,7 @@ import Image from 'next/image';
 import logo from '@/assets/images/tmmlogo.png';
 import Link from 'next/link';
 import Button from './Button';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut, useSession, getSession } from 'next-auth/react';
 import { Session, User } from 'next-auth';
 import { useForceUpdate } from '@/hooks/useForce';
 import { useRouter } from 'next/navigation';
@@ -232,7 +232,7 @@ function Sidebar() {
   const role = (data as CustomSession)?.user?.role ?? '';
 
   useEffect(() => {
-    console.log(data, role);
+    getSession().then((session) => console.log(session));
   }, [data, role]);
 
   return (
