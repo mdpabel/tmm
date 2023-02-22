@@ -41,7 +41,6 @@ export interface CustomSession extends Session {
 }
 const Navbar = () => {
   const { data, status } = useSession();
-  const session = useSession();
   const [show, setShow] = useState(false);
 
   const role = (data as CustomSession)?.user?.role;
@@ -67,7 +66,7 @@ const Navbar = () => {
                   )}
                   <NavLink label='About Us' link='about' />
                   <NavLink label='Contact Us' link='contact' />
-                  {status === 'unauthenticated' || status === 'loading' ? (
+                  {status === 'unauthenticated' || status !== 'loading' ? (
                     <>
                       <NavLink
                         label='Login'
