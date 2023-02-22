@@ -66,20 +66,22 @@ const Navbar = () => {
                   )}
                   <NavLink label='About Us' link='about' />
                   <NavLink label='Contact Us' link='contact' />
-                  {status === 'unauthenticated' || status !== 'loading' ? (
-                    <>
-                      <NavLink
-                        label='Login'
-                        link='login'
-                        customStyles='login'
-                      />
-                      <NavLink
-                        label='Register'
-                        link='register'
-                        customStyles='register'
-                      />
-                    </>
-                  ) : (
+                  {status === 'unauthenticated' ||
+                    (status !== 'loading' && (
+                      <>
+                        <NavLink
+                          label='Login'
+                          link='login'
+                          customStyles='login'
+                        />
+                        <NavLink
+                          label='Register'
+                          link='register'
+                          customStyles='register'
+                        />
+                      </>
+                    ))}
+                  {status === 'authenticated' && (
                     <NavLink
                       label='Dashboard'
                       link='dashboard'
