@@ -39,7 +39,7 @@ export async function getStaticProps({ params }: ParamsType) {
 
   return {
     props: { job },
-    revalidate: 30,
+    revalidate: 1,
   };
 }
 

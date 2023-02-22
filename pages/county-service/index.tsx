@@ -11,7 +11,7 @@ export async function getStaticProps() {
   const res = await prisma.service.findMany();
   const services = JSON.parse(JSON.stringify(res));
 
-  return { props: { services }, revalidate: 30 };
+  return { props: { services }, revalidate: 1 };
 }
 
 function CountyServices({ services }: { services: ServiceType[] }) {

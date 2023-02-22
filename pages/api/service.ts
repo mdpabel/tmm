@@ -63,11 +63,16 @@ const handler = nc<ReqType, NextApiResponse>({
         },
       });
 
-      // await res.revalidate('/county-service');
-
-      res.status(201).json({
-        data: newService,
-      });
+      try {
+        await res.revalidate('/county-service');
+        return res.status(201).json({
+          data: newService,
+        });
+      } catch (error) {
+        return res.status(201).json({
+          data: newService,
+        });
+      }
     } catch (error) {
       // await res.revalidate('/county-service');
       // await res.revalidate('/services-inventory');

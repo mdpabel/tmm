@@ -40,7 +40,7 @@ export async function getStaticProps({ params }: ParamsType) {
     props: {
       service,
     },
-    revalidate: 30,
+    revalidate: 1,
   };
 }
 
