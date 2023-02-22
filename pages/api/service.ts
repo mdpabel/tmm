@@ -63,8 +63,7 @@ const handler = nc<ReqType, NextApiResponse>({
         },
       });
 
-      await res.revalidate('/county-service');
-      await res.revalidate('/county-service/' + newService.id);
+      // await res.revalidate('/county-service');
 
       res.status(201).json({
         data: newService,
