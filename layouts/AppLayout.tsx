@@ -9,9 +9,8 @@ const AppLayout = ({ children }: ChildrenType) => {
       <main
         style={{
           minHeight: 'calc(100vh - 90px)',
-          padding: '25px',
         }}
-        className='flex flex-col w-full justify-center items-center container mx-auto'
+        className='container flex flex-col items-center justify-center w-full px-6 pb-4 mx-auto pt'
       >
         {children}
       </main>

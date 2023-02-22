@@ -6,3 +6,13 @@
     transform: translateX(0px);
   }
 }
+
+.pt {
+  padding-top: 120px;
+}
+
+@media (min-width: 1280px) {
+  .pt {
+    padding-top: 30px;
+  }
+}

@@ -44,7 +44,8 @@ const options = [
 ];
 
 const AddService = () => {
-  const { data, error, isLoading, isError, isSuccess, run } = useAsync();
+  const { data, error, isLoading, setStatus, isError, isSuccess, run } =
+    useAsync();
   const router = useRouter();
   const [state, setState] = useState({ ...initialState });
   const { county, price, name, movers, hours, info, disclaimer, imgUrl } =
@@ -67,13 +68,11 @@ const AddService = () => {
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
     const fileInput = (e.target as HTMLFormElement).fileInput.files;
-
+    setStatus('PENDING');
     const secureUrl = await cloudinaryImgUpload(fileInput);
 
-    console.log(secureUrl);
-
     run(addNewService({ ...state, imgUrl: secureUrl as string }));
-    // router.refresh();
+    setState({ ...initialState });
   }
 
   return (
