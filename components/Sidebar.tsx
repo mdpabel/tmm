@@ -264,36 +264,38 @@ function Sidebar() {
               </svg>
             </div>
           </div>
-          <div>
-            {sidebarLinks.map(({ label, link, subItems, allowed }, index) => {
-              return (
-                allowed.includes(role) && (
-                  <SidebarItem
-                    link={link}
-                    setToggleSidebar={(val) => setToggleSidebar(val)}
-                    subItems={subItems}
-                    list={list}
-                    setList={setList}
-                    label={label}
-                    key={label}
-                    index={index}
-                  />
-                )
-              );
-            })}
-          </div>
+          <div className='flex flex-col justify-between min-w-[70vh]'>
+            <div>
+              {sidebarLinks.map(({ label, link, subItems, allowed }, index) => {
+                return (
+                  allowed.includes(role) && (
+                    <SidebarItem
+                      link={link}
+                      setToggleSidebar={(val) => setToggleSidebar(val)}
+                      subItems={subItems}
+                      list={list}
+                      setList={setList}
+                      label={label}
+                      key={label}
+                      index={index}
+                    />
+                  )
+                );
+              })}
+            </div>
 
-          <div className='absolute bottom-10'>
-            <Button
-              onClick={() =>
-                signOut({
-                  callbackUrl: '/',
-                })
-              }
-              intent='logout'
-            >
-              Logout
-            </Button>
+            <div>
+              <Button
+                onClick={() =>
+                  signOut({
+                    callbackUrl: '/',
+                  })
+                }
+                intent='logout'
+              >
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -330,36 +332,42 @@ function Sidebar() {
             <Link href='/'>
               <Image src={logo} alt='tmm logo' />
             </Link>
-            <div className='pt-8'>
-              {sidebarLinks.map(({ label, link, subItems, allowed }, index) => {
-                return (
-                  allowed.includes(role) && (
-                    <SidebarItem
-                      link={link}
-                      subItems={subItems}
-                      list={list}
-                      setList={setList}
-                      label={label}
-                      key={label}
-                      index={index}
-                    />
-                  )
-                );
-              })}
-            </div>
-          </div>
+            <div className='flex flex-col min-h-[70vh] justify-between'>
+              <div className=''>
+                <div className='pt-8'>
+                  {sidebarLinks.map(
+                    ({ label, link, subItems, allowed }, index) => {
+                      return (
+                        allowed.includes(role) && (
+                          <SidebarItem
+                            link={link}
+                            subItems={subItems}
+                            list={list}
+                            setList={setList}
+                            label={label}
+                            key={label}
+                            index={index}
+                          />
+                        )
+                      );
+                    }
+                  )}
+                </div>
+              </div>
 
-          <div className='absolute bottom-10'>
-            <Button
-              onClick={() =>
-                signOut({
-                  callbackUrl: '/',
-                })
-              }
-              intent='logout'
-            >
-              Logout
-            </Button>
+              <div>
+                <Button
+                  onClick={() =>
+                    signOut({
+                      callbackUrl: '/',
+                    })
+                  }
+                  intent='logout'
+                >
+                  Logout
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

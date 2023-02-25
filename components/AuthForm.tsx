@@ -75,6 +75,7 @@ const AuthForm = ({ mode }: { mode: modeType }) => {
       if (res && res.ok && res.status === 200) {
         setStatus('SUCCESS');
         setValue('Login success');
+        router.replace('/dashboard');
       } else {
         setStatus('ERROR');
         setErrorMessage('Invalid email or password');
@@ -82,11 +83,11 @@ const AuthForm = ({ mode }: { mode: modeType }) => {
     }
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      router.replace('/dashboard');
-    }
-  }, [isSuccess, router]);
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     router.replace('/dashboard');
+  //   }
+  // }, [isSuccess, router]);
 
   return (
     <CardWrapper>
