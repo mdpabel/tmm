@@ -1,65 +1,34 @@
 import Button from '@/components/Button';
-import React, { use } from 'react';
+import React from 'react';
+import Modal from 'react-modal';
+import { Tooltip } from 'react-tooltip';
 import prisma from '@/db/postgresql';
 import { formateDate } from '@/utils/formateDate';
 import { JobType } from '@/types/jobType';
 import AppLayout from '@/layouts/AppLayout';
 import { CompanyType } from '@/types/compnayTypes';
+import ApplyJobForm from '@/components/ApplyToJobForm';
+import { useSession } from 'next-auth/react';
 
 interface ParamsType {
   params: {
     id: string;
   };
 }
-
-export async function getStaticPaths() {
-  const jobs = await prisma.job.findMany({
-    include: {
-      company: true,
-    },
-  });
-
-  const paths = jobs?.map((jobs) => ({
-    params: { id: jobs.id.toString() },
-  }));
-
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps({ params }: ParamsType) {
-  const data = await prisma.job.findFirst({
-    where: {
-      id: +params.id,
-    },
-    include: {
-      company: true,
-    },
-  });
-
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
-
-  const job = JSON.parse(JSON.stringify(data));
-
-  return {
-    props: { job },
-    revalidate: 1,
-  };
-}
-
 interface JobListingType extends JobType {
   company?: CompanyType;
 }
 
 const JobParams = ({ job }: { job: JobListingType }) => {
+  const { data: session } = useSession();
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
   if (!job) {
     return <h2>No job posted yet</h2>;
   }
 
   const {
+    id,
     jobStatus,
     description,
     county,
@@ -121,14 +90,95 @@ const JobParams = ({ job }: { job: JobListingType }) => {
           <p className='text-sm leading-loose'>{companyInfo}</p>
         </div>
 
-        <Button intent='secondary' size='medium'>
-          Apply Now
-        </Button>
+        <span
+          className='inline-block'
+          data-tooltip-id={
+            //@ts-ignore
+            session && session?.user?.role === 'MOVER' ? '' : 'apply-btn'
+          }
+        >
+          <Button
+            //@ts-ignore
+            disabled={session && session?.user?.role === 'MOVER' ? false : true}
+            onClick={() => {
+              setIsOpen(true);
+            }}
+            intent='secondary'
+            size='medium'
+          >
+            Apply Now
+          </Button>
+        </span>
+        {
+          // @ts-ignore
+          session && session?.user?.role !== 'MOVER' && (
+            <Tooltip
+              id='apply-btn'
+              place='top'
+              content='Only movers can apply to the job'
+            />
+          )
+        }
+
+        <Modal
+          style={{
+            content: {
+              top: '50%',
+              left: '50%',
+              right: 'auto',
+              bottom: 'auto',
+              marginRight: '-50%',
+              transform: 'translate(-50%, -50%)',
+            },
+          }}
+          isOpen={modalIsOpen}
+          onRequestClose={() => setIsOpen(false)}
+        >
+          <ApplyJobForm jobId={id} />
+        </Modal>
       </div>
     </div>
   );
 };
 
 JobParams.layout = AppLayout;
+
+export async function getStaticPaths() {
+  const jobs = await prisma.job.findMany({
+    include: {
+      company: true,
+    },
+  });
+
+  const paths = jobs?.map((jobs) => ({
+    params: { id: jobs.id.toString() },
+  }));
+
+  return { paths, fallback: false };
+}
+
+export async function getStaticProps({ params }: ParamsType) {
+  const data = await prisma.job.findFirst({
+    where: {
+      id: +params.id,
+    },
+    include: {
+      company: true,
+    },
+  });
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const job = JSON.parse(JSON.stringify(data));
+
+  return {
+    props: { job },
+    revalidate: 1,
+  };
+}
 
 export default JobParams;

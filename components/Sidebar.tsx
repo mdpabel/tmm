@@ -147,7 +147,7 @@ const SidebarItem = ({
       >
         {link ? (
           <Link
-            href={link}
+            href={'/' + link}
             className='text-sm leading-tight tracking-tight text-gray-800 capitalize select-none xl:text-lg '
           >
             {label}
@@ -205,7 +205,7 @@ const SidebarItem = ({
                     onClick={() =>
                       setToggleSidebar && setToggleSidebar(!toggleSidebar)
                     }
-                    href={link}
+                    href={'/' + link}
                     className={
                       'text-left focus:outline-none pl-3 border-l-4 border-gray-800 focus:border-brand  text-gray-800 focus:text-brand  hover:text-brand hover:border-brand flex w-full text-sm xl:text-lg leading-tight tracking-tight capitalize'
                     }
@@ -302,6 +302,7 @@ function Sidebar() {
         className='fixed top-0 left-0 z-50 flex items-center justify-center w-8 h-8 mt-10 bg-gray-800 rounded-r-lg text-gray-50 xl:hidden'
       >
         <svg
+          onClick={() => setToggleSidebar(!toggleSidebar)}
           xmlns='http://www.w3.org/2000/svg'
           className='icon icon-tabler icon-tabler-chevron-right'
           width={44}

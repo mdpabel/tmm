@@ -18,7 +18,6 @@ import prisma from '@/db/postgresql';
 import { BarSkeleton } from '@/components/Skeletons';
 import Link from 'next/link';
 import LinkIcon from '@/components/icons/LinkIcon';
-import DeleteIcon from '@/components/icons/DeleteIcon';
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -31,59 +30,59 @@ const fetcher = async (url: string) => {
   return data;
 };
 
-const ManageJobs = () => {
+const JobTracking = () => {
   const { data, error, isLoading, isValidating, mutate } = useSWR(
-    '/api/job',
-    fetcher
+    '/api/application',
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
   );
-
-  const handleDelete = () => {
-    console.log('handleDelete');
-  };
 
   return (
     <div className='w-full space-y-8 sm:px-6'>
-      <Title>Manage your jobs</Title>
+      <Title>Track your applications</Title>
       <TableWrapper>
         <Table>
           <TableHead>
             <TableRow>
-              <HeadData>Title</HeadData>
-              <HeadData>Position</HeadData>
+              <HeadData>Job Title</HeadData>
+              <HeadData>Company</HeadData>
               <HeadData>County</HeadData>
-              <HeadData>Rate</HeadData>
-              <HeadData>Created At</HeadData>
+              <HeadData>Applied At</HeadData>
+              <HeadData>Position</HeadData>
               <HeadData>status</HeadData>
-              <HeadData>Delete</HeadData>
+              <HeadData>Job</HeadData>
             </TableRow>
           </TableHead>
           <TableBody>
             {data?.data?.map(
               ({
                 id,
-                title,
-                rate,
-                position,
-                jobStatus,
-                county,
                 createdAt,
-              }: JobType) => (
+                applicantName,
+                applicationStatus,
+                appliedAt,
+                // @ts-ignore
+                job,
+              }: ApplicationType) => (
                 <TableRow key={id}>
-                  <TableData className='text-center'>{title}</TableData>
-                  <TableData className='text-center'>{position}</TableData>
-                  <TableData className='text-center'>{county}</TableData>
-                  <TableData className='text-center'>{rate}</TableData>
+                  <TableData className='text-center'>{job.title}</TableData>
                   <TableData className='text-center'>
-                    {formateDate(createdAt)}
+                    {job.company.companyName}
                   </TableData>
-                  <TableData className='text-center'>{jobStatus}</TableData>
-                  <TableData className='flex justify-center '>
-                    <div
-                      onClick={() => handleDelete}
-                      className='flex justify-center my-4 cursor-pointer'
-                    >
-                      <DeleteIcon />
-                    </div>
+                  <TableData className='text-center'>{job.county}</TableData>
+                  <TableData className='text-center'>
+                    {formateDate(appliedAt)}
+                  </TableData>
+                  <TableData className='text-center'>{job.position}</TableData>
+                  <TableData className='text-center'>
+                    {applicationStatus}
+                  </TableData>
+                  <TableData className='text-center'>
+                    <Link href={`/jobs/${job.id}`}>
+                      <LinkIcon />
+                    </Link>
                   </TableData>
                 </TableRow>
               )
@@ -101,10 +100,6 @@ const ManageJobs = () => {
                   <TableData className='text-center'>loading...</TableData>
                 </TableRow>
               ))}
-
-            {error && (
-              <pre className='text-center text-red-600'>{error.message}</pre>
-            )}
           </TableBody>
         </Table>
       </TableWrapper>
@@ -112,7 +107,7 @@ const ManageJobs = () => {
   );
 };
 
-ManageJobs.layout = DashboardLayout;
+JobTracking.layout = DashboardLayout;
 
 // export async function getStaticProps() {
 //   const data = await prisma.application.findMany({
@@ -132,4 +127,4 @@ ManageJobs.layout = DashboardLayout;
 //   };
 // }
 
-export default ManageJobs;
+export default JobTracking;

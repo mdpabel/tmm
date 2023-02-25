@@ -32,6 +32,7 @@ const buttonStyles = cva(
   }
 );
 
+//
 interface ButtonProps
   extends HTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonStyles> {
@@ -39,11 +40,23 @@ interface ButtonProps
   intent?: 'primary' | 'secondary' | 'logout';
   size?: 'medium' | 'small';
   onClick?: () => void;
+  disabled?: boolean;
 }
 
-const Button: FC<ButtonProps> = ({ children, intent, size, type, onClick }) => {
+const Button: FC<ButtonProps> = ({
+  children,
+  intent,
+  size,
+  type,
+  onClick,
+  disabled = false,
+}) => {
   return (
     <button
+      disabled={disabled}
+      style={{
+        cursor: `${disabled ? 'not-allowed' : 'pointer'}`,
+      }}
       onClick={onClick}
       type={type}
       className={buttonStyles({ intent, size })}

@@ -49,11 +49,11 @@ model User {
 }
 
 model Mover {
-  id         Int      @id @default(autoincrement())
-  bio        String?
-  hourlyRate Float?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  bio       String?
+  mobile    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   applications Application[]
   user         User          @relation(fields: [userId], references: [id])
@@ -118,12 +118,19 @@ model Job {
 }
 
 model Application {
-  id                Int               @id @default(autoincrement())
-  applicationStatus ApplicationStatus
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  mover             Mover             @relation(fields: [moverId], references: [id])
-  job               Job               @relation(fields: [jobId], references: [id])
-  moverId           Int
-  jobId             Int
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  applicantName     String
+  coverLetter       String
+  applicationStatus ApplicationStatus @default(PENDING)
+  appliedAt         DateTime          @default(now())
+
+  mover   Mover @relation(fields: [moverId], references: [id])
+  job     Job   @relation(fields: [jobId], references: [id])
+  moverId Int
+  jobId   Int
+
+  @@unique([moverId, jobId])
 }

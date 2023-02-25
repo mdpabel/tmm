@@ -62,7 +62,7 @@ const Navbar = () => {
                   <NavLink label='County Service' link='county-service' />
                   {((role && role === 'MOVER') ||
                     role === 'MOVING_COMPANY') && (
-                    <NavLink label='Jobs' link='jobs' />
+                    <NavLink label='Find Jobs' link='jobs' />
                   )}
                   <NavLink label='About Us' link='about' />
                   <NavLink label='Contact Us' link='contact' />
@@ -153,7 +153,7 @@ const Navbar = () => {
                           role === 'MOVING_COMPANY') && (
                           <NavLink
                             onClick={() => setShow(!show)}
-                            label='Jobs'
+                            label='Find Jobs'
                             link='jobs'
                           />
                         )}

@@ -45,13 +45,13 @@ const Input = ({
   );
 };
 
-interface Option {
+export interface OptionType {
   label: string;
   value: string;
 }
 
 interface SelectType {
-  options: Option[];
+  options: OptionType[];
   onChange: (val: string) => void;
   required?: boolean;
   value?: string;

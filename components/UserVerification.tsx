@@ -1,39 +1,51 @@
-'use client';
-import React, {
-  ChangeEvent,
-  FormEventHandler,
-  SyntheticEvent,
-  useState,
-} from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import { CardWrapper } from '@/components/Card';
 import Input, { TextArea, Select } from '@/components/Input';
 import Button from '@/components/Button';
-import { cloudinaryImgUpload } from '@/utils/cloudinaryImgUpload';
 import Title from '@/components/Title';
 import { useAsync } from '@/hooks/useAsync';
-import { addNewService } from '@/utils/serviceProviders';
 import Spinner from '@/components/Spinner';
 import Alert from '@/components/Alert';
 import Image from 'next/image';
 import logo from '@/assets/images/tmmlogo.png';
 import { addNewCompany } from '@/utils/companyProvider';
+import { useSession } from 'next-auth/react';
+import { addNewMover } from '@/utils/moverProvider';
 
 const initialState = {
   companyName: '',
   companyInfo: '',
 };
 
+const initialMoverState = {
+  bio: '',
+  mobile: '',
+};
+
 const UserVerification = () => {
-  const [isPending, setIsPending] = useState(true);
+  const { data: session } = useSession();
   const [show, setShow] = useState(false);
   const { data, error, isLoading, isError, isSuccess, run } = useAsync();
   const [state, setState] = useState({ ...initialState });
+  const [mover, setMover] = useState({ ...initialMoverState });
+
   const { companyName, companyInfo } = state;
+  const { bio, mobile } = mover;
 
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
-    run(addNewCompany({ companyName, companyInfo }));
+    if (!session) {
+      return;
+    }
+    // @ts-ignore
+    if (session?.user?.role === 'MOVING_COMPANY') {
+      run(addNewCompany({ companyName, companyInfo }));
+      // @ts-ignore
+    } else if (session?.user?.role === 'MOVER') {
+      run(addNewMover({ bio, mobile }));
+    }
     setState({ ...initialState });
+    setMover({ ...initialMoverState });
   }
 
   return (
@@ -65,42 +77,84 @@ const UserVerification = () => {
 
       {show && (
         <div>
-          <Title>Please submit your business information</Title>
-          <div className='pb-4'></div>
-          <form onSubmit={handleSubmit}>
-            <Input
-              minLength={5}
-              maxLength={100}
-              focus={true}
-              placeholder='Your company name'
-              onChange={(e) =>
-                setState({ ...state, companyName: e.target.value })
-              }
-              value={companyName}
-              required={true}
-              type='text'
-            />
+          {/* @ts-ignore */}
+          {session?.user?.role === 'MOVING_COMPANY' && (
+            <>
+              <Title>Please submit your company information</Title>
+              <div className='pb-4'></div>
+              <form onSubmit={handleSubmit}>
+                <Input
+                  minLength={5}
+                  maxLength={100}
+                  focus={true}
+                  placeholder='Your company name'
+                  onChange={(e) =>
+                    setState({ ...state, companyName: e.target.value })
+                  }
+                  value={companyName}
+                  required={true}
+                  type='text'
+                />
 
-            <Input
-              minLength={5}
-              maxLength={100}
-              focus={true}
-              placeholder='Your company Info'
-              onChange={(e) =>
-                setState({ ...state, companyInfo: e.target.value })
-              }
-              value={companyInfo}
-              required={true}
-              type='text'
-            />
+                <TextArea
+                  placeholder='Your company Info'
+                  onChange={(e) =>
+                    setState({
+                      ...state,
+                      companyInfo: e.target.value,
+                    })
+                  }
+                  value={companyInfo}
+                />
 
-            <div className='pt-2'>
-              <Button intent='secondary' size='medium' type='submit'>
-                Create Job
-                {isLoading ? <Spinner /> : null}
-              </Button>
-            </div>
-          </form>
+                <div className='pt-2'>
+                  <Button intent='secondary' size='medium' type='submit'>
+                    Verify me
+                    {isLoading ? <Spinner /> : null}
+                  </Button>
+                </div>
+              </form>
+            </>
+          )}
+          {/* @ts-ignore */}
+          {session?.user?.role === 'MOVER' && (
+            <>
+              <Title>Please submit your information</Title>
+              <div className='pb-4'></div>
+              <form onSubmit={handleSubmit}>
+                <Input
+                  minLength={5}
+                  maxLength={100}
+                  focus={true}
+                  placeholder='Your mobile number'
+                  onChange={(e) =>
+                    setMover({ ...mover, mobile: e.target.value })
+                  }
+                  value={mobile}
+                  required={true}
+                  type='text'
+                />
+
+                <TextArea
+                  placeholder='Information'
+                  onChange={(e) =>
+                    setMover({
+                      ...mover,
+                      bio: e.target.value,
+                    })
+                  }
+                  value={bio}
+                />
+
+                <div className='pt-2'>
+                  <Button intent='secondary' size='medium' type='submit'>
+                    Verify me
+                    {isLoading ? <Spinner /> : null}
+                  </Button>
+                </div>
+              </form>
+            </>
+          )}
         </div>
       )}
     </CardWrapper>

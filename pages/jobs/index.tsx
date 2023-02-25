@@ -4,6 +4,18 @@ import prisma from '@/db/postgresql';
 import AppLayout from '@/layouts/AppLayout';
 import { JobType } from '@/types/jobType';
 
+const Jobs = ({ jobs }: { jobs: JobType[] }) => {
+  return (
+    <div className='space-y-4'>
+      {jobs.map((job) => (
+        <JobListing key={job.id} job={job} />
+      ))}
+    </div>
+  );
+};
+
+Jobs.layout = AppLayout;
+
 export async function getStaticProps() {
   const jobsRes = await prisma.job.findMany({
     include: {
@@ -16,20 +28,8 @@ export async function getStaticProps() {
     props: {
       jobs,
     },
-    revalidate: 1,
+    revalidate: 30,
   };
 }
-
-const Jobs = ({ jobs }: { jobs: JobType[] }) => {
-  return (
-    <div className='space-y-4'>
-      {jobs.map((job) => (
-        <JobListing key={job.id} job={job} />
-      ))}
-    </div>
-  );
-};
-
-Jobs.layout = AppLayout;
 
 export default Jobs;

@@ -67,6 +67,11 @@ export async function middleware(req: NextRequest) {
     return res.redirect(req.nextUrl);
   }
 
+  console.log(
+    payload.role,
+    employeeAccess.some((link) => pathname.startsWith(link))
+  );
+
   if (
     payload.role === 'MOVING_COMPANY' &&
     !companyAccess.some((link) => pathname.startsWith(link))
@@ -80,7 +85,7 @@ export async function middleware(req: NextRequest) {
     req.nextUrl.pathname = '/dashboard';
     return res.redirect(req.nextUrl);
   } else if (
-    payload.role === 'MOVER' &&
+    payload.role === 'MOVING_CUSTOMER' &&
     !customerAccess.some((link) => pathname.startsWith(link))
   ) {
     req.nextUrl.pathname = '/dashboard';
