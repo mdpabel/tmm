@@ -72,10 +72,10 @@ const AuthForm = ({ mode }: { mode: modeType }) => {
         password,
       });
 
-      if (res && res.ok && res.status === 200) {
+      if (res && res.ok) {
+        router.replace('/dashboard');
         setStatus('SUCCESS');
         setValue('Login success');
-        router.replace('/dashboard');
       } else {
         setStatus('ERROR');
         setErrorMessage('Invalid email or password');

@@ -66,7 +66,7 @@ const Navbar = () => {
                   )}
                   <NavLink label='About Us' link='about' />
                   <NavLink label='Contact Us' link='contact' />
-                  {status === 'unauthenticated' ? (
+                  {status === 'unauthenticated' && (
                     <>
                       <NavLink
                         onClick={() => setShow(!show)}
@@ -81,7 +81,8 @@ const Navbar = () => {
                         customStyles='register'
                       />
                     </>
-                  ) : (
+                  )}
+                  {status === 'authenticated' && (
                     <NavLink
                       onClick={() => setShow(!show)}
                       label='Dashboard'
@@ -173,7 +174,7 @@ const Navbar = () => {
                           label='Contact Us'
                           link='contact'
                         />
-                        {status === 'unauthenticated' ? (
+                        {status === 'unauthenticated' && (
                           <>
                             <NavLink
                               onClick={() => setShow(!show)}
@@ -188,14 +189,15 @@ const Navbar = () => {
                               customStyles='register'
                             />
                           </>
-                        ) : (
-                          <NavLink
-                            onClick={() => setShow(!show)}
-                            label='Dashboard'
-                            link='dashboard'
-                            customStyles='register'
-                          />
                         )}
+                        {
+                          status === "authenticated" && <NavLink
+                          onClick={() => setShow(!show)}
+                          label='Dashboard'
+                          link='dashboard'
+                          customStyles='register'
+                        />
+                        }
                       </div>
                     </ul>
                   </div>
