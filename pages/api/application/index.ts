@@ -22,42 +22,50 @@ const handler = nc<ReqType, NextApiResponse>({
 })
   .use(auth)
   .get(async (req, res) => {
-    const user = req.user;
+    try {
+      const user = req.user;
 
-    const mover = await prisma.mover.findFirst({
-      where: {
-        userId: user.id,
-      },
-    });
-
-    if (!mover) {
-      return res.status(403).json({
-        data: 'You are not allowed to request the page',
+      const mover = await prisma.mover.findFirst({
+        where: {
+          userId: user.id,
+        },
       });
-    }
 
-    const applications = await prisma.application.findMany({
-      where: {
-        moverId: mover.id,
-      },
-      include: {
-        job: {
-          include: {
-            company: true,
+      if (!mover) {
+        return res.status(403).json({
+          data: 'You are not allowed to request the page',
+        });
+      }
+
+      const applications = await prisma.application.findMany({
+        where: {
+          moverId: mover.id,
+        },
+        include: {
+          job: {
+            include: {
+              company: true,
+            },
           },
         },
-      },
-    });
+      });
 
-    if (!applications) {
-      return res.status(404).json({
-        data: 'Sorry, we could not find any applications associated with your account at this time. Please check back later.',
+      if (!applications) {
+        return res.status(404).json({
+          data: 'Sorry, we could not find any applications associated with your account at this time. Please check back later.',
+        });
+      }
+
+      res.status(200).json({
+        data: applications,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        data: 'Something went wrong',
+        error: error,
       });
     }
-
-    res.status(200).json({
-      data: applications,
-    });
   })
   .post(async (req, res) => {
     try {
