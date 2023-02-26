@@ -264,7 +264,7 @@ function Sidebar() {
               </svg>
             </div>
           </div>
-          <div className='flex flex-col justify-between min-w-[70vh]'>
+          <div className='flex flex-col justify-between min-h-[70vh]'>
             <div>
               {sidebarLinks.map(({ label, link, subItems, allowed }, index) => {
                 return (
