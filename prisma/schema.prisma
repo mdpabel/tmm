@@ -50,10 +50,11 @@ model User {
 
 model Mover {
   id        Int      @id @default(autoincrement())
-  bio       String?
-  mobile    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  bio    String
+  mobile String
 
   applications Application[]
   user         User          @relation(fields: [userId], references: [id])
