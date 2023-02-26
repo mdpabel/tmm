@@ -44,7 +44,7 @@ const JobParams = ({ job }: { job: JobListingType }) => {
   const publishedDate = formateDate(createdAt);
 
   if (!company) {
-    return <h2>No job posted yet</h2>;
+    return <h2>No job posted yet from the company id</h2>;
   }
 
   const { companyName, companyInfo } = company;
@@ -154,7 +154,7 @@ export async function getStaticPaths() {
     params: { id: jobs.id.toString() },
   }));
 
-  return { paths, fallback: false };
+  return { paths, fallback: true };
 }
 
 export async function getStaticProps({ params }: ParamsType) {
@@ -177,7 +177,7 @@ export async function getStaticProps({ params }: ParamsType) {
 
   return {
     props: { job },
-    revalidate: 1,
+    revalidate: 10,
   };
 }
 
