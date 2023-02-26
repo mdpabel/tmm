@@ -28,7 +28,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Mover" (
     "id" SERIAL NOT NULL,
     "bio" TEXT,
-    "hourlyRate" DOUBLE PRECISION,
+    "mobile" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,
@@ -96,9 +96,12 @@ CREATE TABLE "Job" (
 -- CreateTable
 CREATE TABLE "Application" (
     "id" SERIAL NOT NULL,
-    "applicationStatus" "ApplicationStatus" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "applicantName" TEXT NOT NULL,
+    "coverLetter" TEXT NOT NULL,
+    "applicationStatus" "ApplicationStatus" NOT NULL DEFAULT 'PENDING',
+    "appliedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "moverId" INTEGER NOT NULL,
     "jobId" INTEGER NOT NULL,
 
@@ -119,6 +122,9 @@ CREATE UNIQUE INDEX "Service_serviceName_key" ON "Service"("serviceName");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Job_movingCompanyId_title_key" ON "Job"("movingCompanyId", "title");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Application_moverId_jobId_key" ON "Application"("moverId", "jobId");
 
 -- AddForeignKey
 ALTER TABLE "Mover" ADD CONSTRAINT "Mover_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
