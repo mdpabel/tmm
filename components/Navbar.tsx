@@ -43,6 +43,8 @@ const Navbar = () => {
   const { data, status } = useSession();
   const [show, setShow] = useState(false);
 
+  console.log('Navbar ', data);
+
   const role = (data as CustomSession)?.user?.role;
 
   return (
@@ -190,14 +192,14 @@ const Navbar = () => {
                             />
                           </>
                         )}
-                        {
-                          status === "authenticated" && <NavLink
-                          onClick={() => setShow(!show)}
-                          label='Dashboard'
-                          link='dashboard'
-                          customStyles='register'
-                        />
-                        }
+                        {status === 'authenticated' && (
+                          <NavLink
+                            onClick={() => setShow(!show)}
+                            label='Dashboard'
+                            link='dashboard'
+                            customStyles='register'
+                          />
+                        )}
                       </div>
                     </ul>
                   </div>

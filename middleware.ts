@@ -39,6 +39,8 @@ export async function middleware(req: NextRequest) {
     secret: process.env.JWR_SECRETE,
   });
 
+  console.log('Middleware ', payload);
+
   if (
     (pathname.startsWith('/login') || pathname.startsWith('/register')) &&
     payload
@@ -94,19 +96,23 @@ export async function middleware(req: NextRequest) {
 }
 
 // https://stackoverflow.com/questions/73229148/uncaught-syntaxerror-expected-expression-got-while-using-next-js-middlewar
-// export const config = {
-//   matcher: [
-//     '/dashboard',
-//     '/add-order',
-//     '/order-history',
-//     '/order-request',
-//     '/create-job',
-//     '/manage-jobs',
-//     '/job-request',
-//     '/add-service',
-//     '/services-inventory',
-//     '/add-new-user',
-//     '/manage-users',
-//     '/order-scheduled',
-//   ],
-// };
+export const config = {
+  matcher: [
+    '/dashboard',
+    '/add-order',
+    '/order-history',
+    '/order-request',
+    '/create-job',
+    '/manage-jobs',
+    '/job-request',
+    '/add-service',
+    '/services-inventory',
+    '/add-new-user',
+    '/manage-users',
+    '/schedule',
+    '/jobs',
+    '/my-jobs',
+    '/job-tracking',
+    '/my-orders',
+  ],
+};
