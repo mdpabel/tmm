@@ -89,7 +89,7 @@ const JobTracking = () => {
             )}
 
             {isLoading &&
-              new Array(10).fill(0).map((_, idx) => (
+              new Array(2).fill(0).map((_, idx) => (
                 <TableRow key={idx}>
                   <TableData className='text-center'>loading...</TableData>
                   <TableData className='text-center'>loading...</TableData>
