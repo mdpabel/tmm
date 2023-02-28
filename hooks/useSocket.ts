@@ -7,7 +7,8 @@ function useSocket() {
 
   // @ts-ignore
   useEffect(() => {
-    const newSocket = io('http://localhost:3000', {
+    // @ts-ignore
+    const newSocket = io(process.env.SOCKET_URI, {
       path: '/api/socketio',
     });
 
