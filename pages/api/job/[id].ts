@@ -15,7 +15,7 @@ const handler = nc<ReqType, NextApiResponse>({
     res.status(404).end('Page is not found!');
   },
 })
-  //   .use(auth)
+  .use(auth)
   .get(async (req, res) => {
     try {
       const { id } = req.query;
@@ -37,6 +37,30 @@ const handler = nc<ReqType, NextApiResponse>({
         data: 'Something went wrong',
       });
     }
+  })
+  .put(async (req, res) => {
+    const { id } = req.query;
+    const jobId = id;
+    const { status } = req.body;
+
+    if (!jobId || !status) {
+      return res.status(204).json({
+        data: 'job id and status are required',
+      });
+    }
+
+    const updatedJob = await prisma.job.update({
+      where: {
+        id: +jobId,
+      },
+      data: {
+        jobStatus: status,
+      },
+    });
+
+    res.status(200).json({
+      data: updatedJob,
+    });
   });
 
 export default handler;

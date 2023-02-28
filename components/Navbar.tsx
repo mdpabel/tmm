@@ -43,8 +43,6 @@ const Navbar = () => {
   const { data, status } = useSession();
   const [show, setShow] = useState(false);
 
-  console.log('Navbar ', data);
-
   const role = (data as CustomSession)?.user?.role;
 
   return (

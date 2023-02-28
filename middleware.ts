@@ -39,8 +39,6 @@ export async function middleware(req: NextRequest) {
     secret: process.env.JWR_SECRETE,
   });
 
-  console.log('Middleware ', payload);
-
   if (
     (pathname.startsWith('/login') || pathname.startsWith('/register')) &&
     payload
@@ -68,11 +66,6 @@ export async function middleware(req: NextRequest) {
     req.nextUrl.pathname = '/login';
     return res.redirect(req.nextUrl);
   }
-
-  console.log(
-    payload.role,
-    employeeAccess.some((link) => pathname.startsWith(link))
-  );
 
   if (
     payload.role === 'MOVING_COMPANY' &&

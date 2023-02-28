@@ -24,15 +24,12 @@ const handler = nc<ReqType, NextApiResponse>({
         });
       }
 
-      console.log(user);
-
       res.status(200).json({
         data: 'users',
       });
     } catch (error) {}
   })
   .put(async (req, res) => {
-    console.log(req.body);
     try {
       const user = req.user;
       const updatedUser = await prisma.user.update({

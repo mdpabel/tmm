@@ -22,3 +22,15 @@ export const applyToJob = async ({
 
   return data;
 };
+
+export const updateStatus = async (
+  applicationId: number,
+  newStatus: string,
+  jobId: number
+) => {
+  const data = client(`/api/application/${applicationId}`, {
+    data: { status: newStatus, jobId: jobId },
+    method: 'PUT',
+  });
+  return data;
+};

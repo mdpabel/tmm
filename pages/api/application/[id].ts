@@ -4,6 +4,7 @@ import prisma from '@/db/postgresql';
 import { verifyToken } from '@/utils/jwtToken';
 import { auth } from '@/middlewares/auth';
 import { ReqType } from 'types/reqType';
+import { NextApiResponseServerIO } from '@/types/socket';
 
 interface ApplicationType {
   name: string;
@@ -11,7 +12,7 @@ interface ApplicationType {
   jobId: number;
 }
 
-const handler = nc<ReqType, NextApiResponse>({
+const handler = nc<ReqType, NextApiResponseServerIO>({
   onError: (err, req, res, next) => {
     console.error(err.stack);
     res.status(500).end('Something broke!');
@@ -30,8 +31,6 @@ const handler = nc<ReqType, NextApiResponse>({
         userId: user.id,
       },
     });
-
-    console.log(mover, user);
 
     if (!mover) {
       return res.status(403).json({
@@ -57,6 +56,42 @@ const handler = nc<ReqType, NextApiResponse>({
 
     res.status(200).json({
       data: applications,
+    });
+  })
+  .put(async (req, res) => {
+    const { id } = req.query;
+    const applicationId = id;
+    const { status, jobId } = req.body;
+
+    if (!applicationId || !status) {
+      return res.status(204).json({
+        data: 'applicationId id and status are required',
+      });
+    }
+
+    const updatedApplication = await prisma.application.update({
+      where: {
+        id: +applicationId,
+      },
+      data: {
+        applicationStatus: status,
+      },
+    });
+
+    if (applicationId === 'ACCEPTED') {
+      const updatedJob = await prisma.job.update({
+        where: {
+          id: +jobId,
+        },
+        data: {
+          jobStatus: status,
+        },
+      });
+    }
+    res?.socket?.server?.io?.emit('updatedApplication', updatedApplication);
+
+    res.status(200).json({
+      data: updatedApplication,
     });
   });
 

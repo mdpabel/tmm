@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useSWR, { SWRConfig } from 'swr';
+import { io } from 'socket.io-client';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import {
   HeadData,
@@ -18,6 +19,7 @@ import prisma from '@/db/postgresql';
 import { BarSkeleton } from '@/components/Skeletons';
 import Link from 'next/link';
 import LinkIcon from '@/components/icons/LinkIcon';
+import useSocket from '@/hooks/useSocket';
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -31,6 +33,8 @@ const fetcher = async (url: string) => {
 };
 
 const JobTracking = () => {
+  const socket = useSocket();
+  const [applications, setApplications] = useState<ApplicationType[]>([]);
   const { data, error, isLoading, isValidating, mutate } = useSWR(
     '/api/application',
     fetcher,
@@ -38,6 +42,33 @@ const JobTracking = () => {
       revalidateOnFocus: false,
     }
   );
+
+  useEffect(() => {
+    if (data && data?.data) {
+      setApplications(data.data);
+    }
+  }, [data]);
+
+  useEffect((): any => {
+    // connect to socket server
+
+    if (!socket) return;
+
+    // update chat on new message dispatched
+    socket.on('updatedApplication', (updatedData: ApplicationType) => {
+      const updatedApplications = [...applications];
+      updatedApplications.forEach((app) => {
+        if (app.id === updatedData.id) {
+          app.applicationStatus = updatedData.applicationStatus;
+        }
+        return app;
+      });
+
+      setApplications(updatedApplications);
+    });
+
+    // socket disconnet onUnmount if exists
+  }, [applications, socket]);
 
   return (
     <div className='w-full space-y-8 sm:px-6'>
@@ -56,7 +87,7 @@ const JobTracking = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.data?.map(
+            {applications?.map(
               ({
                 id,
                 createdAt,

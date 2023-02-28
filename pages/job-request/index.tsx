@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import useSWR, { SWRConfig } from 'swr';
+import useSWR from 'swr';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import {
   HeadData,
@@ -22,6 +22,18 @@ import { OptionType, Select } from '@/components/Input';
 import Modal from 'react-modal';
 import PhoneIcon from '@/components/icons/PhoneIcon';
 import MailIcon from '@/components/icons/MailIcon';
+import Button from '@/components/Button';
+import clsx from 'clsx';
+import { useAsync } from '@/hooks/useAsync';
+import { updateStatus } from '@/utils/applicationProvider';
+import Spinner from '@/components/Spinner';
+import { useForceUpdate } from './../../hooks/useForce';
+
+const jobStatus = [
+  { label: 'PENDING', value: 'PENDING' },
+  { label: 'ACCEPTED', value: 'ACCEPTED' },
+  { label: 'REJECTED', value: 'REJECTED' },
+];
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -35,11 +47,19 @@ const fetcher = async (url: string) => {
 };
 
 const JobRequest = () => {
+  const [currentStatus, setCurrentStatus] = useState('PENDING');
   const [options, setOptions] = useState<OptionType[]>([]);
   const [selectedOption, setSelectedOption] = useState('');
   const [jobs, setJobs] = useState({});
   const [coverLetterOpen, setCoverLetterOpen] = useState(false);
   const [applicantDetailsOpen, setApplicantDetailsOpen] = useState(false);
+
+  const {
+    data: updatedData,
+    run,
+    isLoading: isUpdating,
+    isSuccess,
+  } = useAsync();
 
   const { data, error, isLoading, isValidating, mutate } = useSWR(
     '/api/job',
@@ -60,7 +80,11 @@ const JobRequest = () => {
           value: job.title,
         });
         // @ts-ignore
-        jobs[job.title] = job.applications;
+        jobs[job.title] = {
+          // @ts-ignore
+          applications: job.applications,
+          jobId: job.id,
+        };
       });
 
       setOptions(jobsOptions);
@@ -71,6 +95,14 @@ const JobRequest = () => {
       setJobs[{ ...jobs, ...transformedJobs }];
     }
   }, [data, jobs]);
+
+  const handleStatusUpdate = (
+    applicationId: number,
+    newStatus: string,
+    jobId: number
+  ) => {
+    run(updateStatus(applicationId, newStatus, jobId));
+  };
 
   return (
     <div className='w-full space-y-8 sm:px-6'>
@@ -86,16 +118,17 @@ const JobRequest = () => {
                 <HeadData>Job Title</HeadData>
                 <HeadData>Applicant Name</HeadData>
                 <HeadData>Applied At</HeadData>
-                <HeadData>status</HeadData>
                 <HeadData>cover letter</HeadData>
                 <HeadData>Applicant Details</HeadData>
+                <HeadData>status</HeadData>
+                <HeadData>Action</HeadData>
               </TableRow>
             </TableHead>
             <TableBody>
               {jobs &&
                 selectedOption &&
                 // @ts-ignore
-                jobs[selectedOption]?.map(
+                jobs[selectedOption]?.applications.map(
                   ({
                     id,
                     applicantName,
@@ -115,9 +148,6 @@ const JobRequest = () => {
                       <TableData className='text-center'>
                         {formateDate(appliedAt)}
                       </TableData>
-                      <TableData className='text-center'>
-                        {applicationStatus}
-                      </TableData>
                       <TableData className='text-center '>
                         <div
                           onClick={() => setCoverLetterOpen(!coverLetterOpen)}
@@ -135,6 +165,47 @@ const JobRequest = () => {
                         >
                           <LinkIcon />
                         </div>
+                      </TableData>
+
+                      <TableData className='text-center'>
+                        {/* <h2>{applicationStatus}</h2> */}
+                        <select
+                          className={clsx({
+                            'text-green-700 font-extrabold':
+                              applicationStatus === 'ACCEPTED',
+                          })}
+                          onChange={(e) => setCurrentStatus(e.target.value)}
+                        >
+                          <option value={applicationStatus}>
+                            {applicationStatus}
+                          </option>
+                          {applicationStatus !== 'ACCEPTED' &&
+                            jobStatus.map(
+                              (jobS, idx) =>
+                                applicationStatus !== jobS.value && (
+                                  <option key={idx} value={jobS.value}>
+                                    {jobS.label}
+                                  </option>
+                                )
+                            )}
+                        </select>
+                      </TableData>
+                      <TableData>
+                        <Button
+                          disabled={applicationStatus === 'ACCEPTED'}
+                          type='button'
+                          onClick={() => {
+                            handleStatusUpdate(
+                              id,
+                              currentStatus,
+                              // @ts-ignore
+                              jobs[selectedOption]?.jobId
+                            );
+                          }}
+                        >
+                          Updated
+                          {isUpdating && <Spinner />}
+                        </Button>
                       </TableData>
                       <Modal
                         style={{

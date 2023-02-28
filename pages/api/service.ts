@@ -47,8 +47,6 @@ const handler = nc<ReqType, NextApiResponse>({
       const { county, name, price, movers, hours, info, disclaimer, imgUrl } =
         req.body;
 
-      // console.log(imgUrl);
-
       const newService = await prisma.service.create({
         data: {
           serviceName: '' + name,

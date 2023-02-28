@@ -9,6 +9,7 @@ import AppLayout from '@/layouts/AppLayout';
 import { CompanyType } from '@/types/compnayTypes';
 import ApplyJobForm from '@/components/ApplyToJobForm';
 import { useSession } from 'next-auth/react';
+import useSocket from '@/hooks/useSocket';
 
 interface ParamsType {
   params: {

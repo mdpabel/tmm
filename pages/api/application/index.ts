@@ -31,8 +31,6 @@ const handler = nc<ReqType, NextApiResponse>({
         },
       });
 
-      console.log('Application mover', mover);
-
       if (!mover) {
         return res.status(403).json({
           data: 'You are not allowed to request the page',

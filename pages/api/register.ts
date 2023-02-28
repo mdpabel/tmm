@@ -24,8 +24,6 @@ const handler = nc<NextApiRequest, NextApiResponse>({
   try {
     let { firstName, lastName, email, password, role }: UserType = req.body;
 
-    console.log('API ', role);
-
     const hashedPassword = await hashPassword(password);
 
     const newUser = await prisma.user.create({

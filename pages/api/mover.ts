@@ -20,8 +20,6 @@ const handler = nc<ReqType, NextApiResponse>({
 
       const { bio, mobile } = req.body;
 
-      console.log(bio, mobile);
-
       const newMover = await prisma.mover.create({
         data: {
           bio,

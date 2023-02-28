@@ -52,8 +52,6 @@ const handler = nc<ReqType, NextApiResponse>({
         },
       });
 
-      console.log(jobs);
-
       if (!jobs) {
         return res.status(404).json({
           data: 'No jobs found, please post a new job',

@@ -71,6 +71,7 @@ const UserVerification = () => {
               Please submit additional information or documents to verify your
               account.
             </p>
+            <p>{JSON.stringify(session?.user)}</p>
           </div>
         </div>
       )}
