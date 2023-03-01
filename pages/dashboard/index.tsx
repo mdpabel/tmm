@@ -5,14 +5,20 @@ import DashboardLayout from '@/layouts/DashboardLayout';
 import { GetServerSideProps } from 'next';
 import NotificationCard from '@/components/NotificationCard';
 import Graph from '@/components/Graph';
+import Title from '@/components/Title';
 
 const Dashboard = () => {
   const { data, status } = useSession();
   const isVerified = false;
 
   return (
-    <div className='pt-4'>
-      <div>Welcome, ${data?.user?.firstName + ' ' + data?.user?.lastName}</div>
+    <div className='flex flex-col pt-4'>
+      <div>
+        <Title>
+          {/* @ts-ignore */}
+          Welcome, {data?.user?.firstName + ' ' + data?.user?.lastName}
+        </Title>
+      </div>
       <div className='grid grid-cols-1 m-auto space-x-4 md:grid-cols-2'>
         <NotificationCard />
         <UserVerification />
