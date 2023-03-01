@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Button from './Button';
 import { signOut, useSession, getSession } from 'next-auth/react';
 import { Session, User } from 'next-auth';
+import NotificationIcon from './icons/NotificationIcon';
+import ChatIcon from './icons/ChatIcon';
 
 const sidebarLinks = [
   {
@@ -229,6 +231,8 @@ function Sidebar() {
 
   const role = (data as CustomSession)?.user?.role ?? '';
 
+  console.log();
+
   return (
     <nav>
       <div
@@ -237,34 +241,34 @@ function Sidebar() {
           'overflow-y-scroll fixed left-0 h-79vh h-full w-80 xl:w-64 xl:mr-6 2xl:pr-12 2xl:mr-12 pr-6 border-r-2 border-gray-200  bg-white px-6 xl:pl-0 z-20 top-0 pt-10 transition-transform duration-150 ease-in-out xl:hidden'
         }
       >
-        <div>
-          <div className='flex items-center justify-between'>
-            <Link onClick={() => setToggleSidebar(!toggleSidebar)} href='/'>
-              <Image src={logo} alt='tmm logo' />
-            </Link>
-            <div
-              onClick={() => setToggleSidebar(true)}
-              className='pt-8 text-gray-800 '
-            >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                className='icon icon-tabler icon-tabler-x'
-                width={24}
-                height={24}
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='currentColor'
-                fill='none'
-                strokeLinecap='round'
-                strokeLinejoin='round'
+        <div className='flex flex-col justify-between min-h-[90vh]'>
+          <div className='space-y-8 '>
+            <div className='flex items-center justify-between'>
+              <Link onClick={() => setToggleSidebar(!toggleSidebar)} href='/'>
+                <Image src={logo} alt='tmm logo' />
+              </Link>
+              <div
+                onClick={() => setToggleSidebar(true)}
+                className='pt-8 text-gray-800 '
               >
-                <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-                <line x1={18} y1={6} x2={6} y2={18} />
-                <line x1={6} y1={6} x2={18} y2={18} />
-              </svg>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  className='icon icon-tabler icon-tabler-x'
+                  width={24}
+                  height={24}
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  fill='none'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                >
+                  <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+                  <line x1={18} y1={6} x2={6} y2={18} />
+                  <line x1={6} y1={6} x2={18} y2={18} />
+                </svg>
+              </div>
             </div>
-          </div>
-          <div className='flex flex-col justify-between min-h-[70vh]'>
             <div>
               {sidebarLinks.map(({ label, link, subItems, allowed }, index) => {
                 return (
@@ -283,18 +287,28 @@ function Sidebar() {
                 );
               })}
             </div>
+          </div>
 
-            <div>
-              <Button
-                onClick={() =>
-                  signOut({
-                    callbackUrl: '/',
-                  })
-                }
-                intent='logout'
-              >
-                Logout
-              </Button>
+          <div className='flex flex-col'>
+            <Button
+              onClick={() =>
+                signOut({
+                  callbackUrl: '/',
+                })
+              }
+              intent='logout'
+            >
+              Logout
+            </Button>
+            <div className='pt-2'></div>
+            <div className='flex justify-center pt-2 space-x-4 border-t-2'>
+              <div>{data?.user?.firstName + ' ' + data?.user?.lastName}</div>
+              <div>
+                <NotificationIcon />
+              </div>
+              <div>
+                <ChatIcon />
+              </div>
             </div>
           </div>
         </div>
@@ -354,7 +368,9 @@ function Sidebar() {
                   )}
                 </div>
               </div>
+            </div>
 
+            <div className='flex flex-col'>
               <div>
                 <Button
                   onClick={() =>
@@ -366,6 +382,16 @@ function Sidebar() {
                 >
                   Logout
                 </Button>
+              </div>
+              <div className='pt-2'></div>
+              <div className='flex justify-center pt-2 space-x-4 border-t-2'>
+                <div>{data?.user?.firstName + ' ' + data?.user?.lastName}</div>
+                <div>
+                  <NotificationIcon />
+                </div>
+                <div>
+                  <ChatIcon />
+                </div>
               </div>
             </div>
           </div>

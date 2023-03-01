@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useSWR, { SWRConfig } from 'swr';
-import { io } from 'socket.io-client';
+import useSound from 'use-sound';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import {
   HeadData,
@@ -13,6 +13,7 @@ import {
 } from '@/components/Table';
 import Title from '@/components/Title';
 import { ApplicationType } from '@/types/applicationTypes';
+import notificationSound from '../../assets/sounds/notification.mp3';
 import { JobType } from '@/types/jobType';
 import { formateDate } from '@/utils/formateDate';
 import prisma from '@/db/postgresql';
@@ -33,6 +34,7 @@ const fetcher = async (url: string) => {
 };
 
 const JobTracking = () => {
+  const [play] = useSound(notificationSound);
   const socket = useSocket();
   const [applications, setApplications] = useState<ApplicationType[]>([]);
   const { data, error, isLoading, isValidating, mutate } = useSWR(
@@ -63,12 +65,12 @@ const JobTracking = () => {
         }
         return app;
       });
-
+      play();
       setApplications(updatedApplications);
     });
 
     // socket disconnet onUnmount if exists
-  }, [applications, socket]);
+  }, [applications, play, socket]);
 
   return (
     <div className='w-full space-y-8 sm:px-6'>

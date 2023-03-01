@@ -27,7 +27,6 @@ import clsx from 'clsx';
 import { useAsync } from '@/hooks/useAsync';
 import { updateStatus } from '@/utils/applicationProvider';
 import Spinner from '@/components/Spinner';
-import { useForceUpdate } from './../../hooks/useForce';
 
 const jobStatus = [
   { label: 'PENDING', value: 'PENDING' },
@@ -53,6 +52,7 @@ const JobRequest = () => {
   const [jobs, setJobs] = useState({});
   const [coverLetterOpen, setCoverLetterOpen] = useState(false);
   const [applicantDetailsOpen, setApplicantDetailsOpen] = useState(false);
+  const [applicationId, setApplicationId] = useState(-1);
 
   const {
     data: updatedData,
@@ -101,6 +101,7 @@ const JobRequest = () => {
     newStatus: string,
     jobId: number
   ) => {
+    setApplicationId(applicationId);
     run(updateStatus(applicationId, newStatus, jobId));
   };
 
@@ -204,7 +205,7 @@ const JobRequest = () => {
                           }}
                         >
                           Updated
-                          {isUpdating && <Spinner />}
+                          {isUpdating && applicationId == id && <Spinner />}
                         </Button>
                       </TableData>
                       <Modal
@@ -265,6 +266,7 @@ const JobRequest = () => {
               {isLoading &&
                 new Array(2).fill(0).map((_, idx) => (
                   <TableRow key={idx}>
+                    <TableData className='text-center'>loading...</TableData>
                     <TableData className='text-center'>loading...</TableData>
                     <TableData className='text-center'>loading...</TableData>
                     <TableData className='text-center'>loading...</TableData>

@@ -8,7 +8,7 @@ const DashboardLayout = ({ children }: ChildrenType) => {
       <aside>
         <Sidebar />
       </aside>
-      <section className='container flex flex-col items-center justify-center w-full min-h-screen px-4 py-6'>
+      <section className='container flex flex-col items-center justify-center w-full min-h-screen px-4 py-6 mx-auto'>
         {children}
       </section>
     </div>
