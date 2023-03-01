@@ -27,10 +27,10 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Mover" (
     "id" SERIAL NOT NULL,
-    "bio" TEXT,
-    "mobile" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "bio" TEXT NOT NULL,
+    "mobile" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Mover_pkey" PRIMARY KEY ("id")
@@ -112,10 +112,10 @@ CREATE TABLE "Application" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "MovingCompany_companyName_key" ON "MovingCompany"("companyName");
+CREATE UNIQUE INDEX "Mover_userId_key" ON "Mover"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "MovingCompany_userId_key" ON "MovingCompany"("userId");
+CREATE UNIQUE INDEX "MovingCompany_userId_companyName_key" ON "MovingCompany"("userId", "companyName");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Service_serviceName_key" ON "Service"("serviceName");

@@ -59,6 +59,8 @@ model Mover {
   applications Application[]
   user         User          @relation(fields: [userId], references: [id])
   userId       Int
+
+  @@unique([userId])
 }
 
 model MovingCustomer {
@@ -71,7 +73,7 @@ model MovingCustomer {
 
 model MovingCompany {
   id          Int           @id @default(autoincrement())
-  companyName String        @unique
+  companyName String
   companyInfo String?
   status      AccountStatus @default(PENDING)
   createdAt   DateTime      @default(now())
@@ -79,7 +81,9 @@ model MovingCompany {
   user        User          @relation(fields: [userId], references: [id])
   services    Service[]
   jobs        Job[]
-  userId      Int           @unique
+  userId      Int
+
+  @@unique([userId, companyName])
 }
 
 model Service {
