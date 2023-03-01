@@ -5,6 +5,7 @@ import { verifyToken } from '@/utils/jwtToken';
 import { auth } from '@/middlewares/auth';
 import { ReqType } from 'types/reqType';
 import { NextApiResponseServerIO } from '@/types/socket';
+import { pusher } from '@/utils/pusher';
 
 interface ApplicationType {
   name: string;
@@ -88,7 +89,8 @@ const handler = nc<ReqType, NextApiResponseServerIO>({
         },
       });
     }
-    res?.socket?.server?.io?.emit('updatedApplication', updatedApplication);
+    // res?.socket?.server?.io?.emit('updatedApplication', updatedApplication);
+    pusher.trigger('application', 'updatedApplication', updatedApplication);
 
     res.status(200).json({
       data: updatedApplication,

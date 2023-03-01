@@ -21,7 +21,7 @@ import { BarSkeleton } from '@/components/Skeletons';
 import Link from 'next/link';
 import LinkIcon from '@/components/icons/LinkIcon';
 import useSocket from '@/hooks/useSocket';
-import { io } from 'socket.io-client';
+import { pusherJs } from '@/utils/pusherClient';
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -52,9 +52,25 @@ const JobTracking = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    const channel = pusherJs.subscribe('application');
+
+    channel.bind('updatedApplication', function (updatedData: ApplicationType) {
+      const updatedApplications = [...applications];
+      updatedApplications.forEach((app) => {
+        if (app.id === updatedData.id) {
+          app.applicationStatus = updatedData.applicationStatus;
+        }
+        return app;
+      });
+      setApplications(updatedApplications);
+      play();
+    });
+  }, [applications, play]);
+
   // useEffect((): any => {
   //   // connect to socket server
-  //   console.log('Socket ');
+
   //   if (!socket) return;
 
   //   // update chat on new message dispatched
@@ -73,29 +89,6 @@ const JobTracking = () => {
 
   //   // socket disconnet onUnmount if exists
   // }, [applications, play, socket]);
-
-  useEffect(() => {
-    fetch('/api/socketio').finally(() => {
-      const socket = io();
-
-      socket.on('updatedApplication', (updatedData: ApplicationType) => {
-        console.log(updatedData);
-        const updatedApplications = [...applications];
-        updatedApplications.forEach((app) => {
-          if (app.id === updatedData.id) {
-            app.applicationStatus = updatedData.applicationStatus;
-          }
-          return app;
-        });
-        setApplications(updatedApplications);
-        play();
-      });
-
-      socket.on('disconnect', () => {
-        console.log('disconnect');
-      });
-    });
-  }, [applications, play]);
 
   return (
     <div className='w-full space-y-8 sm:px-6'>

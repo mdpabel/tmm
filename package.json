@@ -28,6 +28,8 @@
     "next": "13.1.6",
     "next-auth": "^4.19.2",
     "next-connect": "^0.13.0",
+    "pusher": "^5.1.2",
+    "pusher-js": "^8.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-modal": "^3.16.1",
