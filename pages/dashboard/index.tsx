@@ -14,7 +14,7 @@ const Dashboard = () => {
     <div className='pt-4'>
       <div className='grid grid-cols-1 m-auto space-x-4 md:grid-cols-2'>
         <NotificationCard />
-        <Graph />
+        <UserVerification />
         <Graph />
         <Graph />
       </div>
