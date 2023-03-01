@@ -21,6 +21,7 @@ import { BarSkeleton } from '@/components/Skeletons';
 import Link from 'next/link';
 import LinkIcon from '@/components/icons/LinkIcon';
 import useSocket from '@/hooks/useSocket';
+import { io } from 'socket.io-client';
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -35,7 +36,7 @@ const fetcher = async (url: string) => {
 
 const JobTracking = () => {
   const [play] = useSound(notificationSound);
-  const socket = useSocket();
+  // const socket = useSocket();
   const [applications, setApplications] = useState<ApplicationType[]>([]);
   const { data, error, isLoading, isValidating, mutate } = useSWR(
     '/api/application',
@@ -51,27 +52,50 @@ const JobTracking = () => {
     }
   }, [data]);
 
-  useEffect((): any => {
-    // connect to socket server
-    console.log('Socket ');
-    if (!socket) return;
+  // useEffect((): any => {
+  //   // connect to socket server
+  //   console.log('Socket ');
+  //   if (!socket) return;
 
-    // update chat on new message dispatched
-    socket.on('updatedApplication', (updatedData: ApplicationType) => {
-      console.log(updatedData);
-      const updatedApplications = [...applications];
-      updatedApplications.forEach((app) => {
-        if (app.id === updatedData.id) {
-          app.applicationStatus = updatedData.applicationStatus;
-        }
-        return app;
+  //   // update chat on new message dispatched
+  //   socket.on('updatedApplication', (updatedData: ApplicationType) => {
+  //     console.log(updatedData);
+  //     const updatedApplications = [...applications];
+  //     updatedApplications.forEach((app) => {
+  //       if (app.id === updatedData.id) {
+  //         app.applicationStatus = updatedData.applicationStatus;
+  //       }
+  //       return app;
+  //     });
+  //     setApplications(updatedApplications);
+  //     play();
+  //   });
+
+  //   // socket disconnet onUnmount if exists
+  // }, [applications, play, socket]);
+
+  useEffect(() => {
+    fetch('/api/socketio').finally(() => {
+      const socket = io();
+
+      socket.on('updatedApplication', (updatedData: ApplicationType) => {
+        console.log(updatedData);
+        const updatedApplications = [...applications];
+        updatedApplications.forEach((app) => {
+          if (app.id === updatedData.id) {
+            app.applicationStatus = updatedData.applicationStatus;
+          }
+          return app;
+        });
+        setApplications(updatedApplications);
+        play();
       });
-      setApplications(updatedApplications);
-      play();
-    });
 
-    // socket disconnet onUnmount if exists
-  }, [applications, play, socket]);
+      socket.on('disconnect', () => {
+        console.log('disconnect');
+      });
+    });
+  }, [applications, play]);
 
   return (
     <div className='w-full space-y-8 sm:px-6'>
