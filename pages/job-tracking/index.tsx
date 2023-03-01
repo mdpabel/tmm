@@ -58,6 +58,7 @@ const JobTracking = () => {
 
     // update chat on new message dispatched
     socket.on('updatedApplication', (updatedData: ApplicationType) => {
+      console.log(updatedData);
       const updatedApplications = [...applications];
       updatedApplications.forEach((app) => {
         if (app.id === updatedData.id) {
