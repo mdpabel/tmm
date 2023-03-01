@@ -53,7 +53,7 @@ const JobTracking = () => {
 
   useEffect((): any => {
     // connect to socket server
-
+    console.log('Socket ');
     if (!socket) return;
 
     // update chat on new message dispatched
