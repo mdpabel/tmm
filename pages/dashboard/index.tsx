@@ -12,6 +12,7 @@ const Dashboard = () => {
 
   return (
     <div className='pt-4'>
+      <div>Welcome, ${data?.user?.firstName + ' ' + data?.user?.lastName}</div>
       <div className='grid grid-cols-1 m-auto space-x-4 md:grid-cols-2'>
         <NotificationCard />
         <UserVerification />
