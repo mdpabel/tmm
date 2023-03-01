@@ -65,8 +65,8 @@ const JobTracking = () => {
         }
         return app;
       });
-      play();
       setApplications(updatedApplications);
+      play();
     });
 
     // socket disconnet onUnmount if exists
