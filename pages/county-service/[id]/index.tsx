@@ -115,7 +115,7 @@ const Service = ({ service }: { service: ServiceType }) => {
 
               <p className='py-4 text-sm text-gray-600'>{serviceDisclaimer}</p>
 
-              <ScheduledMove serviceHours={serviceHours} />
+              <ScheduledMove price={servicePrice} serviceHours={serviceHours} />
             </div>
           </div>
         </div>

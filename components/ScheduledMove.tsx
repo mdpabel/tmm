@@ -4,20 +4,30 @@ import { Label } from '@/components/Input';
 import { formateDateAndTime } from '@/utils/formateDate';
 
 const initialState = {
-  time: new Date().toString(),
+  time: new Date().toLocaleString(),
   reservationHours: '2',
 };
 
-const ScheduledMove = ({ serviceHours }: { serviceHours: number }) => {
+interface PropTypes {
+  serviceHours: number;
+  price: number;
+}
+
+const ScheduledMove = ({ serviceHours, price }: PropTypes) => {
   const [options, setOptions] = useState([
     {
       label: '',
       value: '',
     },
   ]);
-  const [state, setState] = useState({ ...initialState });
+  const [state, setState] = useState({
+    time: new Date().toLocaleString(),
+    reservationHours: '' + serviceHours,
+  });
   const { time, reservationHours } = state;
   const [end, setEnd] = useState('');
+
+  const servicePrice = (price / serviceHours) * +reservationHours;
 
   useEffect(() => {
     const endTime = new Date(
@@ -69,6 +79,11 @@ const ScheduledMove = ({ serviceHours }: { serviceHours: number }) => {
         <Label htmlFor='end-time'>End time</Label>
         <div>{end ?? ''}</div>
       </InputWrapper>
+
+      <div>
+        <hr className='py-4' />
+        <h2 className='text-2xl font-semibold'>Total: ${servicePrice}</h2>
+      </div>
     </div>
   );
 };
