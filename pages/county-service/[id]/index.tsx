@@ -28,6 +28,9 @@ export async function getStaticProps({ params }: ParamsType) {
     where: {
       id: +params?.id,
     },
+    include: {
+      company: true,
+    },
   });
 
   if (!res) {
@@ -60,6 +63,8 @@ const Service = ({ service }: { service: ServiceType }) => {
     serviceDesc,
     serviceDisclaimer,
     serviceImg,
+    // @ts-ignore
+    company,
   } = service;
 
   return (
@@ -88,13 +93,14 @@ const Service = ({ service }: { service: ServiceType }) => {
                 <span className='text-2xl font-medium text-gray-900 title-font'>
                   ${servicePrice}
                 </span>
-                <button className='flex px-6 py-2 ml-auto text-white bg-indigo-500 border-0 rounded focus:outline-none hover:bg-indigo-600'>
-                  Button
-                </button>
               </div>
 
               <div className='pt-4'>
                 <h2 className='py-2 text-xl font-semibold'>Service Details</h2>
+                <div className='flex justify-between py-2 border-b'>
+                  <span>Company</span>
+                  <span>{company?.companyName}</span>
+                </div>
                 <div className='flex justify-between py-2 border-b'>
                   <span>County</span>
                   <span>{serviceCounty}</span>

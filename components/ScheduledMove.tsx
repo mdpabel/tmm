@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Input, { InputWrapper, Select } from './Input';
 import { Label } from '@/components/Input';
 import { formateDateAndTime } from '@/utils/formateDate';
+import Button from './Button';
+import RightArrow from './icons/RightArrow';
+import { useRouter } from 'next/router';
 
 const initialState = {
   time: new Date().toLocaleString(),
@@ -26,6 +29,7 @@ const ScheduledMove = ({ serviceHours, price }: PropTypes) => {
   });
   const { time, reservationHours } = state;
   const [end, setEnd] = useState('');
+  const router = useRouter();
 
   const servicePrice = (price / serviceHours) * +reservationHours;
 
@@ -48,6 +52,10 @@ const ScheduledMove = ({ serviceHours, price }: PropTypes) => {
     }
     setOptions(genOptions);
   }, [serviceHours]);
+
+  const handleSchedule = () => {
+    router.push('/order-details');
+  };
 
   return (
     <div className='p-4 space-y-4 border'>
@@ -82,7 +90,12 @@ const ScheduledMove = ({ serviceHours, price }: PropTypes) => {
 
       <div>
         <hr className='py-4' />
-        <h2 className='text-2xl font-semibold'>Total: ${servicePrice}</h2>
+        <div className='space-y-4 md:flex md:flex-row md:justify-between md:items-center'>
+          <h2 className='text-2xl font-semibold'>Total: ${servicePrice}</h2>
+          <Button onClick={handleSchedule} type='button'>
+            Schedule your move <RightArrow />
+          </Button>
+        </div>
       </div>
     </div>
   );
