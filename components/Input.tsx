@@ -1,5 +1,3 @@
-'use client';
-
 import React, { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react';
 import { useFocus } from './../hooks/useFocus';
 
@@ -77,7 +75,7 @@ export const Select = ({ options, onChange, required, value }: SelectType) => {
 };
 
 export const InputWrapper = ({ children }: { children: ReactNode }) => {
-  return <div className='flex flex-col space-y-2'>{children}</div>;
+  return <div className='flex flex-col w-full space-y-2'>{children}</div>;
 };
 
 interface LabelType {

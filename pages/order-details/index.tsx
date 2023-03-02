@@ -112,7 +112,7 @@ const OrderDetails = () => {
           </label>
         </div>
 
-        <div className='flex flex-col items-center gap-4 md:justify-between md:flex-row'>
+        <div className='flex flex-col items-center w-full gap-4 md:justify-between md:flex-row'>
           <InputWrapper>
             <Label htmlFor='rooms'>Number of Rooms</Label>
             <Input
