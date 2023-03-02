@@ -4,6 +4,7 @@ import prisma from '@/db/postgresql';
 import { verifyToken } from '@/utils/jwtToken';
 import { auth } from '@/middlewares/auth';
 import { ReqType } from 'types/reqType';
+import { pusher } from '@/utils/pusher';
 
 interface ApplicationType {
   name: string;
@@ -105,6 +106,8 @@ const handler = nc<ReqType, NextApiResponse>({
           jobId: job.id,
         },
       });
+
+      pusher.trigger('application', 'newApplication', newApplication);
 
       res.status(201).json({
         data: newApplication,

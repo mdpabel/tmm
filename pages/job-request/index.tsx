@@ -27,6 +27,9 @@ import clsx from 'clsx';
 import { useAsync } from '@/hooks/useAsync';
 import { updateStatus } from '@/utils/applicationProvider';
 import Spinner from '@/components/Spinner';
+import { pusherJs } from '@/utils/pusherClient';
+import notificationSound from '../../assets/sounds/notification.mp3';
+import useSound from 'use-sound';
 
 const jobStatus = [
   { label: 'PENDING', value: 'PENDING' },
@@ -46,6 +49,7 @@ const fetcher = async (url: string) => {
 };
 
 const JobRequest = () => {
+  const [play] = useSound(notificationSound);
   const [currentStatus, setCurrentStatus] = useState('PENDING');
   const [options, setOptions] = useState<OptionType[]>([]);
   const [selectedOption, setSelectedOption] = useState('');
@@ -68,6 +72,14 @@ const JobRequest = () => {
       revalidateOnFocus: false,
     }
   );
+
+  // useEffect(() => {
+  //   const channel = pusherJs.subscribe('application');
+
+  //   channel.bind('updatedApplication', function (updatedData: ApplicationType) {
+  //     console.log(updatedData);
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (data) {

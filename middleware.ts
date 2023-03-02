@@ -15,14 +15,14 @@ const companyAccess = [
   '/services-inventory',
   '/add-new-user',
   '/manage-users',
-  '/schedule',
+  '/scheduled',
   '/jobs',
 ];
 
 const employeeAccess = [
   '/dashboard',
   '/my-jobs',
-  '/schedule',
+  '/scheduled',
   '/job-tracking',
   '/jobs',
 ];
