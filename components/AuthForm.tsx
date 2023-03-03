@@ -7,7 +7,7 @@ import Button from './Button';
 import Link from 'next/link';
 import Alert from './Alert';
 import Spinner from './Spinner';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useAsync } from '@/hooks/useAsync';
 import { register } from '@/utils/authProvider';
 import { UserType } from '@/types/userType';
@@ -73,7 +73,9 @@ const AuthForm = ({ mode }: { mode: modeType }) => {
       });
 
       if (res && res.ok) {
-        router.replace('/dashboard');
+        const redirectURL = router?.query.returnUrl || '/dashboard';
+        // @ts-ignore
+        router.replace(redirectURL);
         setStatus('SUCCESS');
         setValue('Login success');
       } else {

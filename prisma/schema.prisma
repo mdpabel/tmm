@@ -46,6 +46,43 @@ model User {
   Mover          Mover[]
   MovingCustomer MovingCustomer[]
   MovingCompany  MovingCompany[]
+  Order          Order[]
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  totalPrice   Float
+  user         User           @relation(fields: [userId], references: [id])
+  userId       Int
+  OrderDetails OrderDetails[]
+}
+
+model OrderDetails {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  startAddress            String
+  endAddress              String
+  state                   String
+  city                    String
+  zip                     String
+  loading                 Boolean
+  unloading               Boolean
+  numberOfRooms           Int
+  numberOfStairFlights    Int
+  numberOfStairFloors     Int
+  numberOfStairDimensions Int
+  specialItems            String?
+  notes                   String?
+  latitude                String?
+  longitude               String?
+
+  order   Order @relation(fields: [orderId], references: [id])
+  orderId Int
 }
 
 model Mover {

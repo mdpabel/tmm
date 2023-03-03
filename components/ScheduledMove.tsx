@@ -14,9 +14,10 @@ const initialState = {
 interface PropTypes {
   serviceHours: number;
   price: number;
+  id: number;
 }
 
-const ScheduledMove = ({ serviceHours, price }: PropTypes) => {
+const ScheduledMove = ({ serviceHours, price, id }: PropTypes) => {
   const [options, setOptions] = useState([
     {
       label: '',
@@ -54,6 +55,14 @@ const ScheduledMove = ({ serviceHours, price }: PropTypes) => {
   }, [serviceHours]);
 
   const handleSchedule = () => {
+    window.localStorage.setItem(
+      'cartService',
+      '' +
+        JSON.stringify({
+          price: servicePrice,
+          id,
+        })
+    );
     router.push('/order-details');
   };
 
