@@ -26,6 +26,8 @@ const OrderDetails = () => {
       ShippingAddress,
     ]);
 
+  console.log(router.isFallback);
+
   useEffect(() => {
     const cartService = JSON.parse(
       window.localStorage.getItem('cartService') ?? '{}'
