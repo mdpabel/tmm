@@ -49,7 +49,7 @@ const Register = () => {
           <SelectRole role={role} setRole={setRole} />
         </form>
       )}
-      {selectedRole && role === 'client' && <AuthForm />}
+      {selectedRole && role === 'client' && <AuthForm mode='register' />}
       {selectedRole && (role === 'company' || role === 'employee') && (
         <div className=''>
           <ol className='flex items-center w-full mb-4 sm:mb-5'>
