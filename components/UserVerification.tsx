@@ -1,6 +1,11 @@
-import React, { SyntheticEvent, useState } from 'react';
+import React, { ChangeEvent, SyntheticEvent, useState } from 'react';
 import { CardWrapper } from '@/components/Card';
-import Input, { TextArea, Select } from '@/components/Input';
+import Input, {
+  TextArea,
+  Select,
+  Label,
+  InputWrapper,
+} from '@/components/Input';
 import Button from '@/components/Button';
 import Title from '@/components/Title';
 import { useAsync } from '@/hooks/useAsync';
@@ -13,149 +18,198 @@ import { useSession } from 'next-auth/react';
 import { addNewMover } from '@/utils/moverProvider';
 
 const initialState = {
-  companyName: '',
-  companyInfo: '',
+  imgUrl: '',
+  ein: '',
+  businessLicense: '',
+  sole: true,
 };
 
-const initialMoverState = {
-  bio: '',
-  mobile: '',
-};
-
-const UserVerification = () => {
-  const { data: session } = useSession();
-  const [show, setShow] = useState(false);
-  const { data, error, isLoading, isError, isSuccess, run } = useAsync();
+const UserVerification = ({ role }: { role: string }) => {
   const [state, setState] = useState({ ...initialState });
-  const [mover, setMover] = useState({ ...initialMoverState });
 
-  const { companyName, companyInfo } = state;
-  const { bio, mobile } = mover;
+  const { imgUrl, ein, businessLicense, sole } = state;
 
-  async function handleSubmit(e: SyntheticEvent) {
-    e.preventDefault();
-    if (!session) {
+  function handleImage(e: ChangeEvent<HTMLInputElement>) {
+    const reader = new FileReader();
+    reader.onload = function (onLoadEvent) {
+      setState({
+        ...state,
+        imgUrl: onLoadEvent.target?.result as any,
+      });
+    };
+    if (!e.target.files) {
       return;
     }
-    // @ts-ignore
-    if (session?.user?.role === 'MOVING_COMPANY') {
-      run(addNewCompany({ companyName, companyInfo }));
-      // @ts-ignore
-    } else if (session?.user?.role === 'MOVER') {
-      run(addNewMover({ bio, mobile }));
-    }
-    setState({ ...initialState });
-    setMover({ ...initialMoverState });
+    reader.readAsDataURL(e.target?.files[0]);
   }
 
   return (
     <CardWrapper>
-      {!show && (
-        <div className='max-w-xl p-8 text-center text-gray-800 lg:max-w-3xl rounded-3xl lg:p-12'>
-          <h3 className='text-2xl'>
-            Thank you for signing up! Your account has been created.
-          </h3>
-          <div className='flex justify-center py-8'>
-            <Image src={logo} alt='Logo' width={120} height={120} />
+      {role === 'company' && (
+        <div>
+          <Label htmlFor='ownerId'>Upload your owner Id :</Label>
+          <div className='flex flex-col items-center space-x-10 md:flex-row'>
+            <div className='flex items-center justify-center w-full md:w-1/2'>
+              <label
+                htmlFor='fileInput'
+                className='flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursorPointer h-23 bg-gray-50 dark:hover:bg-bray-800 hover:bg-gray-100 '
+              >
+                <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                  <svg
+                    aria-hidden='true'
+                    className='w-10 h-10 mb-3 text-gray-400'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12'
+                    ></path>
+                  </svg>
+                  <p className='mb-2 text-sm text-gray-500 '>
+                    Click to upload or drag and drop you{' '}
+                    <span className='font-semibold'>owner id</span>
+                  </p>
+                  <p className='text-xs text-gray-500 '>SVG, PNG, JPG or GIF</p>
+                </div>
+                <input
+                  id='fileInput'
+                  type='file'
+                  className='hidden'
+                  name='file'
+                  onChange={handleImage}
+                />
+              </label>
+            </div>
+            <div>
+              {imgUrl ? (
+                <Image width='300' height='300' src={imgUrl} alt='preview' />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <Image
+                  width={300}
+                  height='300'
+                  src='https://res.cloudinary.com/divg4kqqk/image/upload/v1676051218/3973481_egybzc.jpg'
+                  alt='preview'
+                />
+              )}
+            </div>
           </div>
-          <p>Your account is pending verification.</p>
-          <div className='flex flex-col items-center mt-4'>
-            <Button
-              type='submit'
-              intent='secondary'
-              onClick={() => setShow(true)}
+
+          <div className='flex items-center mb-4'>
+            <input
+              onChange={(e) => setState({ ...state, sole: e.target.checked })}
+              id='solePropLLCCorp'
+              type='checkbox'
+              checked={sole}
+              className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2'
+            />
+            <label
+              htmlFor='solePropLLCCorp'
+              className='ml-2 text-sm font-medium text-gray-400'
             >
-              Verify Account
+              Sole prop, LLC or corp
+            </label>
+          </div>
+
+          <div className='space-y-4'>
+            {!sole && (
+              <>
+                <InputWrapper>
+                  <Label htmlFor='ein'>EIN</Label>
+                  <Input
+                    id='ein'
+                    placeholder='EIN'
+                    onChange={(e) =>
+                      setState({ ...state, ein: e.target.value })
+                    }
+                    value={ein}
+                    required={true}
+                    type='string'
+                  />
+                </InputWrapper>
+
+                <InputWrapper>
+                  <Label htmlFor='businessLicense'>Business License</Label>
+                  <Input
+                    id='businessLicense'
+                    placeholder='Business License'
+                    onChange={(e) =>
+                      setState({ ...state, businessLicense: e.target.value })
+                    }
+                    value={businessLicense}
+                    required={true}
+                    type='string'
+                  />
+                </InputWrapper>
+              </>
+            )}
+            <Button intent='primary' size='medium' type='submit'>
+              Submit documents
+              {/* {isLoading ? <Spinner /> : null} */}
             </Button>
-            <p className='mt-4 text-sm'>
-              Please submit additional information or documents to verify your
-              account.
-            </p>
-            <p>{JSON.stringify(session?.user)}</p>
           </div>
         </div>
       )}
 
-      {show && (
+      {role === 'employee' && (
         <div>
-          {/* @ts-ignore */}
-          {session?.user?.role === 'MOVING_COMPANY' && (
-            <>
-              <Title>Please submit your company information</Title>
-              <div className='pb-4'></div>
-              <form onSubmit={handleSubmit}>
-                <Input
-                  minLength={5}
-                  maxLength={100}
-                  focus={true}
-                  placeholder='Your company name'
-                  onChange={(e) =>
-                    setState({ ...state, companyName: e.target.value })
-                  }
-                  value={companyName}
-                  required={true}
-                  type='text'
-                />
-
-                <TextArea
-                  placeholder='Your company Info'
-                  onChange={(e) =>
-                    setState({
-                      ...state,
-                      companyInfo: e.target.value,
-                    })
-                  }
-                  value={companyInfo}
-                />
-
-                <div className='pt-2'>
-                  <Button intent='secondary' size='medium' type='submit'>
-                    Verify me
-                    {isLoading ? <Spinner /> : null}
-                  </Button>
+          <Label htmlFor='ownerId'>Upload your owner Id :</Label>
+          <div className='flex flex-col items-center space-x-10 md:flex-row'>
+            <div className='flex items-center justify-center w-full md:w-1/2'>
+              <label
+                htmlFor='fileInput'
+                className='flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursorPointer h-23 bg-gray-50 dark:hover:bg-bray-800 hover:bg-gray-100 '
+              >
+                <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                  <svg
+                    aria-hidden='true'
+                    className='w-10 h-10 mb-3 text-gray-400'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12'
+                    ></path>
+                  </svg>
+                  <p className='mb-2 text-sm text-gray-500 '>
+                    Click to upload or drag and drop you{' '}
+                    <span className='font-semibold'>owner id</span>
+                  </p>
+                  <p className='text-xs text-gray-500 '>SVG, PNG, JPG or GIF</p>
                 </div>
-              </form>
-            </>
-          )}
-          {/* @ts-ignore */}
-          {session?.user?.role === 'MOVER' && (
-            <>
-              <Title>Please submit your information</Title>
-              <div className='pb-4'></div>
-              <form onSubmit={handleSubmit}>
-                <Input
-                  minLength={5}
-                  maxLength={100}
-                  focus={true}
-                  placeholder='Your mobile number'
-                  onChange={(e) =>
-                    setMover({ ...mover, mobile: e.target.value })
-                  }
-                  value={mobile}
-                  required={true}
-                  type='text'
+                <input
+                  id='fileInput'
+                  type='file'
+                  className='hidden'
+                  name='file'
+                  onChange={handleImage}
                 />
-
-                <TextArea
-                  placeholder='Information'
-                  onChange={(e) =>
-                    setMover({
-                      ...mover,
-                      bio: e.target.value,
-                    })
-                  }
-                  value={bio}
+              </label>
+            </div>
+            <div>
+              {imgUrl ? (
+                <Image width='300' height='300' src={imgUrl} alt='preview' />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <Image
+                  width={300}
+                  height='300'
+                  src='https://res.cloudinary.com/divg4kqqk/image/upload/v1676051218/3973481_egybzc.jpg'
+                  alt='preview'
                 />
-
-                <div className='pt-2'>
-                  <Button intent='secondary' size='medium' type='submit'>
-                    Verify me
-                    {isLoading ? <Spinner /> : null}
-                  </Button>
-                </div>
-              </form>
-            </>
-          )}
+              )}
+            </div>
+          </div>
         </div>
       )}
     </CardWrapper>

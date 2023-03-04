@@ -1,4 +1,3 @@
-'use client';
 import React, { SyntheticEvent, useState } from 'react';
 import { CardWrapper } from '@/components/Card';
 import Input, { TextArea, Select } from '@/components/Input';

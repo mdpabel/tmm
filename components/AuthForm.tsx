@@ -1,5 +1,3 @@
-'use client';
-
 import React, { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react';
 import { CardBody, CardHeader, CardWrapper } from './Card';
 import Input from './Input';
@@ -41,7 +39,7 @@ const initialState = {
 
 type modeType = 'register' | 'signin';
 
-const AuthForm = ({ mode }: { mode: modeType }) => {
+const AuthForm = ({ mode, next }: { mode: modeType; next: () => void }) => {
   const {
     data,
     error,
@@ -85,11 +83,11 @@ const AuthForm = ({ mode }: { mode: modeType }) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     router.replace('/dashboard');
-  //   }
-  // }, [isSuccess, router]);
+  useEffect(() => {
+    if (isSuccess) {
+      next();
+    }
+  }, [isSuccess, next]);
 
   return (
     <CardWrapper>
@@ -104,67 +102,28 @@ const AuthForm = ({ mode }: { mode: modeType }) => {
       <CardBody>
         <form onSubmit={handleFormSubmission} className='space-y-6'>
           {mode === 'register' && (
-            <>
-              <div
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  setFormState({ ...formState, role: e.target.value });
-                }}
-                className='flex justify-around'
-              >
-                <div className='flex items-center space-x-2'>
-                  <label htmlFor='Company'>Company</label>
-                  <input
-                    value='company'
-                    type='radio'
-                    name='role'
-                    id='Company'
-                  />
-                </div>
+            <div className='flex space-x-4'>
+              <Input
+                focus={true}
+                placeholder='First Name'
+                onChange={(e) =>
+                  setFormState({ ...formState, firstName: e.target.value })
+                }
+                value={firstName}
+                required={true}
+                type='string'
+              />
 
-                <div className='flex items-center space-x-2'>
-                  <label htmlFor='Employee'>Employee</label>
-                  <input
-                    value='employee'
-                    type='radio'
-                    name='role'
-                    id='Employee'
-                  />
-                </div>
-
-                <div className='flex items-center space-x-2'>
-                  <label htmlFor='Customer'>Customer</label>
-                  <input
-                    value='customer'
-                    type='radio'
-                    name='role'
-                    id='Customer'
-                  />
-                </div>
-              </div>
-
-              <div className='flex space-x-4'>
-                <Input
-                  focus={true}
-                  placeholder='First Name'
-                  onChange={(e) =>
-                    setFormState({ ...formState, firstName: e.target.value })
-                  }
-                  value={firstName}
-                  required={true}
-                  type='string'
-                />
-
-                <Input
-                  placeholder='Last Name'
-                  onChange={(e) =>
-                    setFormState({ ...formState, lastName: e.target.value })
-                  }
-                  value={lastName}
-                  required={true}
-                  type='string'
-                />
-              </div>
-            </>
+              <Input
+                placeholder='Last Name'
+                onChange={(e) =>
+                  setFormState({ ...formState, lastName: e.target.value })
+                }
+                value={lastName}
+                required={true}
+                type='string'
+              />
+            </div>
           )}
 
           <Input

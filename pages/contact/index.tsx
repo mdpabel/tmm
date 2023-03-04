@@ -1,4 +1,3 @@
-'use client';
 import Input, { Label, TextArea } from '@/components/Input';
 import React, { useState } from 'react';
 import { CardWrapper } from '@/components/Card';

@@ -55,7 +55,12 @@ const OrderDetails = () => {
     <div>
       <ol className='flex items-center w-full mb-4 sm:mb-5'>
         {steps.map((_, idx) => (
-          <div className='w-full ' key={idx}>
+          <div
+            className={clsx({
+              'w-full': idx !== steps.length - 1,
+            })}
+            key={idx}
+          >
             <li
               className={clsx({
                 "flex w-full items-center after:content-[''] after:w-full": true,
