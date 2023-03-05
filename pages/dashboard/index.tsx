@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, getSession } from 'next-auth/react';
 import UserVerification from '@/components/UserVerification';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { GetServerSideProps } from 'next';
@@ -8,7 +8,7 @@ import Graph from '@/components/Graph';
 import Title from '@/components/Title';
 import { CustomSession } from '@/types/session';
 
-const Dashboard = () => {
+const Dashboard = ({ session }) => {
   const { data, status } = useSession();
 
   const role =
@@ -18,7 +18,7 @@ const Dashboard = () => {
       ? 'employee'
       : 'client';
 
-  console.log(role + ' <=> ' + data);
+  console.log(role + ' <=> ' + session);
 
   if (
     !(data as CustomSession)?.user?.hasUploadedDocuments &&
@@ -48,25 +48,25 @@ const Dashboard = () => {
 
 Dashboard.layout = DashboardLayout;
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const session = await getSession({
-//     req: context.req,
-//   });
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession({
+    req: context.req,
+  });
 
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: '/login',
-//         permanent: false,
-//       },
-//     };
-//   }
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
 
-//   return {
-//     props: {
-//       session,
-//     },
-//   };
-// };
+  return {
+    props: {
+      session,
+    },
+  };
+};
 
 export default Dashboard;
