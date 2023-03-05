@@ -3,8 +3,10 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '@/db/postgresql';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compareHashedPassword } from '@/utils/password';
+import { jwtVerify, SignJWT } from 'jose';
+import { createToken } from '@/utils/jwtToken';
 
-const createOptions = (req) => ({
+export default NextAuth({
   session: {
     strategy: 'jwt',
     maxAge: 7 * 24 * 60 * 60,
@@ -22,10 +24,8 @@ const createOptions = (req) => ({
           },
         });
 
-        console.log(user);
-
         if (!user) {
-          throw new Error('Invalid email or password');
+          throw new Error('Invalid credentials');
         }
 
         const validPassword = await compareHashedPassword(
@@ -34,7 +34,7 @@ const createOptions = (req) => ({
         );
 
         if (!validPassword) {
-          throw new Error('Invalid email or password');
+          throw new Error('Invalid credentials');
         }
 
         return user;
@@ -44,7 +44,7 @@ const createOptions = (req) => ({
   pages: {
     signIn: '/login',
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.JWR_SECRETE,
   cookies: {
     sessionToken: {
       name: process.env.COOKIES_NAME,
@@ -56,29 +56,26 @@ const createOptions = (req) => ({
     },
   },
   callbacks: {
-    jwt({ token, user, account }) {
-      if (req.query?.hasUploadedDocuments) {
-        token.hasUploadedDocuments = req.query?.hasUploadedDocuments ?? false;
+    jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
+        token.id = user.id;
+        token.hasUploadedDocuments = user.hasUploadedDocuments;
+        token.isCompanyVerified = user.isCompanyVerified;
+        token.isEmailVerified = user.isEmailVerified;
       }
-      token.role = user?.role ?? null;
-      token.hasUploadedDocuments = user?.hasUploadedDocuments ?? false;
-      token.firstName = user?.firstName ?? null;
-      token.lastName = user?.lastName ?? null;
-      token.id = user?.id ?? null;
-      token.isCompanyVerified = user?.isCompanyVerified ?? false;
-      token.isEmailVerified = user?.isEmailVerified ?? false;
-
-      console.log(token);
 
       return token;
     },
 
     session({ session, token }) {
       session.user.role = token?.role;
-      session.user.hasUploadedDocuments = token.hasUploadedDocuments;
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
       session.user.id = token.id;
+      session.user.hasUploadedDocuments = token.hasUploadedDocuments;
       session.user.isCompanyVerified = token.isCompanyVerified;
       session.user.isEmailVerified = token.isEmailVerified;
 
@@ -86,11 +83,3 @@ const createOptions = (req) => ({
     },
   },
 });
-
-const handler = async (req, res) => {
-  return NextAuth(req, res, createOptions(req));
-};
-
-export default handler;
-
-// export default NextAuth();
