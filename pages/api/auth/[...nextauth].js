@@ -3,8 +3,6 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '@/db/postgresql';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compareHashedPassword } from '@/utils/password';
-import { jwtVerify, SignJWT } from 'jose';
-import { createToken } from '@/utils/jwtToken';
 
 const createOptions = (req) => ({
   session: {

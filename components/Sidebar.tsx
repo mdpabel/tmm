@@ -266,6 +266,8 @@ function Sidebar() {
             <div>
               {sidebarLinks.map(({ label, link, subItems, allowed }, index) => {
                 return (
+                  role !== 'MOVING_CUSTOMER' &&
+                  (data as CustomSession)?.user?.hasUploadedDocuments &&
                   allowed.includes(role) && (
                     <SidebarItem
                       link={link}
