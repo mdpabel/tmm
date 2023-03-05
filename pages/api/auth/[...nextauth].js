@@ -22,6 +22,8 @@ const createOptions = (req) => ({
           },
         });
 
+        console.log(user);
+
         if (!user) {
           throw new Error('Invalid email or password');
         }
