@@ -18,7 +18,7 @@ const Dashboard = ({ session }) => {
       ? 'employee'
       : 'client';
 
-  console.log(role + ' <=> ' + session);
+  console.log(session);
 
   if (
     !(data as CustomSession)?.user?.hasUploadedDocuments &&
