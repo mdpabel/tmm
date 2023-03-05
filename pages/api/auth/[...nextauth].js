@@ -61,24 +61,24 @@ const createOptions = (req) => ({
       }
       if (user) {
         token.role = user.role;
-        token.firstName = user.firstName;
-        token.lastName = user.lastName;
+        // token.firstName = user.firstName;
+        // token.lastName = user.lastName;
         token.id = user.id;
         token.isCompanyVerified = user.isCompanyVerified;
-        token.isEmailVerified = user.isEmailVerified;
-        token.hasUploadedDocuments = user.hasUploadedDocuments;
+        // token.isEmailVerified = user.isEmailVerified;
+        // token.hasUploadedDocuments = user.hasUploadedDocuments;
       }
       return token;
     },
 
     session({ session, token }) {
       session.user.role = token?.role;
-      session.user.firstName = token.firstName;
-      session.user.lastName = token.lastName;
+      // session.user.firstName = token.firstName;
+      // session.user.lastName = token.lastName;
       session.user.id = token.id;
       session.user.hasUploadedDocuments = token.hasUploadedDocuments;
-      session.user.isCompanyVerified = token.isCompanyVerified;
-      session.user.isEmailVerified = token.isEmailVerified;
+      // session.user.isCompanyVerified = token.isCompanyVerified;
+      // session.user.isEmailVerified = token.isEmailVerified;
 
       return session;
     },
