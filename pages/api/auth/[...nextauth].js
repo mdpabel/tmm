@@ -55,10 +55,10 @@ const createOptions = (req) => ({
   },
   callbacks: {
     jwt({ token, user, account }) {
-      // if (req.query?.hasUploadedDocuments) {
-      //   token.hasUploadedDocuments =
-      //     Boolean(req.query?.hasUploadedDocuments) ?? false;
-      // }
+      if (req.query?.hasUploadedDocuments) {
+        token.hasUploadedDocuments =
+          Boolean(req.query?.hasUploadedDocuments) ?? false;
+      }
       if (user) {
         token.role = user.role;
         token.hasUploadedDocuments = user.hasUploadedDocuments;
@@ -68,6 +68,9 @@ const createOptions = (req) => ({
         token.isCompanyVerified = user.isCompanyVerified;
         token.isEmailVerified = user.isEmailVerified;
       }
+
+      console.log(token);
+
       return token;
     },
 
