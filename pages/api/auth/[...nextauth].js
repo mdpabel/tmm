@@ -56,18 +56,15 @@ const createOptions = (req) => ({
   callbacks: {
     jwt({ token, user, account }) {
       if (req.query?.hasUploadedDocuments) {
-        token.hasUploadedDocuments =
-          Boolean(req.query?.hasUploadedDocuments) ?? false;
+        token.hasUploadedDocuments = req.query?.hasUploadedDocuments ?? false;
       }
-      if (user) {
-        token.role = user.role;
-        token.hasUploadedDocuments = user.hasUploadedDocuments;
-        token.firstName = user.firstName;
-        token.lastName = user.lastName;
-        token.id = user.id;
-        token.isCompanyVerified = user.isCompanyVerified;
-        token.isEmailVerified = user.isEmailVerified;
-      }
+      token.role = user?.role ?? null;
+      token.hasUploadedDocuments = user?.hasUploadedDocuments ?? false;
+      token.firstName = user?.firstName ?? null;
+      token.lastName = user?.lastName ?? null;
+      token.id = user?.id ?? null;
+      token.isCompanyVerified = user?.isCompanyVerified ?? false;
+      token.isEmailVerified = user?.isEmailVerified ?? false;
 
       console.log(token);
 
