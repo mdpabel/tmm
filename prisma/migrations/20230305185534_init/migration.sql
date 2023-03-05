@@ -93,7 +93,7 @@ CREATE TABLE "MovingCompany" (
     "idCardImage" TEXT,
     "ein" TEXT,
     "businessLicense" TEXT,
-    "sole" BOOLEAN NOT NULL DEFAULT false,
+    "sole" BOOLEAN DEFAULT false,
     "companyName" TEXT,
     "status" "AccountStatus" NOT NULL DEFAULT 'PENDING',
     "userId" INTEGER NOT NULL,
