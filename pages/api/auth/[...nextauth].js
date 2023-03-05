@@ -42,7 +42,7 @@ const createOptions = (req) => ({
   pages: {
     signIn: '/login',
   },
-  secret: process.env.JWR_SECRETE,
+  secret: process.env.NEXTAUTH_SECRET,
   cookies: {
     sessionToken: {
       name: process.env.COOKIES_NAME,
@@ -55,10 +55,10 @@ const createOptions = (req) => ({
   },
   callbacks: {
     jwt({ token, user, account }) {
-      if (req.query?.hasUploadedDocuments) {
-        token.hasUploadedDocuments =
-          Boolean(req.query?.hasUploadedDocuments) ?? false;
-      }
+      // if (req.query?.hasUploadedDocuments) {
+      //   token.hasUploadedDocuments =
+      //     Boolean(req.query?.hasUploadedDocuments) ?? false;
+      // }
       if (user) {
         token.role = user.role;
         token.hasUploadedDocuments = user.hasUploadedDocuments;

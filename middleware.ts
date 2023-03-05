@@ -36,8 +36,10 @@ export async function middleware(req: NextRequest) {
   const payload = await getToken({
     req: req,
     cookieName: process.env.COOKIES_NAME,
-    secret: process.env.JWR_SECRETE,
+    secret: process.env.NEXTAUTH_SECRET,
   });
+
+  console.log(payload);
 
   if (
     (pathname.startsWith('/login') || pathname.startsWith('/register')) &&

@@ -8,7 +8,7 @@ import Graph from '@/components/Graph';
 import Title from '@/components/Title';
 import { CustomSession } from '@/types/session';
 
-const Dashboard = ({ session }) => {
+const Dashboard = () => {
   const { data, status } = useSession();
 
   const role =
@@ -17,8 +17,6 @@ const Dashboard = ({ session }) => {
       : (data as CustomSession)?.user?.role === 'MOVER'
       ? 'employee'
       : 'client';
-
-  console.log(session);
 
   if (
     !(data as CustomSession)?.user?.hasUploadedDocuments &&
@@ -48,25 +46,25 @@ const Dashboard = ({ session }) => {
 
 Dashboard.layout = DashboardLayout;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({
-    req: context.req,
-  });
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const session = await getSession({
+//     req: context.req,
+//   });
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: '/login',
+//         permanent: false,
+//       },
+//     };
+//   }
 
-  return {
-    props: {
-      session,
-    },
-  };
-};
+//   return {
+//     props: {
+//       session,
+//     },
+//   };
+// };
 
 export default Dashboard;
