@@ -5,6 +5,7 @@ import { verifyToken } from '@/utils/jwtToken';
 import { auth } from '@/middlewares/auth';
 import { ReqType } from 'types/reqType';
 import { pusher } from '@/utils/pusher';
+import { handleError } from '@/utils/ApiErrorHandling';
 
 interface ApplicationType {
   name: string;
@@ -61,11 +62,7 @@ const handler = nc<ReqType, NextApiResponse>({
         data: applications,
       });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        data: 'Something went wrong',
-        error: error,
-      });
+      handleError(res, error);
     }
   })
   .post(async (req, res) => {
@@ -113,11 +110,7 @@ const handler = nc<ReqType, NextApiResponse>({
         data: newApplication,
       });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        data: 'Something went wrong',
-        error: error,
-      });
+      handleError(res, error);
     }
   });
 

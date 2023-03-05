@@ -6,7 +6,7 @@ import { compareHashedPassword } from '@/utils/password';
 import { jwtVerify, SignJWT } from 'jose';
 import { createToken } from '@/utils/jwtToken';
 
-export default NextAuth({
+const createOptions = (req) => ({
   session: {
     strategy: 'jwt',
     maxAge: 7 * 24 * 60 * 60,
@@ -56,12 +56,19 @@ export default NextAuth({
     },
   },
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, account }) {
+      if (req.query?.hasUploadedDocuments) {
+        token.hasUploadedDocuments =
+          Boolean(req.query?.hasUploadedDocuments) ?? false;
+      }
       if (user) {
         token.role = user.role;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
         token.id = user.id;
+        token.isCompanyVerified = user.isCompanyVerified;
+        token.isEmailVerified = user.isEmailVerified;
+        token.hasUploadedDocuments = user.hasUploadedDocuments;
       }
       return token;
     },
@@ -71,8 +78,19 @@ export default NextAuth({
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
       session.user.id = token.id;
+      session.user.hasUploadedDocuments = token.hasUploadedDocuments;
+      session.user.isCompanyVerified = token.isCompanyVerified;
+      session.user.isEmailVerified = token.isEmailVerified;
 
       return session;
     },
   },
 });
+
+const handler = async (req, res) => {
+  return NextAuth(req, res, createOptions(req));
+};
+
+export default handler;
+
+// export default NextAuth();

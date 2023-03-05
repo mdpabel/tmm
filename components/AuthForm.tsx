@@ -34,12 +34,19 @@ const initialState = {
   lastName: '',
   email: '',
   password: '',
-  role: 'customer',
 };
 
 type modeType = 'register' | 'signin';
 
-const AuthForm = ({ mode, next }: { mode: modeType; next: () => void }) => {
+const AuthForm = ({
+  mode,
+  next,
+  role,
+}: {
+  mode: modeType;
+  next: () => void;
+  role: string;
+}) => {
   const {
     data,
     error,
@@ -55,7 +62,7 @@ const AuthForm = ({ mode, next }: { mode: modeType; next: () => void }) => {
   const router = useRouter();
 
   const content = mode === 'register' ? registerContent : signInContent;
-  const { firstName, lastName, email, password, role } = formState;
+  const { firstName, lastName, email, password } = formState;
 
   const handleFormSubmission = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -84,10 +91,14 @@ const AuthForm = ({ mode, next }: { mode: modeType; next: () => void }) => {
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && mode === 'register' && role !== 'client') {
+      router.replace({
+        pathname: router.pathname,
+        query: { userId: data?.id },
+      });
       next();
     }
-  }, [isSuccess, next]);
+  }, [data?.id, isSuccess, mode, next, role, router]);
 
   return (
     <CardWrapper>
@@ -97,7 +108,11 @@ const AuthForm = ({ mode, next }: { mode: modeType; next: () => void }) => {
       </CardHeader>
 
       {isError && <Alert intent='danger'>{error}</Alert>}
-      {isSuccess && <Alert intent='success'>{data}</Alert>}
+      {isSuccess && (
+        <Alert intent='success'>
+          {mode === 'register' ? 'Register Success' : 'Login Success'}
+        </Alert>
+      )}
 
       <CardBody>
         <form onSubmit={handleFormSubmission} className='space-y-6'>

@@ -4,6 +4,7 @@ import prisma from '@/db/postgresql';
 import { verifyToken } from '@/utils/jwtToken';
 import { auth } from '@/middlewares/auth';
 import { ReqType } from 'types/reqType';
+import { handleError } from '@/utils/ApiErrorHandling';
 
 const handler = nc<ReqType, NextApiResponse>({
   onError: (err, req, res, next) => {
@@ -74,14 +75,7 @@ const handler = nc<ReqType, NextApiResponse>({
         });
       }
     } catch (error) {
-      // await res.revalidate('/county-service');
-      // await res.revalidate('/services-inventory');
-
-      console.error(error);
-      res.status(500).json({
-        data: 'Something went wrong',
-        error: error,
-      });
+      handleError(res, error);
     }
   });
 

@@ -1,14 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import prisma from '@/db/postgresql';
-import { serialize } from 'cookie';
 import { hashPassword } from '@/utils/password';
-import { createToken } from '@/utils/jwtToken';
 import { UserType } from '@/types/userType';
+import { handleError } from '@/utils/ApiErrorHandling';
 
 const roles = {
   employee: 'MOVER',
-  customer: 'MOVING_CUSTOMER',
+  client: 'MOVING_CUSTOMER',
   company: 'MOVING_COMPANY',
 };
 
@@ -31,33 +30,17 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         firstName,
         lastName,
         email,
+        password: hashedPassword,
         // @ts-ignore
         role: roles[role],
-        password: hashedPassword,
       },
     });
 
-    const token = createToken({ id: newUser.id, role: newUser.role });
-
-    res.setHeader(
-      'Set-Cookie',
-      // @ts-ignore
-      serialize(process.env.COOKIES_NAME, token, {
-        httpOnly: true,
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7,
-      })
-    );
-
     res.status(201).json({
-      data: 'Registered Successfully',
-      user: newUser,
+      data: newUser,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      data: 'Registration Failed',
-    });
+    handleError(res, error);
   }
 });
 

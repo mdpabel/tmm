@@ -35,18 +35,25 @@ enum AccountStatus {
 }
 
 model User {
-  id             Int              @id @default(autoincrement())
-  firstName      String
-  lastName       String
-  role           Role
-  email          String           @unique
-  password       String
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  firstName String
+  lastName  String
+  email     String @unique
+  password  String
+
   Mover          Mover[]
   MovingCustomer MovingCustomer[]
   MovingCompany  MovingCompany[]
   Order          Order[]
+
+  role Role @default(MOVING_CUSTOMER)
+
+  hasUploadedDocuments Boolean @default(false)
+  isCompanyVerified    Boolean @default(false)
+  isEmailVerified      Boolean @default(false)
 }
 
 model Order {
@@ -90,14 +97,14 @@ model Mover {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  bio    String
-  mobile String
+  drivingLicense String
+  idCardImage    String
 
   applications Application[]
   user         User          @relation(fields: [userId], references: [id])
   userId       Int
 
-  @@unique([userId])
+  @@unique([userId, drivingLicense])
 }
 
 model MovingCustomer {
@@ -109,18 +116,23 @@ model MovingCustomer {
 }
 
 model MovingCompany {
-  id          Int           @id @default(autoincrement())
-  companyName String
-  companyInfo String?
-  status      AccountStatus @default(PENDING)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  user        User          @relation(fields: [userId], references: [id])
-  services    Service[]
-  jobs        Job[]
-  userId      Int
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@unique([userId, companyName])
+  idCardImage     String?
+  ein             String?
+  businessLicense String?
+  sole            Boolean @default(false)
+  companyName     String?
+
+  status   AccountStatus @default(PENDING)
+  user     User          @relation(fields: [userId], references: [id])
+  services Service[]
+  jobs     Job[]
+  userId   Int
+
+  @@unique([userId, ein])
 }
 
 model Service {

@@ -1,15 +1,21 @@
 import { client } from './apiClient';
 
 interface MoverType {
-  bio: string;
-  mobile: string;
+  idCardImage: string;
+  userId: string;
+  drivingLicense: string;
 }
 
-export const addNewMover = async ({ bio, mobile }: MoverType) => {
+export const addNewMover = async ({
+  idCardImage,
+  drivingLicense,
+  userId,
+}: MoverType) => {
   const data = client('/api/mover', {
     data: {
-      bio,
-      mobile,
+      drivingLicense,
+      userId,
+      idCardImage,
     },
     method: 'POST',
   });

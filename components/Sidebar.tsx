@@ -4,9 +4,9 @@ import logo from '@/assets/images/tmmlogo.png';
 import Link from 'next/link';
 import Button from './Button';
 import { signOut, useSession, getSession } from 'next-auth/react';
-import { Session, User } from 'next-auth';
 import NotificationIcon from './icons/NotificationIcon';
 import ChatIcon from './icons/ChatIcon';
+import { CustomSession } from '@/types/session';
 
 const sidebarLinks = [
   {
@@ -127,10 +127,6 @@ interface SidebarItemType {
   link?: string;
 }
 
-interface CustomSession extends Session {
-  user?: User & { role?: string; firstName?: string; lastName?: string };
-}
-
 const SidebarItem = ({
   list,
   setList,
@@ -231,8 +227,6 @@ function Sidebar() {
 
   const role = (data as CustomSession)?.user?.role ?? '';
 
-  console.log();
-
   return (
     <nav>
       <div
@@ -302,7 +296,11 @@ function Sidebar() {
             </Button>
             <div className='pt-2'></div>
             <div className='flex justify-center pt-2 space-x-4 border-t-2'>
-              <div>{data?.user?.firstName + ' ' + data?.user?.lastName}</div>
+              <div>
+                {(data as CustomSession)?.user?.firstName +
+                  ' ' +
+                  (data as CustomSession)?.user?.lastName}
+              </div>
               <div>
                 <NotificationIcon />
               </div>
@@ -352,6 +350,8 @@ function Sidebar() {
                   {sidebarLinks.map(
                     ({ label, link, subItems, allowed }, index) => {
                       return (
+                        role !== 'MOVING_CUSTOMER' &&
+                        (data as CustomSession)?.user?.hasUploadedDocuments &&
                         allowed.includes(role) && (
                           <SidebarItem
                             link={link}
@@ -385,7 +385,11 @@ function Sidebar() {
               </div>
               <div className='pt-2'></div>
               <div className='flex justify-center pt-2 space-x-4 border-t-2'>
-                <div>{data?.user?.firstName + ' ' + data?.user?.lastName}</div>
+                <div>
+                  {(data as CustomSession)?.user?.firstName +
+                    ' ' +
+                    (data as CustomSession)?.user?.lastName}
+                </div>
                 <div>
                   <NotificationIcon />
                 </div>

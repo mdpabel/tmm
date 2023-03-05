@@ -1,18 +1,30 @@
 import { client } from './apiClient';
 
-interface CompanyType {
+export interface CompanyType {
   companyName: string;
-  companyInfo: string;
+  idCardImage: string;
+  ein: string;
+  sole: boolean;
+  businessLicense: string;
+  userId: string;
 }
 
 export const addNewCompany = async ({
+  idCardImage,
+  ein,
   companyName,
-  companyInfo,
+  businessLicense,
+  sole,
+  userId,
 }: CompanyType) => {
   const data = client('/api/company', {
     data: {
+      idCardImage,
+      ein,
       companyName,
-      companyInfo,
+      businessLicense,
+      sole,
+      userId,
     },
     method: 'POST',
   });

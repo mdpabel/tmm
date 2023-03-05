@@ -9,9 +9,10 @@ import { useRouter } from 'next/router';
 import { useMultiSteps } from '@/hooks/usemultisteps';
 import clsx from 'clsx';
 import UserVerification from '@/components/UserVerification';
+import RegistrationSuccess from '@/components/RegistrationSuccess';
 
 const messages = [
-  'SelectRole',
+  'Select-role  ',
   'Register',
   'Submit Documents',
   'Registration Success',
@@ -22,7 +23,7 @@ const Register = () => {
   const [role, setRole] = useState('');
   const [selectedRole, setSelectedRole] = useState(false);
   const { currentStepIndex, Step, steps, prev, next, goTo, isFirst, isLast } =
-    useMultiSteps([AuthForm, UserVerification, AuthForm, AuthForm]);
+    useMultiSteps([AuthForm, UserVerification, RegistrationSuccess, '']);
 
   const handleRole = (e: FormEvent) => {
     e.preventDefault();
@@ -49,7 +50,9 @@ const Register = () => {
           <SelectRole role={role} setRole={setRole} />
         </form>
       )}
-      {selectedRole && role === 'client' && <AuthForm mode='register' />}
+      {selectedRole && role === 'client' && (
+        <AuthForm role='client' mode='register' />
+      )}
       {selectedRole && (role === 'company' || role === 'employee') && (
         <div className=''>
           <ol className='flex items-center w-full mb-4 sm:mb-5'>
@@ -75,7 +78,8 @@ const Register = () => {
                       'flex items-center justify-center w-10 h-10 border-4 rounded-full lg:h-14 lg:w-14 shrink-0 cursor-pointer':
                         true,
                       'border-green-600 text-green-500 font-bold':
-                        idx < currentStepIndex,
+                        idx < currentStepIndex ||
+                        currentStepIndex === steps.length - 1,
                     })}
                   >
                     {idx + 1}

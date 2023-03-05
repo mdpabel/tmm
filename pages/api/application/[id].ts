@@ -6,6 +6,7 @@ import { auth } from '@/middlewares/auth';
 import { ReqType } from 'types/reqType';
 import { NextApiResponseServerIO } from '@/types/socket';
 import { pusher } from '@/utils/pusher';
+import { handleError } from '@/utils/ApiErrorHandling';
 
 interface ApplicationType {
   name: string;
@@ -60,41 +61,45 @@ const handler = nc<ReqType, NextApiResponseServerIO>({
     });
   })
   .put(async (req, res) => {
-    const { id } = req.query;
-    const applicationId = id;
-    const { status, jobId } = req.body;
+    try {
+      const { id } = req.query;
+      const applicationId = id;
+      const { status, jobId } = req.body;
 
-    if (!applicationId || !status) {
-      return res.status(204).json({
-        data: 'applicationId id and status are required',
-      });
-    }
+      if (!applicationId || !status) {
+        return res.status(204).json({
+          data: 'applicationId id and status are required',
+        });
+      }
 
-    const updatedApplication = await prisma.application.update({
-      where: {
-        id: +applicationId,
-      },
-      data: {
-        applicationStatus: status,
-      },
-    });
-
-    if (applicationId === 'ACCEPTED') {
-      const updatedJob = await prisma.job.update({
+      const updatedApplication = await prisma.application.update({
         where: {
-          id: +jobId,
+          id: +applicationId,
         },
         data: {
-          jobStatus: status,
+          applicationStatus: status,
         },
       });
-    }
-    // res?.socket?.server?.io?.emit('updatedApplication', updatedApplication);
-    pusher.trigger('application', 'updatedApplication', updatedApplication);
 
-    res.status(200).json({
-      data: updatedApplication,
-    });
+      if (applicationId === 'ACCEPTED') {
+        const updatedJob = await prisma.job.update({
+          where: {
+            id: +jobId,
+          },
+          data: {
+            jobStatus: status,
+          },
+        });
+      }
+      // res?.socket?.server?.io?.emit('updatedApplication', updatedApplication);
+      pusher.trigger('application', 'updatedApplication', updatedApplication);
+
+      res.status(200).json({
+        data: updatedApplication,
+      });
+    } catch (error) {
+      handleError(res, error);
+    }
   });
 
 export default handler;

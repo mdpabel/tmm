@@ -1,10 +1,11 @@
 import nc from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/db/postgresql';
+import { verifyToken } from '@/utils/jwtToken';
+import { auth } from '@/middlewares/auth';
 import { ReqType } from 'types/reqType';
 import { CompanyType } from '@/types/compnayTypes';
 import { handleError } from '@/utils/ApiErrorHandling';
-import { EmployeeType } from '@/types/employeeTypes';
 
 const handler = nc<ReqType, NextApiResponse>({
   onError: (err, req, res, next) => {
@@ -23,7 +24,14 @@ const handler = nc<ReqType, NextApiResponse>({
   })
   .post(async (req, res) => {
     try {
-      const { idCardImage, userId, drivingLicense }: EmployeeType = req.body;
+      const {
+        idCardImage,
+        userId,
+        ein,
+        businessLicense,
+        sole,
+        companyName,
+      }: CompanyType = req.body;
 
       const user = await prisma.user.findFirst({
         where: {
@@ -33,20 +41,23 @@ const handler = nc<ReqType, NextApiResponse>({
 
       if (!user) {
         return res.status(403).json({
-          data: 'User does not exist, Please register first',
+          data: 'User does not exist, Please register first to verify your company',
         });
       }
 
-      if (!drivingLicense || !idCardImage) {
+      if (!sole && (!idCardImage || !ein || !businessLicense || !companyName)) {
         return res.status(403).json({
-          data: 'drivingLicense or idCardImage is invalid',
+          data: 'idCardImage or ein or businessLicense or companyName is invalid',
         });
       }
 
-      const newCompany = await prisma.mover.create({
+      const newCompany = await prisma.movingCompany.create({
         data: {
           idCardImage,
-          drivingLicense,
+          ein,
+          businessLicense,
+          sole,
+          companyName,
           userId: user.id,
         },
       });
@@ -57,7 +68,7 @@ const handler = nc<ReqType, NextApiResponse>({
         },
         data: {
           hasUploadedDocuments: true,
-          role: 'MOVER',
+          role: 'MOVING_COMPANY',
         },
       });
 
