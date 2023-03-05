@@ -72,6 +72,8 @@ const createOptions = (req) => ({
     },
 
     session({ session, token }) {
+      console.log('token =>', token);
+
       session.user.role = token?.role;
       session.user.hasUploadedDocuments = token.hasUploadedDocuments;
       session.user.firstName = token.firstName;
