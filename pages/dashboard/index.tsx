@@ -11,6 +11,8 @@ import { CustomSession } from '@/types/session';
 const Dashboard = () => {
   const { data, status } = useSession();
 
+  console.log(data);
+
   const role =
     (data as CustomSession)?.user?.role === 'MOVING_COMPANY'
       ? 'company'
