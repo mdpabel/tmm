@@ -58,6 +58,7 @@ export default NextAuth({
   callbacks: {
     jwt({ token, user }) {
       if (user) {
+        token.test = 'TEST';
         token.role = user.role;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
@@ -71,6 +72,7 @@ export default NextAuth({
     },
 
     session({ session, token }) {
+      session.user.test = 'TEST';
       session.user.role = token?.role;
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
