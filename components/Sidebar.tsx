@@ -227,6 +227,8 @@ function Sidebar() {
 
   const role = (data as CustomSession)?.user?.role ?? '';
 
+  const requiredVerification = role === 'MOVING_CUSTOMER' ? false : true;
+
   return (
     <nav>
       <div
@@ -266,8 +268,8 @@ function Sidebar() {
             <div>
               {sidebarLinks.map(({ label, link, subItems, allowed }, index) => {
                 return (
-                  role !== 'MOVING_CUSTOMER' &&
-                  (data as CustomSession)?.user?.hasUploadedDocuments &&
+                  (!requiredVerification ||
+                    (data as CustomSession)?.user?.hasUploadedDocuments) &&
                   allowed.includes(role) && (
                     <SidebarItem
                       link={link}
@@ -352,8 +354,9 @@ function Sidebar() {
                   {sidebarLinks.map(
                     ({ label, link, subItems, allowed }, index) => {
                       return (
-                        role !== 'MOVING_CUSTOMER' &&
-                        (data as CustomSession)?.user?.hasUploadedDocuments &&
+                        (!requiredVerification ||
+                          (data as CustomSession)?.user
+                            ?.hasUploadedDocuments) &&
                         allowed.includes(role) && (
                           <SidebarItem
                             link={link}
