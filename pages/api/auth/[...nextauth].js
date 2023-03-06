@@ -58,7 +58,6 @@ export default NextAuth({
   callbacks: {
     jwt({ token, user }) {
       if (user) {
-        token.test = 'TEST';
         token.role = user.role;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
@@ -72,16 +71,14 @@ export default NextAuth({
     },
 
     session({ session, token }) {
-      session.user.test = 'TEST';
       session.user.role = token?.role;
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
       session.user.id = token.id;
-      session.user.hasUploadedDocuments = token.hasUploadedDocuments
-        ? '1'
-        : '0';
-      session.user.isCompanyVerified = token.isCompanyVerified ? '1' : '0';
-      session.user.isEmailVerified = token.isEmailVerified ? '1' : '0';
+      session.user.hasUploadedDocuments = token.hasUploadedDocuments;
+
+      session.user.isCompanyVerified = token.isCompanyVerified;
+      session.user.isEmailVerified = token.isEmailVerified;
 
       return session;
     },
