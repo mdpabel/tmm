@@ -143,6 +143,9 @@ const createOptions = (req) => ({
   },
   callbacks: {
     jwt({ token, user }) {
+      if (req.query?.hasUploadedDocuments) {
+        token.hasUploadedDocuments = req.query?.hasUploadedDocuments;
+      }
       if (user) {
         token.role = user.role;
         token.firstName = user.firstName;
