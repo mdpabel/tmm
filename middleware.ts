@@ -39,6 +39,7 @@ export async function middleware(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
+  console.log('MIDDLEWARE =>');
   console.log(payload);
 
   if (

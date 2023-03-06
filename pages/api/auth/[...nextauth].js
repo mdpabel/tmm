@@ -57,7 +57,6 @@ export default NextAuth({
   },
   callbacks: {
     jwt({ token, user }) {
-      console.log('USER ', user);
       if (user) {
         token.role = user.role;
         token.firstName = user.firstName;
