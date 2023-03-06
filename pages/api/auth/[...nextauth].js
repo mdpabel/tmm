@@ -63,7 +63,7 @@ export default NextAuth({
         token.firstName = user.firstName;
         token.lastName = user.lastName;
         token.id = user.id;
-        token.hasUploadedDocuments = 'user.hasUploadedDocuments';
+        token.hasUploadedDocuments = user.hasUploadedDocuments;
         token.isCompanyVerified = user.isCompanyVerified;
         token.isEmailVerified = user.isEmailVerified;
       }
@@ -77,9 +77,11 @@ export default NextAuth({
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
       session.user.id = token.id;
-      session.user.hasUploadedDocuments = 'token.hasUploadedDocuments';
-      session.user.isCompanyVerified = token.isCompanyVerified;
-      session.user.isEmailVerified = token.isEmailVerified;
+      session.user.hasUploadedDocuments = token.hasUploadedDocuments
+        ? '1'
+        : '0';
+      session.user.isCompanyVerified = token.isCompanyVerified ? '1' : '0';
+      session.user.isEmailVerified = token.isEmailVerified ? '1' : '0';
 
       return session;
     },
