@@ -3,6 +3,8 @@ import Input, { InputWrapper, Label, TextArea } from '@/components/Input';
 import AppLayout from '@/layouts/AppLayout';
 import React, { useEffect, useState, SyntheticEvent } from 'react';
 import { useRouter } from 'next/router';
+import LeftArrow from './icons/LeftArrow';
+import RightArrow from './icons/RightArrow';
 
 const initialState = {
   startAddress: '',
@@ -23,7 +25,13 @@ const initialState = {
   longitude: '',
 };
 
-const ShippingAddress = ({ next }: { next: () => void }) => {
+const ShippingAddress = ({
+  next,
+  prev,
+}: {
+  next: () => void;
+  prev: () => void;
+}) => {
   const router = useRouter();
   // const { data: session, status } = useSession();
   const [orderDetailsState, setOrderDetailsState] = useState({
@@ -345,7 +353,15 @@ const ShippingAddress = ({ next }: { next: () => void }) => {
           />
         </InputWrapper>
 
-        <Button type='submit'>Submit details</Button>
+        <div className='flex justify-between'>
+          <Button onClick={() => prev()}>
+            <LeftArrow />
+            Back
+          </Button>
+          <Button type='submit'>
+            Submit <RightArrow />
+          </Button>
+        </div>
       </form>
     </div>
   );

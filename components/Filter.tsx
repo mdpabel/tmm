@@ -7,7 +7,7 @@ const Filter = ({ label = 'Services Inventory' }: { label?: string }) => {
 
   return (
     <div className='w-full px-4 py-4 md:px-10 md:py-7'>
-      <div className='items-center justify-between lg:flex'>
+      <div className='items-center justify-between w-full lg:flex'>
         <p className='text-base font-bold leading-normal text-center text-gray-800 sm:text-lg md:text-xl lg:text-2xl'>
           {label}
         </p>

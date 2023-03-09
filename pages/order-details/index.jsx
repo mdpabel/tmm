@@ -6,10 +6,12 @@ import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
+import Checkout from '@/components/Checkout';
+import SelectPaymentMethod from '@/components/SelectPaymentMethod';
 
 const messages = [
   'Product Selection',
-  'Shipping Address',
+  'Moving Address',
   'Payment Method',
   'Payment Form',
   'Purchase Success',
@@ -20,10 +22,10 @@ const OrderDetails = () => {
   const { currentStepIndex, Step, steps, prev, next, goTo, isFirst, isLast } =
     useMultiSteps([
       ShippingAddress,
+      SelectPaymentMethod,
+      Checkout,
       ShippingAddress,
-      ShippingAddress,
-      ShippingAddress,
-      ShippingAddress,
+      '',
     ]);
 
   useEffect(() => {
@@ -52,7 +54,7 @@ const OrderDetails = () => {
   };
 
   return (
-    <div>
+    <div className='flex-auto'>
       <ol className='flex items-center w-full mb-4 sm:mb-5'>
         {steps.map((_, idx) => (
           <div
@@ -87,7 +89,7 @@ const OrderDetails = () => {
           </div>
         ))}
       </ol>
-      {<Step next={next} />}
+      {<Step prev={prev} next={next} />}
     </div>
   );
 };

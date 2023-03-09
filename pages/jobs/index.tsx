@@ -6,10 +6,15 @@ import { JobType } from '@/types/jobType';
 
 const Jobs = ({ jobs }: { jobs: JobType[] }) => {
   return (
-    <div className='space-y-4'>
-      {jobs.map((job) => (
-        <JobListing key={job.id} job={job} />
-      ))}
+    <div className='flex-auto w-full space-y-4'>
+      <div className='flex flex-col justify-between md:flex-row'>
+        <div className='w-full md:w-1/3'>Sidebar</div>
+        <div className='w-full md:w-2/3'>
+          {jobs.map((job) => (
+            <JobListing key={job.id} job={job} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

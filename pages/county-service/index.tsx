@@ -16,10 +16,10 @@ export async function getStaticProps() {
 
 function CountyServices({ services }: { services: ServiceType[] }) {
   return (
-    <>
+    <div className='flex-auto w-full'>
       <Filter label='County Services' />
       <Suspense fallback={<ServiceFallBack />}>
-        <div className='flex flex-wrap justify-center gap-5 pt-6'>
+        <div className='flex flex-wrap justify-center gap-5 pt-6 md:justify-start'>
           {services.length ? (
             services.map((service) => (
               <ServiceCard
@@ -35,7 +35,7 @@ function CountyServices({ services }: { services: ServiceType[] }) {
           )}
         </div>
       </Suspense>
-    </>
+    </div>
   );
 }
 
