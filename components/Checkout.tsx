@@ -1,6 +1,7 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import {
+  PaymentElement,
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement,
@@ -15,6 +16,10 @@ import Button from './Button';
 import LeftArrow from './icons/LeftArrow';
 import RightArrow from './icons/RightArrow';
 import { CardWrapper } from './Card';
+import { useAsync } from '@/hooks/useAsync';
+import Spinner from './Spinner';
+import { useSession } from 'next-auth/react';
+import { CustomSession } from '@/types/session';
 
 const stripePromise = loadStripe('pk_test_TnSeJTOWhtgY6rdr99Yge5mg00s1OIMymW');
 
@@ -23,22 +28,81 @@ interface PropTypes {
   prev: () => void;
 }
 
+interface CartService {
+  id?: number;
+  price: number;
+}
+
 const CheckoutForm = ({ next, prev }: PropTypes) => {
+  const { data: session } = useSession();
+  const { run, data, error, isLoading, isSuccess, isError } = useAsync();
   const stripe = useStripe();
   const elements = useElements();
+  const [cart, setCart] = useState<CartService>();
+  const [details, setDetails] = useState({});
+
+  useEffect(() => {
+    const cartService = JSON.parse(
+      window.localStorage.getItem('cartService') ?? '{}'
+    );
+    const orderDetails = JSON.parse(
+      window.localStorage.getItem('orderDetails') ?? '{}'
+    );
+    const paymentMethod = window.localStorage.getItem('paymentMethod');
+
+    setCart(cartService);
+    setDetails(orderDetails);
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (elements == null) {
+    if (!cart) {
+      alert('Please select your service first');
       return;
     }
 
-    const { error, paymentMethod } = await stripe?.createPaymentMethod({
-      type: 'card',
-      card: elements.getElement(CardElement),
-    });
+    // const name =
+    //   (session as CustomSession)?.user?.firstName +
+    //   ' ' +
+    //   (session as CustomSession)?.user?.lastName;
+
+    // const address = details.city + ' -> ' + details.endAddress;
+
+    // let shipping = {
+    //   address,
+    //   name,
+    // };
+
+    // if (!address || !name) {
+    //   shipping = null;
+    // }
+
+    const { clientSecret } = await fetch('/api/stripe-payment-intent', {
+      method: 'POST',
+      body: JSON.stringify({
+        cartService: cart,
+        description: 'tmmemploy.com',
+        receipt_email: (session as CustomSession)?.user?.email,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json());
+
+    if (elements == null || !stripe || !clientSecret) {
+      return;
+    }
+    run(
+      stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardNumberElement)!,
+        },
+      })
+    );
   };
+
+  console.log(data, isSuccess, isError, error, isLoading);
 
   return (
     <CardWrapper>
@@ -84,7 +148,7 @@ const CheckoutForm = ({ next, prev }: PropTypes) => {
               Back
             </Button>
             <Button type='submit' disabled={!stripe || !elements}>
-              Pay <RightArrow />
+              Pay {isLoading ? <Spinner /> : <RightArrow />}
             </Button>
           </div>
         </div>
