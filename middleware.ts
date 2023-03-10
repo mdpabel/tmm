@@ -17,6 +17,7 @@ const companyAccess = [
   '/manage-users',
   '/scheduled',
   '/jobs',
+  '/profile',
 ];
 
 const employeeAccess = [
@@ -25,9 +26,10 @@ const employeeAccess = [
   '/scheduled',
   '/job-tracking',
   '/jobs',
+  '/profile',
 ];
 
-const customerAccess = ['/dashboard', '/my-orders'];
+const customerAccess = ['/dashboard', '/my-orders', '/profile'];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -107,5 +109,6 @@ export const config = {
     '/my-jobs',
     '/job-tracking',
     '/my-orders',
+    '/profile',
   ],
 };
