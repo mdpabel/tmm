@@ -20,8 +20,14 @@ const handler = nc<ReqType, NextApiResponse>({
 })
   // .use(auth)
   .post(async (req, res) => {
-    const { cartService, shipping, receipt_email, customerId, description } =
-      req.body;
+    const {
+      cartService,
+      shipping,
+      receipt_email,
+      customerId,
+      description,
+      name,
+    } = req.body;
 
     if (!cartService || !cartService.price) {
       return res.status(400).json({
@@ -36,7 +42,16 @@ const handler = nc<ReqType, NextApiResponse>({
         currency: 'usd',
         payment_method_types: ['card'],
         receipt_email,
-        shipping,
+        shipping: {
+          name,
+          address: {
+            line1: shipping?.startAddress,
+            line2: shipping?.endAddress,
+            city: shipping?.city,
+            postal_code: shipping?.zip,
+            state: shipping?.state,
+          },
+        },
         customer: customerId,
       });
 

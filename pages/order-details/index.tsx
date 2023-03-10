@@ -1,3 +1,4 @@
+// @ts-nocheck
 import FinalStepIcon from '@/components/icons/FinalStepIcon';
 import ShippingAddress from '@/components/ShippingAddress';
 import { useMultiSteps } from '@/hooks/usemultisteps';
@@ -8,13 +9,14 @@ import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import Checkout from '@/components/Checkout';
 import SelectPaymentMethod from '@/components/SelectPaymentMethod';
+import PaymentStatus from '@/components/PaymentStatus';
 
 const messages = [
-  'Product Selection',
+  'Service Selection',
   'Moving Address',
   'Payment Method',
   'Payment Form',
-  'Purchase Success',
+  'Purchase Status',
 ];
 
 const OrderDetails = () => {
@@ -24,7 +26,7 @@ const OrderDetails = () => {
       ShippingAddress,
       SelectPaymentMethod,
       Checkout,
-      ShippingAddress,
+      PaymentStatus,
       '',
     ]);
 
@@ -65,7 +67,8 @@ const OrderDetails = () => {
           >
             <li
               className={clsx({
-                "flex w-full items-center after:content-[''] after:w-full": true,
+                "flex w-full items-center after:content-[''] after:w-full":
+                  true,
                 ' after:border-b after:border-blue-100 after:border-4 after:h-1 after:inline-block ':
                   idx !== steps.length - 1,
                 'after:border-green-600': idx < currentStepIndex,
@@ -74,9 +77,11 @@ const OrderDetails = () => {
               <div
                 onClick={() => handleStep(idx)}
                 className={clsx({
-                  'flex items-center justify-center w-10 h-10 border-4 rounded-full lg:h-14 lg:w-14 shrink-0 cursor-pointer': true,
+                  'flex items-center justify-center w-10 h-10 border-4 rounded-full lg:h-14 lg:w-14 shrink-0 cursor-pointer':
+                    true,
                   'border-green-600 text-green-500 font-bold':
-                    idx < currentStepIndex,
+                    idx < currentStepIndex ||
+                    currentStepIndex === steps.length - 1,
                 })}
               >
                 {idx + 1}

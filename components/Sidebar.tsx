@@ -109,6 +109,11 @@ const sidebarLinks = [
     link: 'job-tracking',
     allowed: ['MOVER'],
   },
+  {
+    label: 'Profile',
+    link: 'profile',
+    allowed: ['MOVER', 'MOVING_CUSTOMER', 'MOVING_COMPANY'],
+  },
 ];
 
 interface SubItemsType {
