@@ -1,5 +1,4 @@
 import { compare, hash } from 'bcrypt';
-
 const saltRounds = 10;
 
 export const hashPassword = async (plainTextPassword: string) =>
