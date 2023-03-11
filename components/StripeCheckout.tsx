@@ -40,7 +40,7 @@ interface CartService {
   price: number;
 }
 
-interface DetailsType {
+export interface OrderDetailsType {
   city: string;
   endAddress: string;
   latitude: string;
@@ -67,7 +67,9 @@ const CheckoutForm = ({ next, prev }: PropTypes) => {
   const stripe = useStripe();
   const elements = useElements();
   const [cart, setCart] = useState<CartService>();
-  const [details, setDetails] = useState<DetailsType>({} as DetailsType);
+  const [details, setDetails] = useState<OrderDetailsType>(
+    {} as OrderDetailsType
+  );
   const [errors, setErrors] = useState({
     cardNumber: '',
     cardCvc: '',

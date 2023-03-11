@@ -2,6 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { buffer } from 'micro';
 
 import { stripe } from './stripe-payment-intent';
+import prisma from '@/db/postgresql';
+import { OrderDetailsType } from '@/components/StripeCheckout';
+import Stripe from 'stripe';
 
 export const config = {
   api: {
@@ -36,12 +39,58 @@ export default async function handler(
       console.log(paymentIntentPaymentFailed);
       break;
     case 'payment_intent.succeeded':
-      const paymentIntentSucceeded = event.data.object;
+      const paymentIntentSucceeded = event.data.object as any;
       // Then define and call a function to handle the event payment_intent.succeeded
-      const userEmail = paymentIntentSucceeded;
+      const totalPrice = paymentIntentSucceeded?.amount;
+      const serviceId = paymentIntentSucceeded?.metadata?.service_id;
+      const customerEmail = paymentIntentSucceeded?.receipt_email;
+      const orderDetails: OrderDetailsType =
+        paymentIntentSucceeded?.orderDetails;
 
-      console.log('Webhook =>');
-      console.log(paymentIntentSucceeded);
+      if (!totalPrice || !serviceId || !customerEmail) {
+        return res.status(400).json({
+          data: 'Price or service or customer email is missing',
+        });
+      }
+
+      const user = await prisma.user.findFirst({
+        where: {
+          email: customerEmail,
+        },
+      });
+
+      if (!user) {
+        return res.status(400).json({
+          data: 'User not found with the email',
+        });
+      }
+
+      await prisma.order.create({
+        data: {
+          totalPrice,
+          userId: user.id,
+          serviceId: serviceId,
+          OrderDetails: {
+            create: {
+              startAddress: orderDetails.startAddress,
+              endAddress: orderDetails.endAddress,
+              state: orderDetails.state,
+              city: orderDetails.city,
+              zip: '' + orderDetails.zip,
+              loading: orderDetails.loading,
+              unloading: orderDetails.unloading,
+              numberOfRooms: orderDetails.numberOfRooms,
+              numberOfStairFlights: orderDetails.numberOfStairFlights,
+              numberOfStairFloors: orderDetails.numberOfStairFloors,
+              numberOfStairDimensions: orderDetails.numberOfStairDimensions,
+              specialItems: orderDetails.specialItems,
+              notes: orderDetails.notes,
+              latitude: orderDetails.latitude,
+              longitude: orderDetails.longitude,
+            },
+          },
+        },
+      });
 
       // receipt_email;
       // amount
