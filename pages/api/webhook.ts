@@ -68,30 +68,32 @@ export default async function handler(
         });
       }
 
-      await prisma.order.create({
+      const newOrder = await prisma.order.create({
         data: {
           totalPrice,
           userId: user.id,
           serviceId: metadata.serviceId,
-          OrderDetails: {
-            create: {
-              startAddress: '' + metadata.startAddress,
-              endAddress: '' + metadata.endAddress,
-              state: '' + metadata.state,
-              city: '' + metadata.city,
-              zip: '' + metadata.zip,
-              loading: Boolean(metadata.loading),
-              unloading: Boolean(metadata.unloading),
-              numberOfRooms: +metadata.numberOfRooms,
-              numberOfStairFlights: +metadata.numberOfStairFlights,
-              numberOfStairFloors: +metadata.numberOfStairFloors,
-              numberOfStairDimensions: +metadata.numberOfStairDimensions,
-              specialItems: '' + metadata.specialItems,
-              notes: '' + metadata.notes,
-              latitude: '' + metadata.latitude,
-              longitude: '' + metadata.longitude,
-            },
-          },
+        },
+      });
+
+      await prisma.orderDetails.create({
+        data: {
+          startAddress: '' + metadata.startAddress,
+          endAddress: '' + metadata.endAddress,
+          state: '' + metadata.state,
+          city: '' + metadata.city,
+          zip: '' + metadata.zip,
+          loading: Boolean(metadata.loading),
+          unloading: Boolean(metadata.unloading),
+          numberOfRooms: +metadata.numberOfRooms,
+          numberOfStairFlights: +metadata.numberOfStairFlights,
+          numberOfStairFloors: +metadata.numberOfStairFloors,
+          numberOfStairDimensions: +metadata.numberOfStairDimensions,
+          specialItems: '' + metadata.specialItems,
+          notes: '' + metadata.notes,
+          latitude: '' + metadata.latitude,
+          longitude: '' + metadata.longitude,
+          orderId: newOrder.id,
         },
       });
 
