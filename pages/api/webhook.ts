@@ -68,11 +68,23 @@ export default async function handler(
         });
       }
 
+      const service = await prisma.service.findFirst({
+        where: {
+          id: metadata.service_id,
+        },
+      });
+
+      if (!service) {
+        return res.status(400).json({
+          data: `No service found with the service id ${metadata.service_id}`,
+        });
+      }
+
       const newOrder = await prisma.order.create({
         data: {
           totalPrice,
           userId: user.id,
-          serviceId: metadata.service_id,
+          serviceId: service.id,
         },
       });
 
