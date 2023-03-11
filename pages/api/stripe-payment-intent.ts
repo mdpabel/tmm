@@ -5,7 +5,7 @@ import { auth } from '@/middlewares/auth';
 import { ReqType } from '@/types/reqType';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
 });
 
@@ -18,7 +18,7 @@ const handler = nc<ReqType, NextApiResponse>({
     res.status(404).end('Page is not found!');
   },
 })
-  // .use(auth)
+  .use(auth)
   .post(async (req, res) => {
     const {
       cartService,
