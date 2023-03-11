@@ -5,7 +5,10 @@ import { auth } from '@/middlewares/auth';
 import { ReqType } from '@/types/reqType';
 import Stripe from 'stripe';
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+const key =
+  process.env.STRIPE_SECRET_KEY ?? 'sk_test_NnxwiCcL2ygsJ9e97CO9xgAt007UQyNGum';
+
+export const stripe = new Stripe(key, {
   apiVersion: '2022-11-15',
 });
 
