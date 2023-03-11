@@ -70,7 +70,7 @@ export default async function handler(
 
       const service = await prisma.service.findFirst({
         where: {
-          id: metadata.service_id,
+          id: +metadata.service_id,
         },
       });
 
