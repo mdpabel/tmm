@@ -3,6 +3,7 @@ declare global {
     interface ProcessEnv {
       STRIPE_SECRET_KEY: string;
       STRIPE_PUBLISHABLE_KEY: string;
+      signingSecret: string;
     }
   }
 }

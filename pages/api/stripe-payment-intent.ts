@@ -47,7 +47,7 @@ const handler = nc<ReqType, NextApiResponse>({
         receipt_email,
         metadata: {
           service_id: cartService.id,
-          orderDetails: shipping,
+          orderDetails: JSON.stringify(shipping),
         },
       });
 

@@ -17,8 +17,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const signature = req.headers['stripe-signature'];
-  const signingSecret = process.env.STRIPE_SIGNING_SECRETE;
+  const signingSecret = process.env.STRIPE_SIGNING_SECRETE as string;
   const reqBuffer = await buffer(req);
+
+  if (!signature) {
+    return res.status(400);
+  }
 
   let event;
 
@@ -27,6 +31,7 @@ export default async function handler(
   } catch (error) {
     console.log(error);
     return res.status(400).json({
+      // @ts-ignore
       data: `Webhook error ${error.message}`,
     });
   }
@@ -44,8 +49,9 @@ export default async function handler(
       const totalPrice = paymentIntentSucceeded?.amount;
       const serviceId = paymentIntentSucceeded?.metadata?.service_id;
       const customerEmail = paymentIntentSucceeded?.receipt_email;
-      const orderDetails: OrderDetailsType =
-        paymentIntentSucceeded?.orderDetails;
+      const orderDetails: OrderDetailsType = JSON.parse(
+        paymentIntentSucceeded?.orderDetails
+      );
 
       if (!totalPrice || !serviceId || !customerEmail) {
         return res.status(400).json({
