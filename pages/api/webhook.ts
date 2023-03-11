@@ -38,8 +38,13 @@ export default async function handler(
     case 'payment_intent.succeeded':
       const paymentIntentSucceeded = event.data.object;
       // Then define and call a function to handle the event payment_intent.succeeded
+      const userEmail = paymentIntentSucceeded;
+
       console.log('Webhook =>');
       console.log(paymentIntentSucceeded);
+
+      // receipt_email;
+      // amount
       break;
     // ... handle other event types
     default:

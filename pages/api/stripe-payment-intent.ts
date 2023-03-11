@@ -45,17 +45,9 @@ const handler = nc<ReqType, NextApiResponse>({
         currency: 'usd',
         payment_method_types: ['card'],
         receipt_email,
-        shipping: {
-          name,
-          address: {
-            line1: shipping?.startAddress,
-            line2: shipping?.endAddress,
-            city: shipping?.city,
-            postal_code: shipping?.zip,
-            state: shipping?.state,
-          },
+        metadata: {
+          service_id: cartService.id,
         },
-        customer: customerId,
       });
 
       res.status(200).json({
