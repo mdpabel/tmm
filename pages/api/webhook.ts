@@ -47,14 +47,12 @@ export default async function handler(
       const paymentIntentSucceeded = event.data.object as any;
       // Then define and call a function to handle the event payment_intent.succeeded
       const totalPrice = paymentIntentSucceeded?.amount;
-      const serviceId = paymentIntentSucceeded?.metadata?.service_id;
+      const metadata = paymentIntentSucceeded?.metadata;
       const customerEmail = paymentIntentSucceeded?.receipt_email;
-      const orderDetails: OrderDetailsType =
-        paymentIntentSucceeded?.orderDetails;
 
-      if (!totalPrice || !serviceId || !customerEmail) {
+      if (!totalPrice || !metadata || !customerEmail) {
         return res.status(400).json({
-          data: 'Price or service or customer email is missing',
+          data: 'Price or metadata or customer email is missing',
         });
       }
 
@@ -74,24 +72,24 @@ export default async function handler(
         data: {
           totalPrice,
           userId: user.id,
-          serviceId: serviceId,
+          serviceId: metadata.serviceId,
           OrderDetails: {
             create: {
-              startAddress: orderDetails.startAddress,
-              endAddress: orderDetails.endAddress,
-              state: orderDetails.state,
-              city: orderDetails.city,
-              zip: '' + orderDetails.zip,
-              loading: orderDetails.loading,
-              unloading: orderDetails.unloading,
-              numberOfRooms: orderDetails.numberOfRooms,
-              numberOfStairFlights: orderDetails.numberOfStairFlights,
-              numberOfStairFloors: orderDetails.numberOfStairFloors,
-              numberOfStairDimensions: orderDetails.numberOfStairDimensions,
-              specialItems: orderDetails.specialItems,
-              notes: orderDetails.notes,
-              latitude: orderDetails.latitude,
-              longitude: orderDetails.longitude,
+              startAddress: metadata.startAddress,
+              endAddress: metadata.endAddress,
+              state: metadata.state,
+              city: metadata.city,
+              zip: '' + metadata.zip,
+              loading: metadata.loading,
+              unloading: metadata.unloading,
+              numberOfRooms: metadata.numberOfRooms,
+              numberOfStairFlights: metadata.numberOfStairFlights,
+              numberOfStairFloors: metadata.numberOfStairFloors,
+              numberOfStairDimensions: metadata.numberOfStairDimensions,
+              specialItems: metadata.specialItems,
+              notes: metadata.notes,
+              latitude: metadata.latitude,
+              longitude: metadata.longitude,
             },
           },
         },

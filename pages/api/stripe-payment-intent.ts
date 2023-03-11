@@ -47,7 +47,21 @@ const handler = nc<ReqType, NextApiResponse>({
         receipt_email,
         metadata: {
           service_id: cartService.id,
-          orderDetails: shipping,
+          startAddress: shipping.startAddress,
+          endAddress: shipping.endAddress,
+          state: shipping.state,
+          city: shipping.city,
+          zip: '' + shipping.zip,
+          loading: shipping.loading,
+          unloading: shipping.unloading,
+          numberOfRooms: shipping.numberOfRooms,
+          numberOfStairFlights: shipping.numberOfStairFlights,
+          numberOfStairFloors: shipping.numberOfStairFloors,
+          numberOfStairDimensions: shipping.numberOfStairDimensions,
+          specialItems: shipping.specialItems,
+          notes: shipping.notes,
+          latitude: shipping.latitude,
+          longitude: shipping.longitude,
         },
       });
 
