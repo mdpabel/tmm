@@ -49,9 +49,8 @@ export default async function handler(
       const totalPrice = paymentIntentSucceeded?.amount;
       const serviceId = paymentIntentSucceeded?.metadata?.service_id;
       const customerEmail = paymentIntentSucceeded?.receipt_email;
-      const orderDetails: OrderDetailsType = JSON.parse(
-        paymentIntentSucceeded?.orderDetails
-      );
+      const orderDetails: OrderDetailsType =
+        paymentIntentSucceeded?.orderDetails;
 
       if (!totalPrice || !serviceId || !customerEmail) {
         return res.status(400).json({
