@@ -44,8 +44,6 @@ const MyOrders = ({
     }
   }, [data, error]);
 
-  console.log(isLoading);
-
   return (
     <div className='w-full space-y-8 sm:px-6'>
       <div className='flex items-center justify-between'>
@@ -62,7 +60,23 @@ const MyOrders = ({
               ))}
             </TableRow>
           </TableHead>
-          {data && (
+          {isLoading && (
+            <TableBody>
+              {new Array(2).fill(0)?.map((_, idx) => (
+                <TableRow key={idx}>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
+
+          {!isLoading && data && (
             <TableBody>
               {data?.map(
                 ({
@@ -96,22 +110,6 @@ const MyOrders = ({
                   </TableRow>
                 )
               )}
-            </TableBody>
-          )}
-
-          {isLoading && (
-            <TableBody>
-              {new Array(2).fill(0)?.map((_, idx) => (
-                <TableRow key={idx}>
-                  <TableData className='text-center'>loading...</TableData>
-                  <TableData className='text-center'>loading...</TableData>
-                  <TableData className='text-center'>loading...</TableData>
-                  <TableData className='text-center'>loading...</TableData>
-                  <TableData className='text-center'>loading...</TableData>
-                  <TableData className='text-center'>loading...</TableData>
-                  <TableData className='text-center'>loading...</TableData>
-                </TableRow>
-              ))}
             </TableBody>
           )}
 
