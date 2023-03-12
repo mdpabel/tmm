@@ -74,46 +74,45 @@ export default async function handler(
         },
       });
 
-      console.log(service);
-
       if (!service) {
         return res.status(400).json({
           data: `No service found with the service id ${metadata.service_id}`,
         });
       }
 
-      const newOrder = await prisma.order.create({
-        data: {
-          totalPrice,
-          userId: user.id,
-          service: {
-            connect: {
-              id: service.id,
-            },
-          },
-        },
+      return res.status(200).json({
+        data: service,
+        isTrue: true,
       });
 
-      await prisma.orderDetails.create({
-        data: {
-          startAddress: metadata.startAddress,
-          endAddress: metadata.endAddress,
-          state: metadata.state,
-          city: metadata.city,
-          zip: metadata.zip,
-          loading: Boolean(metadata.loading),
-          unloading: Boolean(metadata.unloading),
-          numberOfRooms: +metadata.numberOfRooms,
-          numberOfStairFlights: +metadata.numberOfStairFlights,
-          numberOfStairFloors: +metadata.numberOfStairFloors,
-          numberOfStairDimensions: +metadata.numberOfStairDimensions,
-          specialItems: metadata.specialItems,
-          notes: metadata.notes,
-          latitude: metadata.latitude,
-          longitude: metadata.longitude,
-          orderId: newOrder.id,
-        },
-      });
+      // const newOrder = await prisma.order.create({
+      //   data: {
+      //     totalPrice,
+      //     userId: user.id,
+      //     serviceId: service.id,
+      //   },
+      // });
+
+      // await prisma.orderDetails.create({
+      //   data: {
+      //     startAddress: metadata.startAddress,
+      //     endAddress: metadata.endAddress,
+      //     state: metadata.state,
+      //     city: metadata.city,
+      //     zip: metadata.zip,
+      //     loading: Boolean(metadata.loading),
+      //     unloading: Boolean(metadata.unloading),
+      //     numberOfRooms: +metadata.numberOfRooms,
+      //     numberOfStairFlights: +metadata.numberOfStairFlights,
+      //     numberOfStairFloors: +metadata.numberOfStairFloors,
+      //     numberOfStairDimensions: +metadata.numberOfStairDimensions,
+      //     specialItems: metadata.specialItems,
+      //     notes: metadata.notes,
+      //     latitude: metadata.latitude,
+      //     longitude: metadata.longitude,
+      //     orderId: newOrder.id,
+      //   },
+      // });
 
       // receipt_email;
       // amount
