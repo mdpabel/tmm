@@ -17,8 +17,7 @@ import { CustomSession } from '@/types/session';
 import prisma from '@/db/postgresql';
 import { formateDate } from '@/utils/formateDate';
 import { OrderType } from '@/types/orderTypes';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useLoading } from './../../hooks/useLoadingIndicator';
 
 const serviceHeader = [
   'Order ID',
@@ -37,13 +36,7 @@ const MyOrders = ({
   data: OrderType[];
   error: string | null;
 }) => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  const router = useRouter();
-
-  useEffect(() => {
-    router.isReady && setIsLoading(false);
-  }, [router.isReady]);
+  const isLoading = useLoading();
 
   return (
     <div className='w-full space-y-8 sm:px-6'>
