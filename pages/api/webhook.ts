@@ -88,31 +88,26 @@ export default async function handler(
         },
       });
 
-      return res.status(200).json({
-        data: newOrder,
-        isTrue: true,
+      await prisma.orderDetails.create({
+        data: {
+          startAddress: metadata.startAddress,
+          endAddress: metadata.endAddress,
+          state: metadata.state,
+          city: metadata.city,
+          zip: metadata.zip,
+          loading: Boolean(metadata.loading),
+          unloading: Boolean(metadata.unloading),
+          numberOfRooms: +metadata.numberOfRooms,
+          numberOfStairFlights: +metadata.numberOfStairFlights,
+          numberOfStairFloors: +metadata.numberOfStairFloors,
+          numberOfStairDimensions: +metadata.numberOfStairDimensions,
+          specialItems: metadata.specialItems,
+          notes: metadata.notes,
+          latitude: metadata.latitude,
+          longitude: metadata.longitude,
+          orderId: newOrder.id,
+        },
       });
-
-      // await prisma.orderDetails.create({
-      //   data: {
-      //     startAddress: metadata.startAddress,
-      //     endAddress: metadata.endAddress,
-      //     state: metadata.state,
-      //     city: metadata.city,
-      //     zip: metadata.zip,
-      //     loading: Boolean(metadata.loading),
-      //     unloading: Boolean(metadata.unloading),
-      //     numberOfRooms: +metadata.numberOfRooms,
-      //     numberOfStairFlights: +metadata.numberOfStairFlights,
-      //     numberOfStairFloors: +metadata.numberOfStairFloors,
-      //     numberOfStairDimensions: +metadata.numberOfStairDimensions,
-      //     specialItems: metadata.specialItems,
-      //     notes: metadata.notes,
-      //     latitude: metadata.latitude,
-      //     longitude: metadata.longitude,
-      //     orderId: newOrder.id,
-      //   },
-      // });
 
       // receipt_email;
       // amount
