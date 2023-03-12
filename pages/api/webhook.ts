@@ -80,18 +80,18 @@ export default async function handler(
         });
       }
 
-      return res.status(200).json({
-        data: service,
-        isTrue: true,
+      const newOrder = await prisma.order.create({
+        data: {
+          totalPrice,
+          userId: user.id,
+          serviceId: service.id,
+        },
       });
 
-      // const newOrder = await prisma.order.create({
-      //   data: {
-      //     totalPrice,
-      //     userId: user.id,
-      //     serviceId: service.id,
-      //   },
-      // });
+      return res.status(200).json({
+        data: newOrder,
+        isTrue: true,
+      });
 
       // await prisma.orderDetails.create({
       //   data: {
