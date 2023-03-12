@@ -82,7 +82,7 @@ export default async function handler(
 
       const newOrder = await prisma.order.create({
         data: {
-          totalPrice,
+          totalPrice: totalPrice / 100,
           userId: user.id,
           serviceId: service.id,
         },
