@@ -86,7 +86,7 @@ export default async function handler(
         data: {
           totalPrice,
           userId: user.id,
-          serviceId: service.id,
+          // serviceId: service.id,
         },
       });
 
