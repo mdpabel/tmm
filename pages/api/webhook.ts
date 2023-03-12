@@ -74,6 +74,8 @@ export default async function handler(
         },
       });
 
+      console.log(service);
+
       if (!service) {
         return res.status(400).json({
           data: `No service found with the service id ${metadata.service_id}`,
