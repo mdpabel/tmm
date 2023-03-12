@@ -18,6 +18,7 @@ import prisma from '@/db/postgresql';
 import { formateDate } from '@/utils/formateDate';
 import { OrderType } from '@/types/orderTypes';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const serviceHeader = [
   'Order ID',
@@ -38,11 +39,11 @@ const MyOrders = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
 
+  const router = useRouter();
+
   useEffect(() => {
-    if (data || error) {
-      setIsLoading(false);
-    }
-  }, [data, error]);
+    router.isReady && setIsLoading(false);
+  }, [router.isReady]);
 
   return (
     <div className='w-full space-y-8 sm:px-6'>
