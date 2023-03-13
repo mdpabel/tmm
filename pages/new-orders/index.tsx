@@ -25,7 +25,6 @@ const serviceHeader = [
   'image',
   'Title',
   'price',
-  'Customer Name',
   'Customer email',
   'Placed on',
   'status',
@@ -52,7 +51,7 @@ const NewOrders = () => {
   return (
     <div className='w-full space-y-8 sm:px-6'>
       <div className='flex items-center justify-between'>
-        <Title>My Orders</Title>
+        <Title>New Orders</Title>
         <div>Filter</div>
       </div>
 
@@ -69,7 +68,6 @@ const NewOrders = () => {
             <TableBody>
               {new Array(2).fill(0)?.map((_, idx) => (
                 <TableRow key={idx}>
-                  <TableData className='text-center'>loading...</TableData>
                   <TableData className='text-center'>loading...</TableData>
                   <TableData className='text-center'>loading...</TableData>
                   <TableData className='text-center'>loading...</TableData>
@@ -101,9 +99,6 @@ const NewOrders = () => {
                       {service?.serviceName}
                     </TableData>
                     <TableData className='text-center'>{totalPrice}</TableData>
-                    <TableData className='text-center'>
-                      {user?.firstName + ' ' + user?.lastName}
-                    </TableData>
                     <TableData className='text-center'>{user?.email}</TableData>
                     <TableData className='text-center'>
                       {formateDate(createdAt)}
