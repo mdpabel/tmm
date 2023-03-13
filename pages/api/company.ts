@@ -1,7 +1,7 @@
 import nc from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/db/postgresql';
-import { verifyToken } from '@/utils/jwtToken';
+
 import { auth } from '@/middlewares/auth';
 import { ReqType } from 'types/reqType';
 import { CompanyType } from '@/types/compnayTypes';

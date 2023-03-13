@@ -10,6 +10,7 @@ import {
   TableRow,
   TableWrapper,
 } from '@/components/Table';
+import useSWR, { SWRConfig } from 'swr';
 import Title from '@/components/Title';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import { getSession } from 'next-auth/react';
@@ -29,14 +30,23 @@ const serviceHeader = [
   'status',
 ];
 
-const MyOrders = ({
-  data,
-  error,
-}: {
-  data: OrderType[];
-  error: string | null;
-}) => {
-  const isLoading = useLoading();
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+
+  const data = await res.json();
+
+  return data;
+};
+
+const MyOrders = () => {
+  const { data, isLoading, error } = useSWR('/api/my-orders', fetcher, {
+    revalidateOnMount: true,
+  });
+
+  const orders = data?.data as OrderType[];
 
   return (
     <div className='w-full space-y-8 sm:px-6'>
@@ -72,7 +82,7 @@ const MyOrders = ({
 
           {!isLoading && data && (
             <TableBody>
-              {data?.map(
+              {orders?.map(
                 ({
                   id,
                   service,
@@ -116,49 +126,49 @@ const MyOrders = ({
 
 MyOrders.layout = DashboardLayout;
 
-export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
-  const session = (await getSession({ req })) as CustomSession;
+// export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
+//   const session = (await getSession({ req })) as CustomSession;
 
-  if (!session || session.user?.role !== 'MOVING_CUSTOMER') {
-    return {
-      props: {
-        data: null,
-        error: 'You are not allowed to fetch the data',
-      },
-    };
-  }
+//   if (!session || session.user?.role !== 'MOVING_CUSTOMER') {
+//     return {
+//       props: {
+//         data: null,
+//         error: 'You are not allowed to fetch the data',
+//       },
+//     };
+//   }
 
-  const data = await prisma.order.findMany({
-    where: {
-      userId: +session.user.id,
-    },
-    include: {
-      service: {
-        include: {
-          company: true,
-        },
-      },
-    },
-  });
+//   const data = await prisma.order.findMany({
+//     where: {
+//       userId: +session.user.id,
+//     },
+//     include: {
+//       service: {
+//         include: {
+//           company: true,
+//         },
+//       },
+//     },
+//   });
 
-  if (data.length === 0) {
-    return {
-      props: {
-        data: null,
-        error:
-          ' No orders found. Please try again later if you already placed any orders',
-      },
-    };
-  }
+//   if (data.length === 0) {
+//     return {
+//       props: {
+//         data: null,
+//         error:
+//           ' No orders found. Please try again later if you already placed any orders',
+//       },
+//     };
+//   }
 
-  const orders = JSON.parse(JSON.stringify(data));
+//   const orders = JSON.parse(JSON.stringify(data));
 
-  return {
-    props: {
-      data: orders,
-      error: null,
-    },
-  };
-};
+//   return {
+//     props: {
+//       data: orders,
+//       error: null,
+//     },
+//   };
+// };
 
 export default MyOrders;

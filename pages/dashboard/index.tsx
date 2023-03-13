@@ -7,21 +7,27 @@ import NotificationCard from '@/components/NotificationCard';
 import Graph from '@/components/Graph';
 import Title from '@/components/Title';
 import { CustomSession } from '@/types/session';
+import useSWR from 'swr';
+import { fetcher } from '@/utils/fetcher';
 
 const Dashboard = () => {
-  const { data, status } = useSession();
+  const { data: session, status } = useSession();
 
-  console.log(data);
+  // prefetching
+  useSWR('/api/my-orders', fetcher, {
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+  });
 
   const role =
-    (data as CustomSession)?.user?.role === 'MOVING_COMPANY'
+    (session as CustomSession)?.user?.role === 'MOVING_COMPANY'
       ? 'company'
-      : (data as CustomSession)?.user?.role === 'MOVER'
+      : (session as CustomSession)?.user?.role === 'MOVER'
       ? 'employee'
       : 'client';
 
   if (
-    !(data as CustomSession)?.user?.hasUploadedDocuments &&
+    !(session as CustomSession)?.user?.hasUploadedDocuments &&
     role !== 'client'
   ) {
     return <UserVerification role={role} />;
@@ -32,9 +38,9 @@ const Dashboard = () => {
       <div>
         <Title>
           Welcome,{' '}
-          {(data as CustomSession)?.user?.firstName +
+          {(session as CustomSession)?.user?.firstName +
             ' ' +
-            (data as CustomSession)?.user?.lastName}
+            (session as CustomSession)?.user?.lastName}
         </Title>
       </div>
       <div className='grid grid-cols-1 m-auto space-x-4 md:grid-cols-2'>

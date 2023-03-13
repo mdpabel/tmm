@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { verifyToken } from '@/utils/jwtToken';
+
 import { ReqType } from 'types/reqType';
 
 export const isAdmin = (req: ReqType, res: NextApiResponse, next: any) => {
