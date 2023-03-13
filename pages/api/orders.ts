@@ -1,11 +1,10 @@
 import nc from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/db/postgresql';
-import { ReqType } from 'types/reqType';
-import { CompanyType } from '@/types/compnayTypes';
-import { handleError } from '@/utils/ApiErrorHandling';
-import { EmployeeType } from '@/types/employeeTypes';
+
 import { auth } from '@/middlewares/auth';
+import { ReqType } from 'types/reqType';
+import { handleError } from '@/utils/ApiErrorHandling';
 
 const handler = nc<ReqType, NextApiResponse>({
   onError: (err, req, res, next) => {
@@ -18,28 +17,48 @@ const handler = nc<ReqType, NextApiResponse>({
 })
   .use(auth)
   .get(async (req, res) => {
-    const user = req.user;
     try {
-      const orders = await prisma.order.findMany({
+      const user = req.user;
+      const company = await prisma.movingCompany.findFirst({
         where: {
           userId: user.id,
         },
-        include: {
+      });
+
+      if (!company) {
+        return res.status(400).json({
+          data: 'No company has been registered with the user',
+        });
+      }
+
+      const orders = await prisma.order.findMany({
+        where: {
           service: {
-            include: {
-              company: true,
+            movingCompanyId: company?.id,
+          },
+        },
+        include: {
+          service: true,
+          user: {
+            select: {
+              email: true,
+              firstName: true,
+              lastName: true,
             },
           },
+        },
+        orderBy: {
+          createdAt: 'desc',
         },
       });
 
       if (orders.length === 0) {
         return res.status(404).json({
-          data: 'No orders found. Please try again later if you already placed any orders',
+          data: 'No orders found',
         });
       }
 
-      return res.status(200).json({
+      res.status(200).json({
         data: orders,
       });
     } catch (error) {

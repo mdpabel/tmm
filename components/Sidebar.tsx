@@ -29,13 +29,13 @@ const sidebarLinks = [
         allowed: ['MOVING_COMPANY'],
       },
       {
-        label: 'Order history',
-        link: 'order-history',
+        label: 'New orders',
+        link: 'new-orders',
         allowed: ['MOVING_COMPANY'],
       },
       {
-        label: 'Order request',
-        link: 'order-request',
+        label: 'Order history',
+        link: 'order-history',
         allowed: ['MOVING_COMPANY'],
       },
     ],

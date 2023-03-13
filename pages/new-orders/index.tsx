@@ -25,7 +25,8 @@ const serviceHeader = [
   'image',
   'Title',
   'price',
-  'company',
+  'Customer Name',
+  'Customer email',
   'Placed on',
   'status',
 ];
@@ -41,8 +42,8 @@ const fetcher = async (url: string) => {
   return data;
 };
 
-const MyOrders = () => {
-  const { data, isLoading, error } = useSWR('/api/my-orders', fetcher, {
+const NewOrders = () => {
+  const { data, isLoading, error } = useSWR('/api/orders', fetcher, {
     revalidateOnMount: true,
   });
 
@@ -75,6 +76,7 @@ const MyOrders = () => {
                   <TableData className='text-center'>loading...</TableData>
                   <TableData className='text-center'>loading...</TableData>
                   <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
                 </TableRow>
               ))}
             </TableBody>
@@ -83,13 +85,8 @@ const MyOrders = () => {
           {!isLoading && data && (
             <TableBody>
               {orders?.map(
-                ({
-                  id,
-                  service,
-                  totalPrice,
-                  serviceId,
-                  createdAt,
-                }: OrderType) => (
+                // @ts-ignore
+                ({ id, service, totalPrice, createdAt, user }: OrderType) => (
                   <TableRow key={id}>
                     <TableData className='text-center'>{id}</TableData>
                     <TableData className='text-center'>
@@ -105,12 +102,19 @@ const MyOrders = () => {
                     </TableData>
                     <TableData className='text-center'>{totalPrice}</TableData>
                     <TableData className='text-center'>
-                      {service?.company?.companyName}
+                      {user?.firstName + ' ' + user?.lastName}
                     </TableData>
+                    <TableData className='text-center'>{user?.email}</TableData>
                     <TableData className='text-center'>
                       {formateDate(createdAt)}
                     </TableData>
-                    <TableData className='text-center'>Pending</TableData>
+                    <TableData className='text-center'>
+                      <select name='order-status' id='order-status'>
+                        <option value='pending'>Pending</option>
+                        <option value='completed'>Completed</option>
+                        <option value='Rejected'>Rejected</option>
+                      </select>
+                    </TableData>
                   </TableRow>
                 )
               )}
@@ -123,51 +127,6 @@ const MyOrders = () => {
   );
 };
 
-MyOrders.layout = DashboardLayout;
+NewOrders.layout = DashboardLayout;
 
-// export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
-//   const session = (await getSession({ req })) as CustomSession;
-
-//   if (!session || session.user?.role !== 'MOVING_CUSTOMER') {
-//     return {
-//       props: {
-//         data: null,
-//         error: 'You are not allowed to fetch the data',
-//       },
-//     };
-//   }
-
-//   const data = await prisma.order.findMany({
-//     where: {
-//       userId: +session.user.id,
-//     },
-//     include: {
-//       service: {
-//         include: {
-//           company: true,
-//         },
-//       },
-//     },
-//   });
-
-//   if (data.length === 0) {
-//     return {
-//       props: {
-//         data: null,
-//         error:
-//           ' No orders found. Please try again later if you already placed any orders',
-//       },
-//     };
-//   }
-
-//   const orders = JSON.parse(JSON.stringify(data));
-
-//   return {
-//     props: {
-//       data: orders,
-//       error: null,
-//     },
-//   };
-// };
-
-export default MyOrders;
+export default NewOrders;
