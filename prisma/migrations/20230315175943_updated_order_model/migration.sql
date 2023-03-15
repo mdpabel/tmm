@@ -32,11 +32,32 @@ CREATE TABLE "Order" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "startTime" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "reservationHours" INTEGER NOT NULL,
+    "endTime" TIMESTAMP(3) NOT NULL,
     "totalPrice" DOUBLE PRECISION NOT NULL,
     "userId" INTEGER NOT NULL,
     "serviceId" INTEGER NOT NULL,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Service" (
+    "id" SERIAL NOT NULL,
+    "serviceName" TEXT NOT NULL,
+    "servicePrice" DOUBLE PRECISION NOT NULL,
+    "serviceMovers" INTEGER NOT NULL,
+    "serviceHours" INTEGER NOT NULL,
+    "serviceDesc" TEXT NOT NULL,
+    "serviceCounty" TEXT NOT NULL,
+    "serviceDisclaimer" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "serviceImg" TEXT NOT NULL,
+    "movingCompanyId" INTEGER NOT NULL,
+
+    CONSTRAINT "Service_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -103,24 +124,6 @@ CREATE TABLE "MovingCompany" (
 );
 
 -- CreateTable
-CREATE TABLE "Service" (
-    "id" SERIAL NOT NULL,
-    "serviceName" TEXT NOT NULL,
-    "servicePrice" DOUBLE PRECISION NOT NULL,
-    "serviceMovers" INTEGER NOT NULL,
-    "serviceHours" INTEGER NOT NULL,
-    "serviceDesc" TEXT NOT NULL,
-    "serviceCounty" TEXT NOT NULL,
-    "serviceDisclaimer" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "serviceImg" TEXT NOT NULL,
-    "movingCompanyId" INTEGER NOT NULL,
-
-    CONSTRAINT "Service_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Job" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -155,13 +158,13 @@ CREATE TABLE "Application" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Service_serviceName_key" ON "Service"("serviceName");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Mover_userId_drivingLicense_key" ON "Mover"("userId", "drivingLicense");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "MovingCompany_userId_ein_key" ON "MovingCompany"("userId", "ein");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Service_serviceName_key" ON "Service"("serviceName");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Job_movingCompanyId_title_key" ON "Job"("movingCompanyId", "title");
@@ -176,6 +179,9 @@ ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") RE
 ALTER TABLE "Order" ADD CONSTRAINT "Order_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Service"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Service" ADD CONSTRAINT "Service_movingCompanyId_fkey" FOREIGN KEY ("movingCompanyId") REFERENCES "MovingCompany"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "OrderDetails" ADD CONSTRAINT "OrderDetails_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -186,9 +192,6 @@ ALTER TABLE "MovingCustomer" ADD CONSTRAINT "MovingCustomer_userId_fkey" FOREIGN
 
 -- AddForeignKey
 ALTER TABLE "MovingCompany" ADD CONSTRAINT "MovingCompany_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Service" ADD CONSTRAINT "Service_movingCompanyId_fkey" FOREIGN KEY ("movingCompanyId") REFERENCES "MovingCompany"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Job" ADD CONSTRAINT "Job_movingCompanyId_fkey" FOREIGN KEY ("movingCompanyId") REFERENCES "MovingCompany"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

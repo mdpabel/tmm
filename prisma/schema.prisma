@@ -61,6 +61,10 @@ model Order {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  startTime        DateTime @default(now())
+  reservationHours Int
+  endTime          DateTime
+
   totalPrice   Float
   user         User           @relation(fields: [userId], references: [id])
   userId       Int

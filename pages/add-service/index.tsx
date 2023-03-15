@@ -2,6 +2,7 @@ import React, {
   ChangeEvent,
   FormEventHandler,
   SyntheticEvent,
+  useEffect,
   useState,
 } from 'react';
 import { useRouter } from 'next/navigation';
@@ -72,8 +73,13 @@ const AddService = () => {
     const secureUrl = await cloudinaryImgUpload(fileInput);
 
     run(addNewService({ ...state, imgUrl: secureUrl as string }));
-    setState({ ...initialState });
   }
+
+  useEffect(() => {
+    if (isSuccess) {
+      setState({ ...initialState });
+    }
+  }, [isSuccess]);
 
   return (
     <div>

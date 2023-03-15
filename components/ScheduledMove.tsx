@@ -25,10 +25,10 @@ const ScheduledMove = ({ serviceHours, price, id }: PropTypes) => {
     },
   ]);
   const [state, setState] = useState({
-    time: new Date().toLocaleString(),
+    startTime: new Date().toLocaleString(),
     reservationHours: '' + serviceHours,
   });
-  const { time, reservationHours } = state;
+  const { startTime, reservationHours } = state;
   const [end, setEnd] = useState('');
   const router = useRouter();
 
@@ -36,12 +36,12 @@ const ScheduledMove = ({ serviceHours, price, id }: PropTypes) => {
 
   useEffect(() => {
     const endTime = new Date(
-      new Date(time).getTime() + +reservationHours * 60 * 60 * 1000
+      new Date(startTime).getTime() + +reservationHours * 60 * 60 * 1000
     );
 
     const humanReadableEndTime = formateDateAndTime(endTime);
     setEnd(humanReadableEndTime);
-  }, [reservationHours, time]);
+  }, [reservationHours, startTime]);
 
   useEffect(() => {
     const genOptions = [];
@@ -61,6 +61,11 @@ const ScheduledMove = ({ serviceHours, price, id }: PropTypes) => {
         JSON.stringify({
           price: servicePrice,
           id,
+          startTime,
+          reservationHours,
+          endTime: new Date(
+            new Date(startTime).getTime() + +reservationHours * 60 * 60 * 1000
+          ),
         })
     );
     router.push('/order-details');
@@ -74,8 +79,8 @@ const ScheduledMove = ({ serviceHours, price, id }: PropTypes) => {
         <Input
           id='start-time'
           focus={true}
-          onChange={(e) => setState({ ...state, time: e.target.value })}
-          value={time}
+          onChange={(e) => setState({ ...state, startTime: e.target.value })}
+          value={startTime}
           required={true}
           type='datetime-local'
         />

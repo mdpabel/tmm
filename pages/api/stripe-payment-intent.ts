@@ -47,6 +47,9 @@ const handler = nc<ReqType, NextApiResponse>({
         receipt_email,
         metadata: {
           service_id: cartService.id,
+          end_time: cartService.endTime,
+          start_time: cartService.startTime,
+          reservation_hours: cartService.reservationHours,
           startAddress: shipping.startAddress,
           endAddress: shipping.endAddress,
           state: shipping.state,

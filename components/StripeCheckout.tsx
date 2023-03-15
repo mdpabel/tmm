@@ -38,6 +38,9 @@ interface PropTypes {
 interface CartService {
   id?: number;
   price: number;
+  endTime: Date;
+  reservationHours: number;
+  startTime: Date;
 }
 
 export interface OrderDetailsType {
@@ -83,7 +86,6 @@ const CheckoutForm = ({ next, prev }: PropTypes) => {
     const orderDetails = JSON.parse(
       window.localStorage.getItem('orderDetails') ?? '{}'
     );
-    const paymentMethod = window.localStorage.getItem('paymentMethod');
 
     setCart(cartService);
     setDetails(orderDetails);

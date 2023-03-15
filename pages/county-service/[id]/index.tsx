@@ -64,7 +64,6 @@ const Service = ({ service }: { service: ServiceType }) => {
     serviceDesc,
     serviceDisclaimer,
     serviceImg,
-    // @ts-ignore
     company,
   } = service;
 

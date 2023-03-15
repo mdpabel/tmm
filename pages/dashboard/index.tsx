@@ -14,10 +14,18 @@ const Dashboard = () => {
   const { data: session, status } = useSession();
 
   // prefetching
-  useSWR('/api/my-orders', fetcher, {
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
-  });
+  useSWR(
+    (session as CustomSession)?.user?.role === 'MOVING_CUSTOMER'
+      ? '/api/my-orders'
+      : (session as CustomSession)?.user?.role === 'MOVING_COMPANY'
+      ? '/api/orders'
+      : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+    }
+  );
 
   const role =
     (session as CustomSession)?.user?.role === 'MOVING_COMPANY'
