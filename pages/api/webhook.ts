@@ -3,8 +3,6 @@ import { buffer } from 'micro';
 
 import { stripe } from './stripe-payment-intent';
 import prisma from '@/db/postgresql';
-import { OrderDetailsType } from '@/components/StripeCheckout';
-import Stripe from 'stripe';
 
 export const config = {
   api: {
