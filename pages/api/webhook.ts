@@ -85,7 +85,7 @@ export default async function handler(
           totalPrice: totalPrice / 100,
           userId: user.id,
           serviceId: service.id,
-          startTime: metadata.start_time,
+          startTime: new Date(metadata.start_time).toISOString(),
           reservationHours: +metadata.reservation_hours,
         },
       });
