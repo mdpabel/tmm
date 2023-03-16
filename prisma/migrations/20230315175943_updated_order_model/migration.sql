@@ -34,7 +34,6 @@ CREATE TABLE "Order" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "startTime" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "reservationHours" INTEGER NOT NULL,
-    "endTime" TIMESTAMP(3) NOT NULL,
     "totalPrice" DOUBLE PRECISION NOT NULL,
     "userId" INTEGER NOT NULL,
     "serviceId" INTEGER NOT NULL,

@@ -81,7 +81,7 @@ const handler = nc<ReqType, NextApiResponseServerIO>({
         },
       });
 
-      if (applicationId === 'ACCEPTED') {
+      if (status === 'ACCEPTED') {
         const updatedJob = await prisma.job.update({
           where: {
             id: +jobId,

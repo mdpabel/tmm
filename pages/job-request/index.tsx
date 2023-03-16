@@ -14,9 +14,6 @@ import Title from '@/components/Title';
 import { ApplicationType } from '@/types/applicationTypes';
 import { JobType } from '@/types/jobType';
 import { formateDate } from '@/utils/formateDate';
-import prisma from '@/db/postgresql';
-import { BarSkeleton } from '@/components/Skeletons';
-import Link from 'next/link';
 import LinkIcon from '@/components/icons/LinkIcon';
 import { OptionType, Select } from '@/components/Input';
 import Modal from 'react-modal';
@@ -30,23 +27,14 @@ import Spinner from '@/components/Spinner';
 import { pusherJs } from '@/utils/pusherClient';
 import notificationSound from '../../assets/sounds/notification.mp3';
 import useSound from 'use-sound';
+import { OrderType } from '@/types/orderTypes';
+import { fetcher } from '@/utils/fetcher';
 
 const jobStatus = [
   { label: 'PENDING', value: 'PENDING' },
   { label: 'ACCEPTED', value: 'ACCEPTED' },
   { label: 'REJECTED', value: 'REJECTED' },
 ];
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-
-  const data = await res.json();
-
-  return data;
-};
 
 const JobRequest = () => {
   const [play] = useSound(notificationSound);
@@ -57,6 +45,13 @@ const JobRequest = () => {
   const [coverLetterOpen, setCoverLetterOpen] = useState(false);
   const [applicantDetailsOpen, setApplicantDetailsOpen] = useState(false);
   const [applicationId, setApplicationId] = useState(-1);
+  const [orderId, setOrderId] = useState('');
+
+  const { data: ordersData } = useSWR('/api/orders', fetcher, {
+    revalidateOnMount: true,
+  });
+
+  const orders = ordersData?.data as OrderType[];
 
   const {
     data: updatedData,
@@ -113,6 +108,10 @@ const JobRequest = () => {
     newStatus: string,
     jobId: number
   ) => {
+    if (currentStatus !== 'ACCEPTED') {
+      alert('Current Status is required!');
+      return;
+    }
     setApplicationId(applicationId);
     run(updateStatus(applicationId, newStatus, jobId));
   };
@@ -134,6 +133,7 @@ const JobRequest = () => {
                 <HeadData>cover letter</HeadData>
                 <HeadData>Applicant Details</HeadData>
                 <HeadData>status</HeadData>
+                {currentStatus === 'ACCEPTED' && <HeadData>Order id</HeadData>}
                 <HeadData>Action</HeadData>
               </TableRow>
             </TableHead>
@@ -181,7 +181,6 @@ const JobRequest = () => {
                       </TableData>
 
                       <TableData className='text-center'>
-                        {/* <h2>{applicationStatus}</h2> */}
                         <select
                           className={clsx({
                             'text-green-700 font-extrabold':
@@ -203,6 +202,22 @@ const JobRequest = () => {
                             )}
                         </select>
                       </TableData>
+                      {currentStatus === 'ACCEPTED' && (
+                        <TableData>
+                          <select
+                            onChange={(e) => setOrderId(e.target.value)}
+                            id='order'
+                          >
+                            <option value=''>Select order id</option>
+                            {orders?.map((order) => (
+                              <option key={order.id} value={order.id}>
+                                {order.id}
+                              </option>
+                            ))}
+                          </select>
+                        </TableData>
+                      )}
+
                       <TableData>
                         <Button
                           disabled={applicationStatus === 'ACCEPTED'}
@@ -216,7 +231,7 @@ const JobRequest = () => {
                             );
                           }}
                         >
-                          Updated
+                          Update
                           {isUpdating && applicationId == id && <Spinner />}
                         </Button>
                       </TableData>
@@ -284,6 +299,9 @@ const JobRequest = () => {
                     <TableData className='text-center'>loading...</TableData>
                     <TableData className='text-center'>loading...</TableData>
                     <TableData className='text-center'>loading...</TableData>
+                    {currentStatus === 'ACCEPTED' && (
+                      <TableData className='text-center'>loading...</TableData>
+                    )}
                     <TableData className='text-center'>loading...</TableData>
                   </TableRow>
                 ))}

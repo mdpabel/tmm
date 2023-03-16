@@ -70,6 +70,7 @@ model Order {
   service      Service        @relation(fields: [serviceId], references: [id])
   OrderDetails OrderDetails[]
   serviceId    Int
+  Application  Application[]
 }
 
 model Service {
@@ -191,6 +192,9 @@ model Application {
   job     Job   @relation(fields: [jobId], references: [id])
   moverId Int
   jobId   Int
+
+  order   Order @relation(fields: [orderId], references: [id])
+  orderId Int
 
   @@unique([moverId, jobId])
 }
