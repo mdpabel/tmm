@@ -108,12 +108,8 @@ const JobRequest = () => {
     newStatus: string,
     jobId: number
   ) => {
-    if (currentStatus !== 'ACCEPTED') {
-      alert('Current Status is required!');
-      return;
-    }
     setApplicationId(applicationId);
-    run(updateStatus(applicationId, newStatus, jobId));
+    run(updateStatus(applicationId, newStatus, jobId, +orderId));
   };
 
   return (

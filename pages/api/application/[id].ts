@@ -64,7 +64,9 @@ const handler = nc<ReqType, NextApiResponseServerIO>({
     try {
       const { id } = req.query;
       const applicationId = id;
-      const { status, jobId } = req.body;
+      const { status, jobId, orderId } = req.body;
+
+      let updatedApplication;
 
       if (!applicationId || !status) {
         return res.status(204).json({
@@ -72,17 +74,41 @@ const handler = nc<ReqType, NextApiResponseServerIO>({
         });
       }
 
-      const updatedApplication = await prisma.application.update({
-        where: {
-          id: +applicationId,
-        },
-        data: {
-          applicationStatus: status,
-        },
-      });
+      if (orderId) {
+        const isExistOrder = await prisma.order.findFirst({
+          where: {
+            id: orderId,
+          },
+        });
 
-      if (status === 'ACCEPTED') {
-        const updatedJob = await prisma.job.update({
+        if (!isExistOrder) {
+          return res.status(400).json({
+            data: `No order found with the Id ${orderId}`,
+          });
+        }
+
+        updatedApplication = await prisma.application.update({
+          where: {
+            id: +applicationId,
+          },
+          data: {
+            applicationStatus: status,
+            orderId: isExistOrder?.id,
+          },
+        });
+      } else {
+        updatedApplication = await prisma.application.update({
+          where: {
+            id: +applicationId,
+          },
+          data: {
+            applicationStatus: status,
+          },
+        });
+      }
+
+      if (status === 'ACCEPTED' && updatedApplication) {
+        await prisma.job.update({
           where: {
             id: +jobId,
           },

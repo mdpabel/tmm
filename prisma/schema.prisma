@@ -193,8 +193,8 @@ model Application {
   moverId Int
   jobId   Int
 
-  order   Order @relation(fields: [orderId], references: [id])
-  orderId Int
+  order   Order? @relation(fields: [orderId], references: [id])
+  orderId Int?
 
   @@unique([moverId, jobId])
 }

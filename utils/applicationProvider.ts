@@ -26,10 +26,11 @@ export const applyToJob = async ({
 export const updateStatus = async (
   applicationId: number,
   newStatus: string,
-  jobId: number
+  jobId: number,
+  orderId: number
 ) => {
   const data = client(`/api/application/${applicationId}`, {
-    data: { status: newStatus, jobId: jobId },
+    data: { status: newStatus, jobId: jobId, orderId },
     method: 'PUT',
   });
   return data;
