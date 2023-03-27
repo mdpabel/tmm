@@ -49,7 +49,7 @@ const Navbar = () => {
       <div className='w-full h-full bg-gray-200'>
         <nav className='hidden bg-white shadow xl:block'>
           <div className='container px-6 py-2 mx-auto xl:py-0'>
-            <div className='flex items-center justify-between'>
+            <div className='flex items-center justify-between max-w-6xl mx-auto'>
               <div className='flex items-center justify-end w-full sm:w-auto sm:items-stretch sm:justify-start'>
                 <Link href='/'>
                   <Image width={100} src={logo} alt='tmmlogo' />
