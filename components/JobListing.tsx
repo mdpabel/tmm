@@ -30,7 +30,7 @@ const JobListing = ({ job }: { job: JobListingType }) => {
     <div className='w-full'>
       <Link href={'/jobs/' + id}>
         <div className='flex flex-col justify-between w-full max-w-4xl gap-4 px-5 py-4 bg-white rounded-md shadow-xl shadow-gray-100 sm:flex-row sm:items-center'>
-          <span className='text-sm text-purple-800'>
+          <span className='inline-block text-sm text-purple-800'>
             {company?.companyName && company?.companyName.length > 20
               ? company?.companyName.substring(0, 20)
               : company?.companyName}

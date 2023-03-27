@@ -19,7 +19,7 @@ function CountyServices({ services }: { services: ServiceType[] }) {
     <div className='flex-auto w-full'>
       <Filter label='County Services' />
       <Suspense fallback={<ServiceFallBack />}>
-        <div className='flex flex-wrap justify-center gap-5 pt-6 md:justify-start'>
+        <div className='grid grid-cols-1 gap-5 pt-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
           {services.length ? (
             services.map((service) => (
               <ServiceCard

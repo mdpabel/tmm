@@ -13,11 +13,11 @@ interface ServiceCard {
 export const ServiceCard = ({ id, packageImage, name, price }: ServiceCard) => {
   return (
     <Link href={`/county-service/${id}`}>
-      <div className='w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow'>
+      <div className='w-full bg-white border border-gray-200 rounded-lg shadow'>
         <Image
           width={300}
           height={300}
-          className='p-8 rounded-t-lg'
+          className='p-8 m-auto rounded-t-lg'
           src={packageImage}
           alt='product image'
         />

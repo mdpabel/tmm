@@ -15,19 +15,7 @@ const handler = nc<ReqType, NextApiResponse>({
   },
 })
   .use(auth)
-  .get(async (req, res) => {
-    // try {
-    //   const user = req.user;
-    //   const services = await prisma.service.findMany({
-    //     where: {
-    //       userId: user?.id,
-    //     },
-    //   });
-    //   res.status(200).json({
-    //     data: services,
-    //   });
-    // } catch (error) {}
-  })
+
   .post(async (req, res) => {
     try {
       const user = req.user;
