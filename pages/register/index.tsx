@@ -44,7 +44,7 @@ const Register = () => {
   };
 
   return (
-    <div className='flex-auto pt-10'>
+    <div className='flex-auto max-w-3xl mx-auto'>
       {!selectedRole && (
         <form onSubmit={handleRole}>
           <SelectRole role={role} setRole={setRole} />

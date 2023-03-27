@@ -21,7 +21,7 @@ export default function Home() {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <div className='py-4 md:pt-32 lg:pt-5'>
+      <div className='max-w-6xl py-4 mx-auto md:pt-32 lg:pt-5'>
         <div className='container flex flex-col items-center space-y-5 md:flex-row'>
           <div className='w-full md:w-1/2'>
             <Image

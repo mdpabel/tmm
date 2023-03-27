@@ -44,8 +44,8 @@ const AuthForm = ({
   role,
 }: {
   mode: modeType;
-  next: () => void;
-  role: string;
+  next?: () => void;
+  role?: string;
 }) => {
   const {
     data,
@@ -67,6 +67,7 @@ const AuthForm = ({
   const handleFormSubmission = async (e: SyntheticEvent) => {
     e.preventDefault();
     if (mode === 'register') {
+      if (!role) return;
       run(register({ firstName, lastName, email, password, role }));
     } else if (mode === 'signin') {
       // run(signIn({ email, password }));
@@ -91,7 +92,7 @@ const AuthForm = ({
   };
 
   useEffect(() => {
-    if (isSuccess && mode === 'register' && role !== 'client') {
+    if (isSuccess && mode === 'register' && role !== 'client' && next) {
       router.replace({
         pathname: router.pathname,
         query: { userId: data?.id },

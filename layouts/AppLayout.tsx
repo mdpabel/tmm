@@ -8,9 +8,9 @@ const AppLayout = ({ children }: ChildrenType) => {
       <Header />
       <main
         style={{
-          minHeight: 'calc(100vh - 90px)',
+          marginTop: '100px',
+          marginBottom: '20px',
         }}
-        className='container flex flex-col items-center justify-center w-full px-6 pb-4 mx-auto pt'
       >
         {children}
       </main>

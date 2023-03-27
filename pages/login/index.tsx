@@ -4,7 +4,7 @@ import React from 'react';
 
 const Login = () => {
   return (
-    <div className='lg:pt-5'>
+    <div className='max-w-xl mx-auto'>
       <AuthForm mode='signin' />
     </div>
   );

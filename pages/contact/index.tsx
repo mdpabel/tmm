@@ -17,7 +17,7 @@ const Contact = () => {
 
   return (
     <CardWrapper>
-      <div className='max-w-screen-md mx-auto'>
+      <div className='max-w-6xl mx-auto'>
         <h2 className='mb-4 text-4xl font-extrabold tracking-tight text-center text-gray-700 '>
           Contact Us
         </h2>

@@ -16,7 +16,7 @@ export async function getStaticProps() {
 
 function CountyServices({ services }: { services: ServiceType[] }) {
   return (
-    <div className='flex-auto w-full'>
+    <div className='flex-auto w-full max-w-6xl mx-auto'>
       <Filter label='County Services' />
       <Suspense fallback={<ServiceFallBack />}>
         <div className='grid grid-cols-1 gap-5 pt-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>

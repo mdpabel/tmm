@@ -7,7 +7,7 @@ import JobFiltering from '@/components/JobFiltering';
 
 const Jobs = ({ jobs }: { jobs: JobType[] }) => {
   return (
-    <div className='flex-auto w-full space-y-4'>
+    <div className='flex-auto w-full max-w-6xl mx-auto space-y-4'>
       <div className='flex flex-col justify-between gap-10 md:flex-row'>
         <div className='w-full md:w-1/3'>
           <JobFiltering />
