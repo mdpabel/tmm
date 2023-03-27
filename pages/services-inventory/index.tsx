@@ -121,6 +121,7 @@ const ServiceInventory = ({ services }: { services: ServiceType[] }) => {
                   <TableData className='text-center'>loading...</TableData>
                   <TableData className='text-center'>loading...</TableData>
                   <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
                 </TableRow>
               ))}
 

@@ -68,10 +68,25 @@ const AddService = () => {
 
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
+
     const fileInput = (e.target as HTMLFormElement).fileInput.files;
     setStatus('PENDING');
     const secureUrl = await cloudinaryImgUpload(fileInput);
-
+    if (
+      !county ||
+      !name ||
+      !price ||
+      !movers ||
+      !hours ||
+      !info ||
+      !disclaimer ||
+      !imgUrl
+    ) {
+      alert(
+        'county or name or price or movers or hours or info or disclaimer or imgUrl is missing'
+      );
+      return;
+    }
     run(addNewService({ ...state, imgUrl: secureUrl as string }));
   }
 

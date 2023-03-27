@@ -23,7 +23,7 @@ export const ServiceCard = ({ id, packageImage, name, price }: ServiceCard) => {
         />
         <div className='px-5 pb-5'>
           <h5 className='py-4 text-xl font-semibold tracking-tight text-gray-900'>
-            {name}
+            {name?.slice(0, 25)}
           </h5>
           <div className='flex items-center justify-between'>
             <span className='text-3xl font-bold text-gray-900 '>${price}</span>

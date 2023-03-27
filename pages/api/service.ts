@@ -61,6 +61,21 @@ const handler = nc<ReqType, NextApiResponse>({
       const { county, name, price, movers, hours, info, disclaimer, imgUrl } =
         req.body;
 
+      if (
+        !county ||
+        !name ||
+        !price ||
+        !movers ||
+        !hours ||
+        !info ||
+        !disclaimer ||
+        !imgUrl
+      ) {
+        return res.status(400).json({
+          data: 'county or name or price or movers or hours or info or disclaimer or imgUrl is missing',
+        });
+      }
+
       const newService = await prisma.service.create({
         data: {
           serviceName: '' + name,
