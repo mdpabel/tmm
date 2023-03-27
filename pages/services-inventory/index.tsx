@@ -16,6 +16,8 @@ import {
 } from '@/components/Table';
 import Title from '@/components/Title';
 import DashboardLayout from '@/layouts/DashboardLayout';
+import { fetcher } from '@/utils/fetcher';
+import useSWR from 'swr';
 
 const serviceHeader = [
   'packageImage',
@@ -36,58 +38,98 @@ export async function getServerSideProps() {
 }
 
 const ServiceInventory = ({ services }: { services: ServiceType[] }) => {
-  return (
-    <div className='p-6 mx-auto'>
-      <Filter />
+  const { data, error, isLoading, isValidating, mutate } = useSWR(
+    '/api/service',
+    fetcher
+  );
 
-      <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
-        <TableWrapper>
-          <Table>
-            <TableHead>
-              <TableRow>
-                {serviceHeader.map((item, idx) => (
-                  <HeadData key={idx}>{item}</HeadData>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {services.map(
-                ({
-                  id,
-                  serviceName,
-                  servicePrice,
-                  serviceMovers,
-                  serviceHours,
-                  serviceCounty,
-                  serviceImg,
-                }) => (
-                  <TableRow key={id}>
-                    <TableData>
-                      <Image
-                        width={70}
-                        height={70}
-                        src={serviceImg}
-                        alt={serviceName}
-                      />
-                    </TableData>
-                    <TableData>{serviceName}</TableData>
-                    <TableData>{serviceCounty}</TableData>
-                    <TableData>{servicePrice}</TableData>
-                    <TableData>{serviceMovers}</TableData>
-                    <TableData>{serviceHours}</TableData>
-                    <TableData>
-                      <EditIcon />
-                    </TableData>
-                    <TableData>
+  const handleDelete = () => {};
+  const handleEdit = () => {};
+
+  return (
+    <div className='w-full space-y-8 sm:px-6'>
+      <Title>Manage your jobs</Title>
+      <TableWrapper>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <HeadData>packageImage</HeadData>
+              <HeadData>name</HeadData>
+              <HeadData>County</HeadData>
+              <HeadData>price</HeadData>
+              <HeadData>movers</HeadData>
+              <HeadData>hours</HeadData>
+              <HeadData>edit</HeadData>
+              <HeadData>delete</HeadData>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data?.data?.map(
+              ({
+                id,
+                serviceCounty,
+                serviceImg,
+                servicePrice,
+                serviceName,
+                serviceMovers,
+                serviceHours,
+              }: ServiceType) => (
+                <TableRow key={id}>
+                  <TableData className='text-center'>
+                    <Image
+                      width={100}
+                      height={100}
+                      src={serviceImg}
+                      alt={serviceName}
+                    />
+                  </TableData>
+                  <TableData className='text-center'>
+                    {serviceName.slice(0, 20)}
+                  </TableData>
+                  <TableData className='text-center'>{serviceCounty}</TableData>
+                  <TableData className='text-center'>{servicePrice}</TableData>
+                  <TableData className='text-center'>{serviceMovers}</TableData>
+                  <TableData className='text-center'>{serviceHours}</TableData>
+                  <TableData className='text-center'>
+                    <div
+                      onClick={handleDelete}
+                      className='flex justify-center my-4 cursor-pointer'
+                    >
                       <DeleteIcon />
-                    </TableData>
-                  </TableRow>
-                )
-              )}
-            </TableBody>
-          </Table>
-        </TableWrapper>
-      </div>
+                    </div>
+                  </TableData>
+
+                  <TableData className='text-center'>
+                    <div
+                      onClick={handleEdit}
+                      className='flex justify-center my-4 cursor-pointer'
+                    >
+                      <EditIcon />
+                    </div>
+                  </TableData>
+                </TableRow>
+              )
+            )}
+
+            {isLoading &&
+              new Array(2).fill(0).map((_, idx) => (
+                <TableRow key={idx}>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                  <TableData className='text-center'>loading...</TableData>
+                </TableRow>
+              ))}
+
+            {error && (
+              <pre className='text-center text-red-600'>{error.message}</pre>
+            )}
+          </TableBody>
+        </Table>
+      </TableWrapper>
     </div>
   );
 };

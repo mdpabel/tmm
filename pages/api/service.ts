@@ -15,7 +15,33 @@ const handler = nc<ReqType, NextApiResponse>({
   },
 })
   .use(auth)
+  .get(async (req, res) => {
+    try {
+      const user = req.user;
+      const company = await prisma.movingCompany.findFirst({
+        where: {
+          userId: user.id,
+        },
+      });
+      if (!company) {
+        return res.status(401).json({
+          data: 'You are not allowed to request the resources',
+        });
+      }
 
+      const services = await prisma.service.findMany({
+        where: {
+          movingCompanyId: company.id,
+        },
+      });
+
+      return res.status(200).json({
+        data: services,
+      });
+    } catch (error) {
+      handleError(res, error);
+    }
+  })
   .post(async (req, res) => {
     try {
       const user = req.user;

@@ -79,7 +79,7 @@ const ManageJobs = () => {
                   <TableData className='text-center'>{jobStatus}</TableData>
                   <TableData className='flex justify-center '>
                     <div
-                      onClick={() => handleDelete}
+                      onClick={handleDelete}
                       className='flex justify-center my-4 cursor-pointer'
                     >
                       <DeleteIcon />
