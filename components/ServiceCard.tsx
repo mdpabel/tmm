@@ -22,11 +22,13 @@ export const ServiceCard = ({ id, packageImage, name, price }: ServiceCard) => {
           alt='product image'
         />
         <div className='px-5 pb-5'>
-          <h5 className='py-4 text-xl font-semibold tracking-tight text-gray-900'>
+          <h5 className='py-4 text-xl font-semibold tracking-tight text-gray-700'>
             {name?.slice(0, 25)}
           </h5>
           <div className='flex items-center justify-between'>
-            <span className='text-3xl font-bold text-gray-900 '>${price}</span>
+            <span className='text-xl font-bold text-gray-700 '>
+              ${price}
+            </span>
             <Button intent='primary' size='small' type='submit'>
               Book Now
             </Button>
