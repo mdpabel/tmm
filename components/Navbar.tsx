@@ -59,10 +59,10 @@ const Navbar = () => {
                 <div className='hidden xl:flex '>
                   <NavLink label='Home' link='/' />
                   <NavLink label='County Service' link='county-service' />
-                  {((role && role === 'MOVER') ||
+                  <NavLink label='Find Jobs' link='jobs' />
+                  {/* {((role && role === 'MOVER') ||
                     role === 'MOVING_COMPANY') && (
-                    <NavLink label='Find Jobs' link='jobs' />
-                  )}
+                  )} */}
                   <NavLink label='About Us' link='about' />
                   <NavLink label='Contact Us' link='contact' />
                   {status === 'unauthenticated' && (
