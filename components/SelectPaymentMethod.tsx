@@ -27,7 +27,7 @@ const SelectPaymentMethod = ({
       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
         setPaymentMethod(e.target.value)
       }
-      className='w-[350px] md:w-[700px] space-y-4'
+      className='w-[350px] md:w-[700px] space-y-4 mx-auto'
     >
       <li className='list-none'>
         <input

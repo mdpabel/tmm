@@ -82,12 +82,12 @@ const ShippingAddress = ({
   };
 
   return (
-    <div>
+    <div className='px-5 mx-auto'>
       <h2 className='py-2 text-xl font-medium'>Order details</h2>
       <hr className='py-4' />
       <form
         onSubmit={handleForm}
-        className='w-full max-w-sm space-y-6 md:max-w-3xl'
+        className='w-full max-w-sm px-5 mx-auto space-y-6 md:max-w-5xl'
       >
         <InputWrapper>
           <Label htmlFor='start-add'>Start Address</Label>

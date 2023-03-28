@@ -56,7 +56,7 @@ const OrderDetails = () => {
   };
 
   return (
-    <div className='flex-auto'>
+    <div className='flex-auto max-w-5xl px-5 mx-auto'>
       <ol className='flex items-center w-full mb-4 sm:mb-5'>
         {steps.map((_, idx) => (
           <div
