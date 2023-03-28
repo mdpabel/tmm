@@ -73,7 +73,7 @@ const ScheduledMove = ({ serviceHours, price, id }: PropTypes) => {
 
   return (
     <div className='p-4 space-y-4 border'>
-      <h2 className='py-2 text-xl font-semibold'>Schedule your move</h2>
+      <h2 className='py-2 text-xl font-medium'>Schedule your move</h2>
       <InputWrapper>
         <Label htmlFor='start-time'>Start time</Label>
         <Input
@@ -105,7 +105,7 @@ const ScheduledMove = ({ serviceHours, price, id }: PropTypes) => {
       <div>
         <hr className='py-4' />
         <div className='space-y-4 md:flex md:flex-row md:justify-between md:items-center'>
-          <h2 className='text-2xl font-semibold'>Total: ${servicePrice}</h2>
+          <h2 className='text-2xl font-medium'>Total: ${servicePrice}</h2>
           <Button onClick={handleSchedule} type='button'>
             Schedule your move <RightArrow />
           </Button>

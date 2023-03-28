@@ -96,7 +96,7 @@ const Service = ({ service }: { service: ServiceType }) => {
               </div>
 
               <div className='pt-4'>
-                <h2 className='py-2 text-xl font-semibold'>Service Details</h2>
+                <h2 className='py-2 text-xl font-medium'>Service Details</h2>
                 <div className='flex justify-between py-2 border-b'>
                   <span>Company</span>
                   <span>{company?.companyName}</span>

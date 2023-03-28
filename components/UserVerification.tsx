@@ -183,7 +183,7 @@ const UserVerification = ({
                     </svg>
                     <p className='mb-2 text-sm text-gray-500 '>
                       Click to upload or drag and drop you{' '}
-                      <span className='font-semibold'>owner id</span>
+                      <span className='font-medium'>owner id</span>
                     </p>
                     <p className='text-xs text-gray-500 '>
                       SVG, PNG, JPG or GIF
@@ -301,7 +301,7 @@ const UserVerification = ({
                   </svg>
                   <p className='mb-2 text-sm text-gray-500 '>
                     Click to upload or drag and drop you{' '}
-                    <span className='font-semibold'>owner id</span>
+                    <span className='font-medium'>owner id</span>
                   </p>
                   <p className='text-xs text-gray-500 '>SVG, PNG, JPG or GIF</p>
                 </div>

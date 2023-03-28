@@ -79,7 +79,7 @@ const OrderDetails = () => {
                 className={clsx({
                   'flex items-center justify-center w-10 h-10 border-4 rounded-full lg:h-14 lg:w-14 shrink-0 cursor-pointer':
                     true,
-                  'border-green-600 text-green-500 font-bold':
+                  'border-green-600 text-green-500 font-medium':
                     idx < currentStepIndex ||
                     currentStepIndex === steps.length - 1,
                 })}

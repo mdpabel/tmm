@@ -7,14 +7,14 @@ const JobListingLoader = () => {
       <span className='text-sm '>
         <BarSkeleton />
       </span>
-      <h3 className='mt-px font-bold'>
+      <h3 className='mt-px font-medium'>
         <BarSkeleton />
       </h3>
       <div className='flex items-center gap-3 mt-2'>
-        <h3 className='mt-px font-bold'>
+        <h3 className='mt-px font-medium'>
           <BarSkeleton />
         </h3>
-        <h3 className='mt-px font-bold'>
+        <h3 className='mt-px font-medium'>
           <BarSkeleton />
         </h3>
       </div>

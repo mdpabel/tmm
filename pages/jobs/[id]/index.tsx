@@ -64,30 +64,32 @@ const JobParams = ({ job }: { job: JobListingType }) => {
         </div>
       </div>
       <div className='w-full p-5 space-y-4 bg-white rounded shadow-sm md:w-2/3'>
-        <h2 className='font-bold text-purple-900'>Job Position : {position}</h2>
-        <h3 className='font-semibold'>{title}</h3>
-        <h3 className='font-semibold'>Company : {companyName}</h3>
+        <h2 className='font-medium text-purple-900'>
+          Job Position : {position}
+        </h2>
+        <h3 className='font-medium'>{title}</h3>
+        <h3 className='font-medium'>Company : {companyName}</h3>
 
         <div className='space-y-2'>
-          <h3 className='font-semibold'>Job Description</h3>
+          <h3 className='font-medium'>Job Description</h3>
           <p className='text-sm leading-loose break-words'>{description}</p>
         </div>
         <div className='text-sm leading-loose'>
           <p>
-            <span className='font-semibold'>Published On:</span> {publishedDate}
+            <span className='font-medium'>Published On:</span> {publishedDate}
           </p>
           <p>
-            <span className='font-semibold'>Job Position:</span> {position}
+            <span className='font-medium'>Job Position:</span> {position}
           </p>
           <p>
-            <span className='font-semibold'>County:</span> {county}
+            <span className='font-medium'>County:</span> {county}
           </p>
           <p>
-            <span className='font-semibold'>Rate:</span> Jan 24, 2023
+            <span className='font-medium'>Rate:</span> Jan 24, 2023
           </p>
         </div>
         <div>
-          <h3 className='font-semibold'>About company</h3>
+          <h3 className='font-medium'>About company</h3>
           <p className='text-sm leading-loose'>{companyInfo}</p>
         </div>
 

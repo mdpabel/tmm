@@ -85,7 +85,7 @@ interface LabelType {
 
 export const Label = ({ children, htmlFor }: LabelType) => {
   return (
-    <label className='text-sm font-semibold text-gray-700' htmlFor={htmlFor}>
+    <label className='text-sm font-medium text-gray-700' htmlFor={htmlFor}>
       {children}
     </label>
   );

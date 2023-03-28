@@ -174,7 +174,7 @@ const AuthForm = ({
               <span>
                 {content.label}
                 <Link
-                  className='font-semibold text-blue-600'
+                  className='font-medium text-blue-600'
                   href={content.linkUrl}
                 >
                   {' '}

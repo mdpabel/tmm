@@ -2,15 +2,7 @@ import Image from 'next/image';
 import banner from '@/assets/images/banner.png';
 import AnimatedHeader from '@/components/AnimatedHeader';
 import Head from 'next/head';
-import { Lato } from '@next/font/google';
 import AppLayout from '@/layouts/AppLayout';
-
-const lato = Lato({
-  variable: '--lato-font',
-  weight: ['100', '300', '400', '700', '900'],
-  // display: 'fallback',
-  subsets: ['latin'],
-});
 
 export default function Home() {
   return (
@@ -34,10 +26,10 @@ export default function Home() {
           </div>
           <div className='w-full space-y-4 md:text-right md:w-1/2 md:space-y-5'>
             <div>
-              <h2 className='text-2xl font-semibold tracking-wide md:text-4xl text-custom'>
+              <h2 className='text-2xl font-medium tracking-wide md:text-4xl text-custom'>
                 <AnimatedHeader />
               </h2>
-              <h1 className='text-4xl font-semibold tracking-wider md:text-6xl text-custom'>
+              <h1 className='text-4xl font-medium tracking-wider md:text-6xl text-custom'>
                 with tmmemploy
               </h1>
             </div>

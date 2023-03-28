@@ -149,15 +149,15 @@ const Navbar = () => {
                           label='Home'
                           link='/'
                         />
-                        {((role && role === 'MOVER') ||
+                        {/* {((role && role === 'MOVER') ||
                           role === 'MOVING_COMPANY') && (
-                          <NavLink
-                            onClick={() => setShow(!show)}
-                            label='Find Jobs'
-                            link='jobs'
-                          />
-                        )}
-
+                          
+                        )} */}
+                        <NavLink
+                          onClick={() => setShow(!show)}
+                          label='Find Jobs'
+                          link='jobs'
+                        />
                         <NavLink
                           onClick={() => setShow(!show)}
                           label='County Service'

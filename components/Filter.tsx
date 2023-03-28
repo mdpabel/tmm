@@ -8,7 +8,7 @@ const Filter = ({ label = 'Services Inventory' }: { label?: string }) => {
   return (
     <div className='w-full'>
       <div className='items-center justify-between w-full lg:flex'>
-        <p className='text-base font-bold leading-normal text-center text-gray-700 sm:text-lg md:text-xl lg:text-2xl'>
+        <p className='text-base font-medium leading-normal text-center text-gray-700 sm:text-lg md:text-xl lg:text-2xl'>
           {label}
         </p>
         <div className='items-center mt-6 md:flex lg:mt-0'>

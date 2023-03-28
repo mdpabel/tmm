@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 
-const alertStyles = cva(['text-center p-2 rounded mb-8 font-bold'], {
+const alertStyles = cva(['text-center p-2 rounded mb-8 font-medium'], {
   variants: {
     intent: {
       success: [

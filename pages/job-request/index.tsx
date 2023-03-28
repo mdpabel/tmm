@@ -265,7 +265,7 @@ const JobRequest = () => {
                         onRequestClose={() => setApplicantDetailsOpen(false)}
                       >
                         <div className='max-w-xs space-y-3 text-center md:max-w-md'>
-                          <label className='text-lg font-bold text-gray-900'>
+                          <label className='text-lg font-medium text-gray-900'>
                             Name: {applicantName}
                           </label>
                           <p className='mt-2 leading-relaxed text-center text-gray-800'>

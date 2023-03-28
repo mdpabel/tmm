@@ -16,7 +16,6 @@ const companyAccess = [
   '/add-new-user',
   '/manage-users',
   '/scheduled',
-  '/jobs',
   '/profile',
 ];
 
@@ -25,7 +24,6 @@ const employeeAccess = [
   '/my-jobs',
   '/scheduled',
   '/job-tracking',
-  '/jobs',
   '/profile',
 ];
 
@@ -52,6 +50,7 @@ export async function middleware(req: NextRequest) {
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/county-service') ||
+    pathname.startsWith('/jobs') ||
     pathname.startsWith('/contact') ||
     pathname.startsWith('/about') ||
     pathname === '/' ||
@@ -105,7 +104,6 @@ export const config = {
     '/add-new-user',
     '/manage-users',
     '/schedule',
-    '/jobs',
     '/my-jobs',
     '/job-tracking',
     '/my-orders',

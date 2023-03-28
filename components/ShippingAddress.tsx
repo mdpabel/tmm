@@ -83,7 +83,7 @@ const ShippingAddress = ({
 
   return (
     <div>
-      <h2 className='py-2 text-xl font-semibold'>Order details</h2>
+      <h2 className='py-2 text-xl font-medium'>Order details</h2>
       <hr className='py-4' />
       <form
         onSubmit={handleForm}

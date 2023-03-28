@@ -40,7 +40,7 @@ const SelectPaymentMethod = ({
         />
         <label
           htmlFor='card'
-          className='flex justify-between w-full px-4 py-4 bg-white border rounded shadow-md cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 peer-checked:font-bold'
+          className='flex justify-between w-full px-4 py-4 bg-white border rounded shadow-md cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 peer-checked:font-medium'
         >
           <div className='flex gap-4'>
             <CardIcon /> Card
@@ -62,7 +62,7 @@ const SelectPaymentMethod = ({
         />
         <label
           htmlFor='paypal'
-          className='flex justify-between w-full px-4 py-4 bg-white border rounded shadow-md cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 peer-checked:font-bold'
+          className='flex justify-between w-full px-4 py-4 bg-white border rounded shadow-md cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 peer-checked:font-medium'
         >
           <div className='flex gap-4'>
             <Image src={paypalImg} alt='paypal-icon' width='24' height='24' />{' '}

@@ -61,7 +61,7 @@ const JobFiltering = () => {
         <Label htmlFor='county'>
           <div className='flex justify-between w-full'>
             <span className='inline-block'>Filter by Price</span>
-            <span className='inline-block text-xl font-bold'>{price}</span>
+            <span className='inline-block text-xl font-medium'>{price}</span>
           </div>
         </Label>
 

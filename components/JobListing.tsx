@@ -35,7 +35,7 @@ const JobListing = ({ job }: { job: JobListingType }) => {
               ? company?.companyName.substring(0, 20)
               : company?.companyName}
           </span>
-          <h3 className='mt-px font-bold'>{title}</h3>
+          <h3 className='mt-px font-medium'>{title}</h3>
           <div className='flex items-center gap-3 mt-2'>
             <span className='px-3 py-1 text-sm text-purple-700 bg-purple-100 rounded-full'>
               ${rate}/hour
