@@ -100,7 +100,7 @@ const sidebarLinks = [
     allowed: ['MOVING_CUSTOMER'],
   },
   {
-    label: 'My Jobs',
+    label: 'My Active Jobs',
     link: 'my-job',
     allowed: ['MOVER'],
   },

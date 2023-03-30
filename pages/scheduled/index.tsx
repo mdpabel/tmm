@@ -14,9 +14,9 @@ const localizer = momentLocalizer(moment);
 
 const sum = ({ date, hours }: { date: Date; hours: number }) => {
   let timestamp = new Date(date);
-  timestamp.setHours(timestamp.getHours() + hours);
+  timestamp.setHours(timestamp?.getHours() + hours);
 
-  let formattedDate = timestamp.toISOString();
+  let formattedDate = timestamp?.toISOString();
   return new Date(formattedDate);
 };
 
@@ -46,30 +46,38 @@ const Scheduled = () => {
   const [schedules, setSchedules] = useState<ScheduledType[]>([]);
 
   useEffect(() => {
-    const formattedSchedules =
-      (applications?.data as ApplicationType[])?.map((ap, idx) => {
+    let formattedSchedules =
+      (applications?.data as ApplicationType[])?.forEach((ap, idx) => {
+        if (!ap?.order) return;
+
         return {
           id: idx,
           details: {
-            ...ap.order.OrderDetails[0],
-            reservationHours: ap.order.reservationHours,
+            ...ap?.order?.OrderDetails[0],
+            reservationHours: ap?.order?.reservationHours,
           },
-          title: ap.order.OrderDetails[0].loading
+          title: ap?.order?.OrderDetails[0].loading
             ? 'Loading'
-            : '' + ap.order.OrderDetails[0].unloading
+            : '' + ap?.order?.OrderDetails[0].unloading
             ? ' Unloading'
             : '',
           allDay: false,
-          start: new Date(ap.order.startTime),
+          start: new Date(ap?.order?.startTime),
           end: sum({
-            date: ap.order.startTime,
-            hours: ap.order.reservationHours,
+            date: ap?.order?.startTime,
+            hours: ap?.order?.reservationHours,
           }),
         };
       }) ?? [];
 
+    if (formattedSchedules[0] === undefined) {
+      formattedSchedules = [];
+    }
+
     setSchedules([...formattedSchedules]);
   }, [applications]);
+
+  console.log(schedules);
 
   return (
     <div>
@@ -137,7 +145,9 @@ const Scheduled = () => {
           <>
             <div className='pt-4'></div>
             <Alert intent='warning'>
-              Please select an event in order to show the details
+              {schedules.length > 0
+                ? 'Please select an event in order to show the details'
+                : 'No event found'}
             </Alert>
           </>
         )}

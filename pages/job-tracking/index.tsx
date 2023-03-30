@@ -127,7 +127,13 @@ const JobTracking = () => {
                     {formateDate(appliedAt)}
                   </TableData>
                   <TableData className='text-center'>{job.position}</TableData>
-                  <TableData className='text-center'>
+                  <TableData
+                    className={`text-center ${
+                      applicationStatus === 'ACCEPTED'
+                        ? 'text-green-700 font-bold'
+                        : ''
+                    }`}
+                  >
                     {applicationStatus}
                   </TableData>
                   <TableData className='text-center'>

@@ -14,6 +14,7 @@ const AppLayout = ({ children }: ChildrenType) => {
         style={{
           marginTop: '100px',
           marginBottom: '20px',
+          minHeight: '80vh',
         }}
       >
         {children}

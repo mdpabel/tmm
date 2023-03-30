@@ -43,8 +43,10 @@ const ApplyJobForm = ({
 
   useEffect(() => {
     if (isSuccess) {
-      setFormState({ ...initialState });
-      setIsOpen(false);
+      setTimeout(() => {
+        setFormState({ ...initialState });
+        setIsOpen(false);
+      }, 1500);
     }
   }, [isSuccess, setIsOpen]);
 
