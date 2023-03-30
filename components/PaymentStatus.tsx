@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 const Success = () => {
   return (
-    <div className='min-w-[300px] md:min-w-[800px] shadow-md rounded  bg-white'>
+    <div className='min-w-[300px] mx-auto md:min-w-[800px] shadow-md rounded  bg-white'>
       <div className='px-12 py-14'>
         <Alert intent='success'>
           Your payment has been successfully processed.
@@ -16,7 +16,7 @@ const Success = () => {
 
 const Failed = () => {
   return (
-    <div className='min-w-[300] md:min-w-800 shadow-md rounded  bg-white'>
+    <div className='min-w-[300] md:min-w-800 mx-auto shadow-md rounded  bg-white'>
       <div className='px-12 py-14'>
         <Alert intent='warning'>
           Oops! There was an error processing your payment. Please contact

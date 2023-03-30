@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import Input from './Input';
 import { TextArea } from '@/components/Input';
 import Button from '@/components/Button';
@@ -13,7 +13,13 @@ const initialState = {
   jobApplicationLetter: '',
 };
 
-const ApplyJobForm = ({ jobId }: { jobId: number }) => {
+const ApplyJobForm = ({
+  jobId,
+  setIsOpen,
+}: {
+  jobId: number;
+  setIsOpen: any;
+}) => {
   const {
     data,
     error,
@@ -33,9 +39,14 @@ const ApplyJobForm = ({ jobId }: { jobId: number }) => {
     e.preventDefault();
 
     run(applyToJob({ name, jobApplicationLetter, jobId }));
-
-    setFormState({ ...initialState });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setFormState({ ...initialState });
+      setIsOpen(false);
+    }
+  }, [isSuccess, setIsOpen]);
 
   return (
     <div>

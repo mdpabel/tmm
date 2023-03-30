@@ -48,10 +48,10 @@ const JobParams = ({ job }: { job: JobListingType }) => {
     return <h2>No job posted yet from the company id</h2>;
   }
 
-  const { companyName, companyInfo } = company;
+  const { companyName, companyInfo } = company as CompanyType;
 
   return (
-    <div className='container flex flex-col gap-10 px-10 md:max-w-3xl md:flex-row md:pt-16 lg:max-w-4xl lg:pt-2'>
+    <div className='container flex flex-col max-w-5xl gap-10 px-10 mx-auto md:max-w-3xl md:flex-row md:pt-16 lg:max-w-4xl lg:pt-2'>
       <div className='w-full p-5 space-y-5 border shadow md:w-1/3'>
         <h2 className='px-2 py-1 text-purple-100 bg-purple-600 rounded h-fit'>
           Job Summary
@@ -64,28 +64,30 @@ const JobParams = ({ job }: { job: JobListingType }) => {
         </div>
       </div>
       <div className='w-full p-5 space-y-4 bg-white rounded shadow-sm md:w-2/3'>
-        <h2 className='font-medium text-purple-900'>
+        <h2 className='font-semibold text-purple-900'>
           Job Position : {position}
         </h2>
-        <h3 className='font-medium'>{title}</h3>
-        <h3 className='font-medium'>Company : {companyName}</h3>
+        <h3 className='font-semibold'>{title}</h3>
+        <h3 className='font-medium'>
+          <strong>Company</strong> : {companyName}
+        </h3>
 
         <div className='space-y-2'>
-          <h3 className='font-medium'>Job Description</h3>
+          <h3 className='font-semibold'>Job Description</h3>
           <p className='text-sm leading-loose break-words'>{description}</p>
         </div>
         <div className='text-sm leading-loose'>
           <p>
-            <span className='font-medium'>Published On:</span> {publishedDate}
+            <strong>Published On:</strong> {publishedDate}
           </p>
           <p>
-            <span className='font-medium'>Job Position:</span> {position}
+            <strong>Job Position:</strong> {position}
           </p>
           <p>
-            <span className='font-medium'>County:</span> {county}
+            <strong>County:</strong> {county}
           </p>
           <p>
-            <span className='font-medium'>Rate:</span> Jan 24, 2023
+            <strong>Rate:</strong> Jan 24, 2023
           </p>
         </div>
         <div>
@@ -137,7 +139,7 @@ const JobParams = ({ job }: { job: JobListingType }) => {
           isOpen={modalIsOpen}
           onRequestClose={() => setIsOpen(false)}
         >
-          <ApplyJobForm jobId={id} />
+          <ApplyJobForm setIsOpen={setIsOpen} jobId={id} />
         </Modal>
       </div>
     </div>
